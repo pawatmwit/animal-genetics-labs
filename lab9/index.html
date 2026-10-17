@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lab Worksheet 9: Predicting mutations · 710 114 Animal Genetics</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Lora:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F6F4EA; --surface:#FFFDF6; --ink:#1E2B27; --muted:#52615B; --line:#DCD5C1;
+  --brand:#2F6F5E; --brand-ink:#FFFFFF; --brand-soft:#E3EEE8; --gold:#B8862A; --gold-soft:#F3E4BE;
+  --ok:#2F7D4F; --ok-soft:#DDEFE3; --bad:#A23B2A; --bad-soft:#F6DEDA;
+  --scope:#13211D; --scope-ring:#2C3F38; --slot:#EEF2EC; --slot-line:#B9CBBF; --slot-ink:#4C5F57;
+  --chr:#DCD3E6; --band:#3E3054; --chr-line:#8D82A2;
+  --head:'Lora','Noto Serif Thai',Georgia,serif; --body:'IBM Plex Sans Thai',system-ui,Arial,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111916; --surface:#18221E; --ink:#E8EEEA; --muted:#A6B3AD; --line:#2D3A35;
+    --brand:#62B39B; --brand-ink:#0D1613; --brand-soft:#1E2E28; --gold:#E0B456; --gold-soft:#3A3120;
+    --ok:#6CC08E; --ok-soft:#173225; --bad:#E58470; --bad-soft:#3A1E19;
+    --scope:#0A110F; --scope-ring:#22312B; --slot:#1D2925; --slot-line:#3B5047; --slot-ink:#A6B3AD;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111916; --surface:#18221E; --ink:#E8EEEA; --muted:#A6B3AD; --line:#2D3A35;
+  --brand:#62B39B; --brand-ink:#0D1613; --brand-soft:#1E2E28; --gold:#E0B456; --gold-soft:#3A3120;
+  --ok:#6CC08E; --ok-soft:#173225; --bad:#E58470; --bad-soft:#3A1E19;
+  --scope:#0A110F; --scope-ring:#22312B; --slot:#1D2925; --slot-line:#3B5047; --slot-ink:#A6B3AD;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 120px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar{max-width:1080px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px}
+.bar h1{font-family:var(--head);font-weight:600;font-size:20px;margin:0;flex:1 1 280px}
+.who{font-size:14px;color:var(--muted)}
+nav.steps{max-width:1080px;margin:0 auto;padding:0 20px 12px;display:flex;gap:6px;overflow-x:auto}
+nav.steps button{flex:none;font:inherit;font-size:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+nav.steps button[aria-current="step"]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+nav.steps button.done::after{content:" ✓";color:var(--ok)}
+nav.steps button[aria-current="step"].done::after{color:var(--brand-ink)}
+main{max-width:1080px;margin:0 auto;padding:24px 20px 80px}
+section.step{display:none}
+section.step.on{display:block}
+h2{font-family:var(--head);font-weight:600;font-size:28px;line-height:1.2;margin:0 0 6px}
+h3{font-size:19px;margin:28px 0 8px}
+.th{color:var(--gold)}
+p.lead{max-width:72ch;color:var(--muted);margin:0 0 18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
+label.field{display:block;font-weight:600;margin:12px 0 4px}
+input[type=text],input[type=number],select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;max-width:420px}
+textarea{max-width:100%;min-height:84px;resize:vertical}
+.q{margin:16px 0}
+.q p{margin:0 0 6px;font-weight:600}
+.opts label{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;border-radius:8px;cursor:pointer}
+.opts label:hover{background:var(--brand-soft)}
+.opts input{margin-top:5px}
+.fb{font-size:15px;margin-top:4px;padding:6px 10px;border-radius:8px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-soft);color:var(--ink)} .fb.bad{background:var(--bad-soft);color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:16px 0}
+button.btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:10px 18px;cursor:pointer;background:var(--brand);color:var(--brand-ink)}
+button.btn.ghost{background:transparent;color:var(--brand);border:1px solid var(--brand)}
+button.btn.quiet{background:transparent;color:var(--muted);border:1px solid var(--line)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.score{font-weight:700}
+.note{font-size:15px;color:var(--muted)}
+.ws{width:100%;height:auto;display:block;border-radius:14px;background:var(--surface);border:1px solid var(--line);touch-action:none;user-select:none;-webkit-user-select:none}
+.chr{cursor:grab}
+.chr.sel .hit{stroke:var(--gold);stroke-width:2.5}
+.chr.dragging{cursor:grabbing}
+.slot{fill:var(--slot);stroke:var(--slot-line);stroke-width:1.2}
+.slot.ok{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.5}
+.slot.bad{fill:var(--bad-soft);stroke:var(--bad);stroke-width:2.5}
+.slotnum{font-family:var(--body);font-size:15px;fill:var(--slot-ink);text-anchor:middle}
+.micro{cursor:pointer}
+.micro.counted ellipse{fill:var(--gold)}
+.tbl{border-collapse:collapse;width:100%;max-width:720px;font-size:16px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:15px;color:var(--muted)}
+.pill{display:inline-block;background:var(--gold-soft);border-radius:999px;padding:2px 10px;font-weight:600;color:var(--ink)}
+.copybox{width:100%;max-width:100%;min-height:160px;font-size:14px}
+@media (max-width:600px){body{font-size:16px} h2{font-size:24px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+
+<style>
+.dna{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:16px;line-height:1.9;word-break:break-all;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.dna .cd{display:inline-block;margin-right:6px}
+.dna .pos{color:var(--muted);font-size:12px;margin-right:2px}
+.prot{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:17px;letter-spacing:3px;line-height:1.8;overflow-x:auto;white-space:nowrap}
+.prot b{display:inline-block;width:90px;letter-spacing:0}
+.chg{background:var(--gold);color:#1A1A1A}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:2px;text-transform:uppercase}
+.simgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;align-items:end}
+.links a{color:var(--brand);font-weight:600}
+.mcard{border-left:4px solid var(--gold);padding-left:12px;margin:8px 0}
+.segrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:6px 0}
+.segs{display:flex;gap:2px}
+.seg{width:30px;height:30px;line-height:30px;text-align:center;color:#fff;font-weight:700;font-size:14px;border-radius:5px}
+.seg.l{border-radius:15px 5px 5px 15px}.seg.r{border-radius:5px 15px 15px 5px}
+.karyo{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;padding:10px;border:1px solid var(--line);border-radius:10px;margin:6px 0 12px;overflow-x:auto}
+.kp{display:flex;flex-direction:column;align-items:center;gap:4px}
+.kp .st{display:flex;gap:3px;align-items:flex-end}
+.kp .ch{width:12px;border-radius:6px;background:var(--brand)}
+.kp .ch.f{background:var(--gold)}
+.kp span{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <h1>Lab Worksheet 9 · Predicting mutations</h1>
+    <span class="who" id="who">710 114 Animal Genetics</span>
+  </div>
+  <nav class="steps" aria-label="Worksheet parts" id="steps"></nav>
+</header>
+<main>
+
+<section class="step" id="s-start" data-title="Start">
+  <h2>Before you begin <span class="th">· ก่อนเริ่ม</span></h2>
+  <p class="lead">Predict what mutations do to a protein, test your predictions in a simulator, classify real livestock mutations and look them up in OMIA, then read chromosome-level changes in karyotypes. Answers save in this browser, so use the same device for the whole session.</p>
+  <div class="card">
+    <label class="field" for="f-name">Full name</label><input type="text" id="f-name" autocomplete="name">
+    <label class="field" for="f-id">Student ID</label><input type="text" id="f-id" inputmode="numeric">
+    <label class="field" for="f-group">Lab group</label><input type="text" id="f-group">
+  </div>
+  <table class="tbl" aria-label="Parts of this worksheet">
+    <tr><th>Part</th><th>What you do</th><th>Time</th></tr>
+    <tr><td>A</td><td>Mutation simulator · ทำนายและทดสอบ</td><td>50 min</td></tr>
+    <tr><td>B</td><td>Real livestock mutations in OMIA · ฐานข้อมูล OMIA</td><td>40 min</td></tr>
+    <tr><td>C</td><td>Chromosome mutations · การกลายพันธุ์ระดับโครโมโซม</td><td>35 min</td></tr>
+    <tr><td>D</td><td>Causes and repair · สาเหตุและการซ่อมแซม</td><td>20 min</td></tr>
+    <tr><td>E</td><td>How many new mutations? · คำนวณ</td><td>10 min</td></tr>
+    <tr><td>F</td><td>Explain · อธิบาย</td><td>15 min</td></tr>
+  </table>
+  <div class="row"><button class="btn" data-go="A">Start Part A</button></div>
+</section>
+
+<section class="step" id="s-A" data-title="A · Simulator">
+  <h2>Part A · Mutation simulator <span class="th">· จำลองการกลายพันธุ์</span></h2>
+  <p class="lead">The gene below codes for the cattle insulin B chain (the coding sequence from Lab 8, written as DNA). Position 1 is the A of ATG.</p>
+  <div class="dna" id="A-dna"></div>
+  <div class="card">
+    <h3 style="margin-top:0">Try a mutation</h3>
+    <div class="simgrid">
+      <div><label class="field" for="S-type">Type</label><select id="S-type"><option value="sub">Substitution</option><option value="ins">Insertion (after the position)</option><option value="del">Deletion (starting at the position)</option></select></div>
+      <div><label class="field" for="S-pos">Position</label><input type="text" id="S-pos" inputmode="numeric" style="max-width:120px"></div>
+      <div><label class="field" for="S-what">New base(s), or number of bases to delete</label><input type="text" id="S-what" class="mono" style="max-width:160px"></div>
+      <div><button class="btn ghost" id="S-run" type="button">Run</button></div>
+    </div>
+    <div class="fb" id="S-msg"></div>
+    <div class="prot" id="S-out"></div>
+  </div>
+  <p class="lead" style="margin-top:18px">For each mutation, <b>predict first</b>, then test it in the simulator if you want to check.</p>
+  <div id="A-qs"></div>
+  <div class="row"><button class="btn" id="A-check">Check Part A</button><span class="score" id="A-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="B">Next: Part B</button></div>
+</section>
+
+<section class="step" id="s-B" data-title="B · OMIA">
+  <h2>Part B · Real livestock mutations <span class="th">· การกลายพันธุ์จริงในปศุสัตว์</span></h2>
+  <div class="card links">
+    <p style="margin:4px 0">Open <a href="https://www.omia.org/" target="_blank" rel="noopener">OMIA (Online Mendelian Inheritance in Animals)</a>. Search by trait or disorder name, then open the entry for the right species. Read the gene and the "Mode of inheritance" lines.</p>
+    <p class="note" style="margin:6px 0 0">If OMIA shows something different from what the checker expects, note it in the box below and tell the instructor.</p>
+  </div>
+  <div id="B-qs"></div>
+  <label class="field" for="B-note">Note for the instructor (optional)</label><textarea id="B-note" style="min-height:70px"></textarea>
+  <div class="row"><button class="btn" id="B-check">Check Part B</button><span class="score" id="B-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="X">Next: Part C</button></div>
+</section>
+
+<section class="step" id="s-X" data-title="C · Chromosomes">
+  <h2>Part C · Chromosome mutations <span class="th">· การกลายพันธุ์ระดับโครโมโซม</span></h2>
+  <p class="lead">Letters stand for segments of a chromosome. Name each change, then read karyotypes and count chromosomes.</p>
+  <div class="card"><h3 style="margin-top:0">C1 · Name the structural change</h3><div id="X-struct"></div></div>
+  <div class="card"><h3 style="margin-top:0">C2 · Read the karyotypes</h3>
+    <p class="note" style="margin:0 0 8px">Simplified karyotypes of three animals: only six chromosome pairs are drawn, numbered by size.</p>
+    <div id="X-karyo"></div></div>
+  <div id="X-qs"></div>
+  <div class="row"><button class="btn" id="X-check">Check Part C</button><span class="score" id="X-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="C">Next: Part D</button></div>
+</section>
+
+<section class="step" id="s-C" data-title="D · Causes">
+  <h2>Part D · Causes and repair <span class="th">· สาเหตุและการซ่อมแซม</span></h2>
+  <div id="C-qs"></div>
+  <div class="row"><button class="btn" id="C-check">Check Part D</button><span class="score" id="C-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="D">Next: Part E</button></div>
+</section>
+
+<section class="step" id="s-D" data-title="E · Numbers">
+  <h2>Part E · How many new mutations? <span class="th">· คำนวณจำนวนการกลายพันธุ์ใหม่</span></h2>
+  <p class="lead">Use a mutation rate of 1 × 10⁻⁸ per bp per generation. A calf receives 2 × 2.7 × 10⁹ bp; a chick 2 × 1.1 × 10⁹ bp. About 1.5% of each genome codes for protein.</p>
+  <div id="D-qs"></div>
+  <div class="row"><button class="btn" id="D-check">Check Part E</button><span class="score" id="D-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="E">Next: Part F</button></div>
+</section>
+
+<section class="step" id="s-E" data-title="F · Explain">
+  <h2>Part F · Explain <span class="th">· อธิบาย</span></h2>
+  <p class="lead">Write 2–4 sentences for each, in English or Thai.</p>
+  <div id="E-qs"></div>
+  <div class="row"><button class="btn" data-go="R">See my summary</button></div>
+</section>
+
+<section class="step" id="s-R" data-title="Summary">
+  <h2>Summary <span class="th">· สรุปผล</span></h2>
+  <p class="lead">Take a screenshot of this page, or copy the summary text, and submit it the way your instructor tells you.</p>
+  <div class="card" id="R-body"></div>
+  <div class="row"><button class="btn ghost" id="R-copy">Copy summary as text</button><button class="btn quiet" id="R-reset">Start over on this device</button></div>
+  <textarea class="copybox" id="R-text" readonly aria-label="Summary text" hidden></textarea>
+</section>
+
+</main>
+<script>
+(function(){
+"use strict";
+var CDS = "ATGTTCGTGAACCAGCACCTGTGCGGCTCCCACCTGGTGGAGGCCCTGTACCTCGTGTGCGGGGAGCGCGGCTTCTTCTACACCCCCAAGGCCTAGGCCTCTGACCTCTGATAAGTAGCTAA";
+var KEY = "lw9-710114-v1";
+var state = load() || {v:1, step:"start", info:{name:"",id:"",group:""}, A:{}, B:{}, C:{}, D:{}, E:{}, X:{}, checked:{}};
+if (!state.X) state.X = {};
+function load(){ try{ var s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; }catch(e){ return null; } }
+var saveT = null;
+function save(){ clearTimeout(saveT); saveT = setTimeout(function(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }, 250); }
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function parseNum(s){ if (s == null) return NaN; s = String(s).trim().replace(/,/g, "").replace(/\s+/g, ""); var m = s.match(/^(-?\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/); if (m) return Number(m[1]) / Number(m[2]); return s === "" ? NaN : Number(s); }
+function close(a, b, tol){ return isFinite(a) && Math.abs(a - b) <= tol; }
+
+/* ---------- genetic code (DNA coding strand) ---------- */
+var BASES = "TCAG", AAS = "FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG", CODE = {}, n = 0;
+for (var i = 0; i < 4; i++) for (var j = 0; j < 4; j++) for (var k = 0; k < 4; k++) CODE[BASES[i] + BASES[j] + BASES[k]] = AAS[n++];
+function protein(s){ var out = ""; for (var i = 0; i + 3 <= s.length; i += 3){ var a = CODE[s.substr(i, 3)]; if (a === "*") return out; out += a; } return out + "…"; }
+function mutate(type, pos, what){
+  if (type === "sub") return CDS.slice(0, pos - 1) + what + CDS.slice(pos);
+  if (type === "ins") return CDS.slice(0, pos) + what + CDS.slice(pos);
+  return CDS.slice(0, pos - 1) + CDS.slice(pos - 1 + Number(what));
+}
+var P0 = protein(CDS);
+
+/* ---------- navigation ---------- */
+var order = ["start","A","B","X","C","D","E","R"], stepsNav = $("steps");
+order.forEach(function(s){ var b = document.createElement("button"); b.type = "button"; b.dataset.step = s; b.textContent = $("s-"+s).dataset.title; b.addEventListener("click", function(){ go(s); }); stepsNav.appendChild(b); });
+function refreshNav(){ stepsNav.querySelectorAll("button").forEach(function(b){ if (b.dataset.step === state.step) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current"); b.classList.toggle("done", !!state.checked[b.dataset.step]); }); }
+function go(s){ state.step = s; save(); order.forEach(function(x){ $("s-"+x).classList.toggle("on", x === s); }); refreshNav(); if (s === "R") renderSummary(); try{ window.scrollTo(0,0); }catch(e){} }
+document.querySelectorAll("[data-go]").forEach(function(b){ b.addEventListener("click", function(){ go(b.dataset.go); }); });
+function confirmTap(btn, label, action){ var armed = false, t = null, orig = btn.textContent; btn.addEventListener("click", function(){ if (armed){ clearTimeout(t); armed = false; btn.textContent = orig; action(); return; } armed = true; btn.textContent = label; t = setTimeout(function(){ armed = false; btn.textContent = orig; }, 4000); }); }
+["name","id","group"].forEach(function(k){ var f = $("f-"+k); f.value = state.info[k] || ""; f.addEventListener("input", function(){ state.info[k] = f.value.trim(); updateWho(); save(); }); });
+function updateWho(){ var i = state.info; $("who").textContent = (i.name || "Name not entered") + (i.id ? ", " + i.id : ""); }
+updateWho();
+
+/* ---------- gene display ---------- */
+(function(){
+  var h = "", stopAt = (P0.length + 1) * 3;
+  for (var i = 0; i < stopAt; i += 3) h += '<span class="cd"><span class="pos">' + (i + 1) + '</span>' + CDS.substr(i, 3) + '</span>';
+  h += '<span class="cd" style="color:var(--muted)">' + CDS.slice(stopAt).replace(/(.{3})/g, "$1 ") + '</span>';
+  $("A-dna").innerHTML = h;
+})();
+function showProt(mut){
+  var p1 = protein(mut), h = "<b>Original</b>" + esc(P0) + "<br><b>Mutant</b>";
+  for (var i = 0; i < p1.length; i++) h += (p1[i] !== P0[i] ? '<span class="chg">' + esc(p1[i]) + '</span>' : esc(p1[i]));
+  var len = p1.replace("…", "").length;
+  h += "<br><span class='note' style='letter-spacing:0'>Original " + P0.length + " amino acids (incl. Met) · mutant " + len + (p1.slice(-1) === "…" ? "+ (no stop in this stretch)" : "") + "</span>";
+  $("S-out").innerHTML = h;
+}
+$("S-run").addEventListener("click", function(){
+  var type = $("S-type").value, pos = parseInt($("S-pos").value, 10), what = String($("S-what").value || "").toUpperCase().replace(/\s/g, ""), m = $("S-msg");
+  m.className = "fb";
+  if (!(pos >= 1 && pos <= CDS.length)){ m.className = "fb show bad"; m.textContent = "Give a position between 1 and " + CDS.length + "."; return; }
+  if (type === "sub" && !/^[ACGT]$/.test(what)){ m.className = "fb show bad"; m.textContent = "For a substitution, type one base: A, C, G or T."; return; }
+  if (type === "ins" && !/^[ACGT]{1,12}$/.test(what)){ m.className = "fb show bad"; m.textContent = "Type the base(s) to insert, e.g. A or GGT."; return; }
+  if (type === "del" && !(/^\d+$/.test(what) && Number(what) >= 1 && Number(what) <= 12)){ m.className = "fb show bad"; m.textContent = "Type how many bases to delete (1–12)."; return; }
+  if (type === "sub" && what === CDS[pos - 1]){ m.className = "fb show bad"; m.textContent = "That base is already " + what + "."; return; }
+  showProt(mutate(type, pos, what));
+});
+
+/* ---------- generic questions ---------- */
+function buildQs(part, host, list){
+  var h = "";
+  list.forEach(function(q){
+    h += "<div class='q" + (q.head ? " mcard" : "") + "'>" + (q.head ? "<p style='margin:0 0 6px'><b>" + q.head + "</b></p>" : "");
+    if (q.t === "mc"){ h += "<p>" + q.q + "</p><div class='opts'>"; q.o.forEach(function(o, j){ h += "<label><input type='radio' name='" + part + "-" + q.k + "' value='" + j + "'> <span>" + o + "</span></label>"; }); h += "</div>"; }
+    else if (q.t === "sel"){ h += "<label class='field' for='" + part + "-" + q.k + "'>" + q.q + "</label><select id='" + part + "-" + q.k + "' style='max-width:260px'><option value=''>Choose…</option>" + q.o.map(function(o, j){ return "<option value='" + j + "'>" + o + "</option>"; }).join("") + "</select>"; }
+    else h += "<label class='field' for='" + part + "-" + q.k + "'>" + q.q + "</label><input type='text' id='" + part + "-" + q.k + "' " + (q.t === "num" ? "inputmode='decimal' style='max-width:200px'" : "class='mono' autocomplete='off' spellcheck='false' style='max-width:200px'") + ">";
+    h += "<div class='fb' id='fb-" + part + "-" + q.k + "'></div></div>";
+  });
+  $(host).innerHTML = h;
+  list.forEach(function(q){
+    if (q.t === "mc") document.querySelectorAll("input[name='" + part + "-" + q.k + "']").forEach(function(r){ if (String(state[part][q.k]) === r.value) r.checked = true; r.addEventListener("change", function(){ state[part][q.k] = Number(r.value); save(); }); });
+    else if (q.t === "sel"){ var s = $(part + "-" + q.k); if (state[part][q.k] != null) s.value = String(state[part][q.k]); s.addEventListener("change", function(){ state[part][q.k] = s.value === "" ? null : Number(s.value); save(); }); }
+    else { var e = $(part + "-" + q.k); e.value = state[part][q.k] || ""; e.addEventListener("input", function(){ state[part][q.k] = e.value; save(); }); }
+  });
+}
+var A1 = {PHE:"F",LEU:"L",ILE:"I",MET:"M",VAL:"V",SER:"S",PRO:"P",THR:"T",ALA:"A",TYR:"Y",HIS:"H",GLN:"Q",ASN:"N",LYS:"K",ASP:"D",GLU:"E",CYS:"C",TRP:"W",ARG:"R",GLY:"G"};
+function aa1(v){ v = String(v || "").trim().toUpperCase(); return A1[v] || v.replace(/[^A-Z]/g, ""); }
+function checkList(part, list, show){
+  var n = 0;
+  list.forEach(function(q){
+    var v = state[part][q.k], ok;
+    if (q.t === "mc" || q.t === "sel") ok = v === q.a;
+    else if (q.t === "aa") ok = aa1(v) === q.a;
+    else if (q.t === "txt") ok = String(v || "").toUpperCase().replace(/[^A-Z0-9]/g, "") === q.a;
+    else ok = q.rel ? (isFinite(parseNum(v)) && Math.abs(parseNum(v) - q.a) <= q.a * q.rel) : close(parseNum(v), q.a, q.tol || 0);
+    if (ok) n++;
+    if (show){ var f = $("fb-" + part + "-" + q.k); f.className = "fb show " + (ok ? "ok" : "bad"); f.textContent = ok ? "Correct. " + (q.why || "") : "Not yet. " + (q.hint || "Try it in the simulator or check the lecture."); }
+  });
+  return n;
+}
+
+/* ---------- PART A ---------- */
+var CLS = ["Silent", "Missense", "Nonsense", "In-frame (whole codons added or lost)", "Frameshift"];
+function lenOf(type, pos, what){ return protein(mutate(type, pos, what)).replace("…", "").length; }
+var M = [
+ {k:"m1", head:"Mutation 1: substitution C → T at position 6", type:"sub", pos:6, what:"T", cls:0},
+ {k:"m2", head:"Mutation 2: substitution G → A at position 91", type:"sub", pos:91, what:"A", cls:1, ask:"aa", askq:"New amino acid (one letter)", why2:"GCC (Ala) → ACC (Thr): the human B30 amino acid."},
+ {k:"m3", head:"Mutation 3: substitution C → T at position 13", type:"sub", pos:13, what:"T", cls:2, ask:"len", askq:"How many amino acids long is the mutant protein (counting Met)?"},
+ {k:"m4", head:"Mutation 4: deletion of 1 base at position 20", type:"del", pos:20, what:"1", cls:4, ask:"len", askq:"How many amino acids long is the mutant protein (counting Met)?"},
+ {k:"m5", head:"Mutation 5: deletion of 3 bases starting at position 22", type:"del", pos:22, what:"3", cls:3, ask:"aa", askq:"Which amino acid is lost? (one letter)", aaAns:"C"},
+ {k:"m6", head:"Mutation 6: insertion of one A after position 45", type:"ins", pos:45, what:"A", cls:4, ask:"len", askq:"How many amino acids long is the mutant protein (counting Met)?"},
+ {k:"m7", head:"Mutation 7: substitution G → A at position 59", type:"sub", pos:59, what:"A", cls:1, ask:"aa", askq:"New amino acid (one letter)", why2:"TGC (Cys) → TAC (Tyr): the same amino-acid change as Piedmontese MSTN, here in insulin."}
+];
+var AQ = [];
+M.forEach(function(m){
+  AQ.push({k:m.k + "c", t:"sel", head:m.head, q:"Kind of mutation", o:CLS, a:m.cls, hint:"Look at the codon (or count the bases) before deciding."});
+  if (m.ask === "len") AQ.push({k:m.k + "l", t:"num", q:m.askq, a:lenOf(m.type, m.pos, m.what), hint:"Run it in the simulator and read the mutant length."});
+  if (m.ask === "aa"){
+    var ans = m.aaAns || protein(mutate(m.type, m.pos, m.what))[Math.floor((m.pos - 1) / 3)];
+    AQ.push({k:m.k + "a", t:"aa", q:m.askq, a:ans, why:m.why2 || "", hint:"Find the codon that contains this position in the codon table."});
+  }
+});
+buildQs("A", "A-qs", AQ);
+function checkA(show){ return checkList("A", AQ, show); }
+$("A-check").addEventListener("click", function(){ var n = checkA(true); $("A-score").textContent = "Score: " + n + " / " + AQ.length; state.checked.A = true; save(); refreshNav(); });
+
+/* ---------- PART B ---------- */
+var CLSB = ["Silent", "Missense", "Nonsense", "Frameshift", "Regulatory (outside the coding sequence)"];
+var BQ = [
+ {k:"b1", t:"sel", head:"Case 1 · Belgian Blue cattle: 11-bp deletion in exon 3 of the double-muscling gene", q:"Kind of mutation", o:CLSB, a:3, why:"11 is not a multiple of 3."},
+ {k:"b1g", t:"txt", q:"Search OMIA for double muscling in cattle. Gene symbol?", a:"MSTN", why:"Myostatin."},
+ {k:"b2", t:"sel", head:"Case 2 · Piedmontese cattle: G → A changing Cys313 to Tyr in the same gene", q:"Kind of mutation", o:CLSB, a:1},
+ {k:"b3", t:"sel", head:"Case 3 · Charolais cattle: C → T turning Gln204 into a stop codon in the same gene", q:"Kind of mutation", o:CLSB, a:2},
+ {k:"b4", t:"sel", head:"Case 4 · Pigs: C → T changing Arg615 to Cys, causing malignant hyperthermia (porcine stress syndrome)", q:"Kind of mutation", o:CLSB, a:1},
+ {k:"b4g", t:"txt", q:"Search OMIA for malignant hyperthermia in pigs. Gene symbol?", a:"RYR1", why:"The ryanodine receptor, a calcium channel in muscle."},
+ {k:"b5", t:"sel", head:"Case 5 · Holstein cattle: A → G changing Asp128 to Gly, causing BLAD", q:"Kind of mutation", o:CLSB, a:1},
+ {k:"b5g", t:"txt", q:"Search OMIA for leukocyte adhesion deficiency (BLAD) in cattle. Gene symbol?", a:"ITGB2", why:"An integrin white blood cells need to leave the bloodstream."},
+ {k:"b6", t:"sel", head:"Case 6 · Angus and Hereford cattle: a ~200-bp duplication in non-coding DNA, causing polled", q:"Kind of mutation", o:CLSB, a:4, why:"No codon changes; gene switching changes."},
+ {k:"b6c", t:"num", q:"On which cattle chromosome is the polled locus?", a:1, why:"BTA1."},
+ {k:"b7", t:"mc", q:"According to OMIA, which pair are both autosomal recessive disorders?", o:["BLAD and malignant hyperthermia in pigs","Polled and BLAD","Polled and double muscling"], a:0, why:"Polled is dominant (Class 2)."}
+];
+buildQs("B", "B-qs", BQ);
+$("B-note").value = state.B.note || ""; $("B-note").addEventListener("input", function(){ state.B.note = $("B-note").value; save(); });
+function checkB(show){ return checkList("B", BQ, show); }
+$("B-check").addEventListener("click", function(){ var n = checkB(true); $("B-score").textContent = "Score: " + n + " / " + BQ.length; state.checked.B = true; save(); refreshNav(); });
+
+
+/* ---------- PART C (chromosomes, state key X) ---------- */
+var SEGCOL = {A:"#1E4D43",B:"#3A6EA5",C:"#7C5A12",D:"#2F8F83",E:"#9E3F2B",F:"#5E6E68",M:"#8A7A4E",N:"#6B5A1E",O:"#5E6E68",P:"#3B4A45",Q:"#7A8A84",R:"#4A5A55"};
+function segs(str){ var h = '<span class="segs">'; for (var i = 0; i < str.length; i++){ var c = str[i]; h += '<span class="seg' + (i === 0 ? " l" : (i === str.length - 1 ? " r" : "")) + '" style="background:' + SEGCOL[c] + '">' + c + '</span>'; } return h + '</span>'; }
+var STY = ["Deletion", "Duplication", "Inversion", "Translocation"];
+var SQ = [
+ {k:"s1", b:["ABCDEF"], a:["ABEF"], ans:0},
+ {k:"s2", b:["ABCDEF"], a:["ADCBEF"], ans:2},
+ {k:"s3", b:["ABCDEF"], a:["ABCDCDEF"], ans:1},
+ {k:"s4", b:["ABCDEF","MNOPQR"], a:["ABCQR","MNOPDEF"], ans:3},
+ {k:"s5", b:["ABCDEF"], a:["AEDCBF"], ans:2}
+];
+(function(){
+  var h = "";
+  SQ.forEach(function(q, i){
+    h += "<div class='q'><div class='segrow'><b style='width:24px'>" + (i + 1) + "</b><span>" + q.b.map(segs).join(" ") + "</span><span style='font-weight:700;color:var(--gold)'>→</span><span>" + q.a.map(segs).join(" ") + "</span></div>"
+      + "<select id='X-" + q.k + "' aria-label='Change " + (i + 1) + "' style='max-width:220px'><option value=''>Choose…</option>" + STY.map(function(o, j){ return "<option value='" + j + "'>" + o + "</option>"; }).join("") + "</select><div class='fb' id='fb-X-" + q.k + "'></div></div>";
+  });
+  $("X-struct").innerHTML = h;
+  SQ.forEach(function(q){ var s = $("X-" + q.k); if (state.X[q.k] != null) s.value = String(state.X[q.k]); s.addEventListener("change", function(){ state.X[q.k] = s.value === "" ? null : Number(s.value); save(); }); });
+})();
+function karyo(spec){
+  var H = [70, 60, 50, 42, 34, 26], h = '<div class="karyo">';
+  spec.forEach(function(chs, i){
+    h += '<div class="kp"><div class="st">' + chs.map(function(c){ return '<div class="ch' + (c > 1 ? " f" : "") + '" style="height:' + (c > 1 ? H[0] + H[5] : H[i]) + 'px"></div>'; }).join("") + '</div><span>' + (i + 1) + '</span></div>';
+  });
+  return h + '</div>';
+}
+var KAR = [
+ {name:"Animal 1", spec:[[1,1],[1,1],[1,1],[1,1,1],[1,1],[1,1]], ans:1},
+ {name:"Animal 2", spec:[[1,2],[1,1],[1,1],[1,1],[1,1],[1]], ans:2},
+ {name:"Animal 3", spec:[[1,1],[1,1],[1,1],[1,1],[1,1],[1,1]], ans:0}
+];
+var KOPT = ["Normal", "Trisomy", "Robertsonian fusion (gold = chromosomes 1 and 6 joined)", "Monosomy"];
+$("X-karyo").innerHTML = KAR.map(function(k, i){ return "<p style='margin:6px 0 0'><b>" + k.name + "</b></p>" + karyo(k.spec); }).join("");
+var XQ = [];
+KAR.forEach(function(k, i){ XQ.push({k:"k" + i, t:"sel", q:"Diagnosis for " + k.name, o:KOPT, a:k.ans, why:"", hint:"Count the chromosomes in each pair and compare their sizes."}); });
+XQ = XQ.concat([
+ {k:"c1", t:"num", q:"Cattle have 2n = 60. How many chromosomes are in the body cells of a bull carrying one 1/29 fusion?", a:59, tol:0, why:"Two chromosomes became one."},
+ {k:"c2", t:"mc", q:"Which gametes from a 1/29 carrier bull can give a normal-looking, healthy calf?", o:["Only gametes with the fused chromosome","Balanced gametes: either the fused 1/29 alone, or a normal 1 and a normal 29","Any gamete, because no genes are lost"], a:1, why:"Unbalanced gametes carry an extra or missing copy of chromosome 1 or 29 material, and those embryos die early."},
+ {k:"c3", t:"num", q:"Nondisjunction in a cow's meiosis I gives an egg with both copies of chromosome 12. A normal sperm fertilizes it. How many copies of chromosome 12 does the embryo have?", a:3, tol:0},
+ {k:"c4", t:"num", q:"How many chromosomes in total does that embryo have?", a:61, tol:0, why:"60 + 1."},
+ {k:"c5", t:"mc", q:"Horses have 2n = 64. An infertile mare is 63,X. What is she missing?", o:["One copy of chromosome 1","One X chromosome","A whole set"], a:1},
+ {k:"c6", t:"num", q:"Cats have 2n = 38. How many chromosomes does an XXY male tortoiseshell cat have?", a:39, tol:0},
+ {k:"c7", t:"num", q:"A herd's average litter is 12 piglets. Litters sired by a translocation-carrier boar are 40% smaller. Piglets per litter from the carrier?", a:7.2, tol:0.25, why:"12 × 0.6 = 7.2."},
+ {k:"c8", t:"num", q:"How many piglets are lost over 100 litters sired by that boar?", a:480, tol:12, why:"(12 − 7.2) × 100."}
+]);
+buildQs("X", "X-qs", XQ);
+function checkX(show){
+  var n = 0;
+  SQ.forEach(function(q){ var ok = state.X[q.k] === q.ans; if (ok) n++; if (show){ var f = $("fb-X-" + q.k); f.className = "fb show " + (ok ? "ok" : "bad"); f.textContent = ok ? "Correct." : "Not yet. Compare the order and number of letters before and after."; } });
+  return n + checkList("X", XQ, show);
+}
+$("X-check").addEventListener("click", function(){ var n = checkX(true); $("X-score").textContent = "Score: " + n + " / " + (SQ.length + XQ.length); state.checked.X = true; save(); refreshNav(); });
+
+/* ---------- PART C ---------- */
+var REP = ["Mismatch repair", "Base excision repair", "Nucleotide excision repair", "Double-strand break repair"];
+var CQ = [
+ {k:"c1", t:"sel", q:"UV light joins two neighbouring thymines. Repair system?", o:REP, a:2},
+ {k:"c2", t:"sel", q:"A cytosine loses an amino group and becomes uracil. Repair system?", o:REP, a:1},
+ {k:"c3", t:"sel", q:"DNA polymerase puts G opposite T and proofreading misses it. Repair system?", o:REP, a:0},
+ {k:"c4", t:"sel", q:"X-rays break both strands. Repair system?", o:REP, a:3},
+ {k:"c5", t:"mc", q:"Cows eat mouldy, aflatoxin-contaminated feed. Which risk applies to their liver cells?", o:["Inherited mutations in their calves","Somatic mutations, mostly G → T","No risk: aflatoxin only affects taste"], a:1, why:"Aflatoxin damages DNA in body cells; it is a mutagen and carcinogen."},
+ {k:"c6", t:"mc", q:"A bull's skin cell gains a mutation from sunlight. Can his calves inherit it?", o:["Yes, all of them","Yes, half of them","No: it is somatic"], a:2}
+];
+buildQs("C", "C-qs", CQ);
+function checkC(show){ return checkList("C", CQ, show); }
+$("C-check").addEventListener("click", function(){ var n = checkC(true); $("C-score").textContent = "Score: " + n + " / " + CQ.length; state.checked.C = true; save(); refreshNav(); });
+
+/* ---------- PART D ---------- */
+var DQ = [
+ {k:"d1", t:"num", q:"About how many new mutations does one calf carry?", a:54, tol:1.5, why:"5.4 × 10⁹ × 10⁻⁸ = 54."},
+ {k:"d2", t:"num", q:"About how many new mutations does one chick carry?", a:22, tol:1, why:"2.2 × 10⁹ × 10⁻⁸ = 22."},
+ {k:"d3", t:"num", q:"How many of a calf's new mutations fall in protein-coding DNA, on average? (2 decimal places)", a:0.81, tol:0.03, why:"54 × 0.015 = 0.81."},
+ {k:"d4", t:"num", q:"A herd produces 1,000 calves. About how many new coding-region mutations do they carry in total?", a:810, tol:15, why:"0.81 × 1,000."}
+];
+buildQs("D", "D-qs", DQ);
+function checkD(show){ return checkList("D", DQ, show); }
+$("D-check").addEventListener("click", function(){ var n = checkD(true); $("D-score").textContent = "Score: " + n + " / " + DQ.length; state.checked.D = true; save(); refreshNav(); });
+
+/* ---------- PART E ---------- */
+var EQ = [
+ {k:"e1", q:"Using Mutations 4 and 5 from Part A, explain why deleting 1 base usually harms a protein more than deleting 3 bases."},
+ {k:"e2", q:"Is the Belgian Blue double-muscling allele good or bad for farmers? Give one benefit and one cost, and suggest how a breeder could use it."}
+];
+(function(){
+  var host = $("E-qs");
+  EQ.forEach(function(q, i){ var d = document.createElement("div"); d.className = "q";
+    d.innerHTML = "<label class='field' for='E-" + q.k + "'>" + (i+1) + ". " + q.q + "</label><textarea id='E-" + q.k + "'></textarea>"; host.appendChild(d);
+    var t = d.querySelector("textarea"); t.value = state.E[q.k] || ""; t.addEventListener("input", function(){ state.E[q.k] = t.value; state.checked.E = true; save(); }); });
+})();
+
+/* ---------- SUMMARY ---------- */
+function renderSummary(){
+  var i = state.info;
+  var rows = [["Name", esc(i.name || "(not entered)")], ["Student ID", esc(i.id || "(not entered)")], ["Lab group", esc(i.group || "(not entered)")],
+    ["Part A · simulator", checkA(false) + " / " + AQ.length],
+    ["Part B · livestock and OMIA", checkB(false) + " / " + BQ.length + (state.B.note ? "; note: " + esc(state.B.note) : "")],
+    ["Part C · chromosome mutations", checkX(false) + " / " + (SQ.length + XQ.length)],
+    ["Part D · causes and repair", checkC(false) + " / " + CQ.length],
+    ["Part E · calculations", checkD(false) + " / " + DQ.length]];
+  var h = "<table class='tbl'>" + rows.map(function(r){ return "<tr><th style='width:34%'>" + r[0] + "</th><td>" + r[1] + "</td></tr>"; }).join("") + "</table><h3>Part F · written answers</h3>";
+  EQ.forEach(function(q, n){ h += "<p><b>" + (n+1) + ".</b> " + esc(q.q) + "<br>" + esc(state.E[q.k] || "(no answer)").replace(/\n/g, "<br>") + "</p>"; });
+  h += "<p class='note'>Created " + new Date().toLocaleString() + "</p>";
+  $("R-body").innerHTML = h;
+  var txt = rows.map(function(r){ return r[0] + ": " + r[1].replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,"\""); }).join("\n");
+  EQ.forEach(function(q, n){ txt += "\n\nF" + (n+1) + ". " + q.q + "\n" + (state.E[q.k] || "(no answer)"); });
+  $("R-text").value = txt;
+}
+$("R-copy").addEventListener("click", function(){ var t = $("R-text"), done = function(){ $("R-copy").textContent = "Copied"; setTimeout(function(){ $("R-copy").textContent = "Copy summary as text"; }, 1800); };
+  try{ if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t.value).then(done, function(){ t.hidden = false; t.select(); }); } else { t.hidden = false; t.select(); } }catch(e){ t.hidden = false; t.select(); } });
+confirmTap($("R-reset"), "Tap again to erase everything", function(){ try{ localStorage.removeItem(KEY); }catch(e){} location.reload(); });
+
+go(order.indexOf(state.step) >= 0 ? state.step : "start");
+})();
+</script>
+</body>
+</html>

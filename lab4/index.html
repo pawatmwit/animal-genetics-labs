@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lab Worksheet 4: Pedigrees and gene maps · 710 114 Animal Genetics</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Lora:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F6F4EA; --surface:#FFFDF6; --ink:#1E2B27; --muted:#52615B; --line:#DCD5C1;
+  --brand:#2F6F5E; --brand-ink:#FFFFFF; --brand-soft:#E3EEE8; --gold:#B8862A; --gold-soft:#F3E4BE;
+  --ok:#2F7D4F; --ok-soft:#DDEFE3; --bad:#A23B2A; --bad-soft:#F6DEDA;
+  --scope:#13211D; --scope-ring:#2C3F38; --slot:#EEF2EC; --slot-line:#B9CBBF; --slot-ink:#4C5F57;
+  --chr:#DCD3E6; --band:#3E3054; --chr-line:#8D82A2;
+  --head:'Lora','Noto Serif Thai',Georgia,serif; --body:'IBM Plex Sans Thai',system-ui,Arial,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111916; --surface:#18221E; --ink:#E8EEEA; --muted:#A6B3AD; --line:#2D3A35;
+    --brand:#62B39B; --brand-ink:#0D1613; --brand-soft:#1E2E28; --gold:#E0B456; --gold-soft:#3A3120;
+    --ok:#6CC08E; --ok-soft:#173225; --bad:#E58470; --bad-soft:#3A1E19;
+    --scope:#0A110F; --scope-ring:#22312B; --slot:#1D2925; --slot-line:#3B5047; --slot-ink:#A6B3AD;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111916; --surface:#18221E; --ink:#E8EEEA; --muted:#A6B3AD; --line:#2D3A35;
+  --brand:#62B39B; --brand-ink:#0D1613; --brand-soft:#1E2E28; --gold:#E0B456; --gold-soft:#3A3120;
+  --ok:#6CC08E; --ok-soft:#173225; --bad:#E58470; --bad-soft:#3A1E19;
+  --scope:#0A110F; --scope-ring:#22312B; --slot:#1D2925; --slot-line:#3B5047; --slot-ink:#A6B3AD;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 120px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar{max-width:1080px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px}
+.bar h1{font-family:var(--head);font-weight:600;font-size:20px;margin:0;flex:1 1 280px}
+.who{font-size:14px;color:var(--muted)}
+nav.steps{max-width:1080px;margin:0 auto;padding:0 20px 12px;display:flex;gap:6px;overflow-x:auto}
+nav.steps button{flex:none;font:inherit;font-size:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+nav.steps button[aria-current="step"]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+nav.steps button.done::after{content:" ✓";color:var(--ok)}
+nav.steps button[aria-current="step"].done::after{color:var(--brand-ink)}
+main{max-width:1080px;margin:0 auto;padding:24px 20px 80px}
+section.step{display:none}
+section.step.on{display:block}
+h2{font-family:var(--head);font-weight:600;font-size:28px;line-height:1.2;margin:0 0 6px}
+h3{font-size:19px;margin:28px 0 8px}
+.th{color:var(--gold)}
+p.lead{max-width:72ch;color:var(--muted);margin:0 0 18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
+label.field{display:block;font-weight:600;margin:12px 0 4px}
+input[type=text],input[type=number],select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;max-width:420px}
+textarea{max-width:100%;min-height:84px;resize:vertical}
+.q{margin:16px 0}
+.q p{margin:0 0 6px;font-weight:600}
+.opts label{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;border-radius:8px;cursor:pointer}
+.opts label:hover{background:var(--brand-soft)}
+.opts input{margin-top:5px}
+.fb{font-size:15px;margin-top:4px;padding:6px 10px;border-radius:8px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-soft);color:var(--ink)} .fb.bad{background:var(--bad-soft);color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:16px 0}
+button.btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:10px 18px;cursor:pointer;background:var(--brand);color:var(--brand-ink)}
+button.btn.ghost{background:transparent;color:var(--brand);border:1px solid var(--brand)}
+button.btn.quiet{background:transparent;color:var(--muted);border:1px solid var(--line)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.score{font-weight:700}
+.note{font-size:15px;color:var(--muted)}
+.ws{width:100%;height:auto;display:block;border-radius:14px;background:var(--surface);border:1px solid var(--line);touch-action:none;user-select:none;-webkit-user-select:none}
+.chr{cursor:grab}
+.chr.sel .hit{stroke:var(--gold);stroke-width:2.5}
+.chr.dragging{cursor:grabbing}
+.slot{fill:var(--slot);stroke:var(--slot-line);stroke-width:1.2}
+.slot.ok{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.5}
+.slot.bad{fill:var(--bad-soft);stroke:var(--bad);stroke-width:2.5}
+.slotnum{font-family:var(--body);font-size:15px;fill:var(--slot-ink);text-anchor:middle}
+.micro{cursor:pointer}
+.micro.counted ellipse{fill:var(--gold)}
+.tbl{border-collapse:collapse;width:100%;max-width:720px;font-size:16px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:15px;color:var(--muted)}
+.pill{display:inline-block;background:var(--gold-soft);border-radius:999px;padding:2px 10px;font-weight:600;color:var(--ink)}
+.copybox{width:100%;max-width:100%;min-height:160px;font-size:14px}
+@media (max-width:600px){body{font-size:16px} h2{font-size:24px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+
+<style>
+.ped{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}
+.ped svg text{fill:currentColor}
+.key{display:flex;flex-wrap:wrap;gap:16px;font-size:14px;margin:6px 0 0}
+.ttab{border-collapse:collapse;width:100%;max-width:560px}
+.ttab td,.ttab th{border:1px solid var(--line);padding:6px 10px;text-align:center}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.mapbox{overflow-x:auto;margin-top:8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <h1>Lab Worksheet 4 · Pedigrees and gene maps</h1>
+    <span class="who" id="who">710 114 Animal Genetics</span>
+  </div>
+  <nav class="steps" aria-label="Worksheet parts" id="steps"></nav>
+</header>
+<main>
+
+<section class="step" id="s-start" data-title="Start">
+  <h2>Before you begin <span class="th">· ก่อนเริ่ม</span></h2>
+  <p class="lead">Read three animal pedigrees to find how a trait is inherited and who carries it, then turn test-cross counts into recombination frequencies and a three-gene map. Answers save in this browser, so use the same device for the whole session.</p>
+  <div class="card">
+    <label class="field" for="f-name">Full name</label><input type="text" id="f-name" autocomplete="name">
+    <label class="field" for="f-id">Student ID</label><input type="text" id="f-id" inputmode="numeric">
+    <label class="field" for="f-group">Lab group</label><input type="text" id="f-group">
+  </div>
+  <table class="tbl" aria-label="Parts of this worksheet">
+    <tr><th>Part</th><th>What you do</th><th>Time</th></tr>
+    <tr><td>A</td><td>Pedigree 1: curly calf in Angus cattle · พันธุประวัติ 1</td><td>30 min</td></tr>
+    <tr><td>B</td><td>Pedigree 2: polled cattle · พันธุประวัติ 2</td><td>25 min</td></tr>
+    <tr><td>C</td><td>Pedigree 3: haemophilia in dogs · พันธุประวัติ 3</td><td>30 min</td></tr>
+    <tr><td>D</td><td>Gene maps from test crosses · แผนที่ยีน</td><td>60 min</td></tr>
+    <tr><td>E</td><td>Explain · อธิบาย</td><td>20 min</td></tr>
+  </table>
+  <p class="note">Fractions such as 2/3 are accepted wherever a probability is asked.</p>
+  <div class="row"><button class="btn" data-go="A">Start Part A</button></div>
+</section>
+
+<section class="step" id="s-A" data-title="A · Pedigree 1">
+  <h2>Part A · Curly calf in Angus cattle <span class="th">· พันธุประวัติ 1</span></h2>
+  <p class="lead">Curly calf syndrome (arthrogryposis multiplex) causes calves to be born dead with twisted limbs. Shaded = affected calf.</p>
+  <div class="ped" id="A-ped"></div>
+  <div id="A-qs"></div>
+  <div class="row"><button class="btn" id="A-check">Check Part A</button><span class="score" id="A-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="B">Next: Part B</button></div>
+</section>
+
+<section class="step" id="s-B" data-title="B · Pedigree 2">
+  <h2>Part B · Polled cattle <span class="th">· พันธุประวัติ 2</span></h2>
+  <p class="lead">Shaded = polled (born without horns); open = horned.</p>
+  <div class="ped" id="B-ped"></div>
+  <div id="B-qs"></div>
+  <div class="row"><button class="btn" id="B-check">Check Part B</button><span class="score" id="B-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="C">Next: Part C</button></div>
+</section>
+
+<section class="step" id="s-C" data-title="C · Pedigree 3">
+  <h2>Part C · Haemophilia A in dogs <span class="th">· พันธุประวัติ 3</span></h2>
+  <p class="lead">Affected dogs bleed for a long time after small injuries because a clotting factor is missing. Shaded = affected.</p>
+  <div class="ped" id="C-ped"></div>
+  <div id="C-qs"></div>
+  <div class="row"><button class="btn" id="C-check">Check Part C</button><span class="score" id="C-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="D">Next: Part D</button></div>
+</section>
+
+<section class="step" id="s-D" data-title="D · Gene maps">
+  <h2>Part D · Gene maps from test crosses <span class="th">· แผนที่ยีน</span></h2>
+  <div class="card"><h3 style="margin-top:0">D1 · Two genes</h3>
+    <p style="margin:4px 0">A hen heterozygous for two linked genes, <span class="mono">AB/ab</span>, is test-crossed to an <span class="mono">ab/ab</span> cock. Her 1,000 chicks:</p>
+    <table class="ttab"><tr><th>Chick phenotype</th><th>Number</th></tr><tr><td class="mono">A B</td><td>412</td></tr><tr><td class="mono">a b</td><td>398</td></tr><tr><td class="mono">A b</td><td>92</td></tr><tr><td class="mono">a B</td><td>98</td></tr></table>
+  </div>
+  <div id="D1-qs"></div>
+  <div class="card"><h3 style="margin-top:0">D2 · Three genes</h3>
+    <p style="margin:4px 0">Three linked genes D, E and F (order unknown). A <span class="mono">DEF/def</span> animal is test-crossed to <span class="mono">def/def</span>. Offspring, written in the order D E F:</p>
+    <table class="ttab"><tr><th>Offspring</th><th>Number</th></tr>
+      <tr><td class="mono">D E F</td><td>318</td></tr><tr><td class="mono">d e f</td><td>312</td></tr>
+      <tr><td class="mono">D e F</td><td>112</td></tr><tr><td class="mono">d E f</td><td>108</td></tr>
+      <tr><td class="mono">D e f</td><td>62</td></tr><tr><td class="mono">d E F</td><td>58</td></tr>
+      <tr><td class="mono">D E f</td><td>16</td></tr><tr><td class="mono">d e F</td><td>14</td></tr>
+      <tr><th>Total</th><th>1,000</th></tr></table>
+  </div>
+  <div id="D2-qs"></div>
+  <div class="card"><h3 style="margin-top:0">Your map</h3><p class="note" style="margin:0">Fill in D2 questions 3–6, then draw.</p>
+    <div class="row"><button class="btn ghost" id="D-draw" type="button">Draw my map</button></div><div class="mapbox" id="D-map"></div></div>
+  <div id="D3-qs"></div>
+  <div class="row"><button class="btn" id="D-check">Check Part D</button><span class="score" id="D-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="E">Next: Part E</button></div>
+</section>
+
+<section class="step" id="s-E" data-title="E · Explain">
+  <h2>Part E · Explain <span class="th">· อธิบาย</span></h2>
+  <p class="lead">Write 2–4 sentences for each, in English or Thai.</p>
+  <div id="E-qs"></div>
+  <div class="row"><button class="btn" data-go="R">See my summary</button></div>
+</section>
+
+<section class="step" id="s-R" data-title="Summary">
+  <h2>Summary <span class="th">· สรุปผล</span></h2>
+  <p class="lead">Take a screenshot of this page, or copy the summary text, and submit it the way your instructor tells you.</p>
+  <div class="card" id="R-body"></div>
+  <div class="row"><button class="btn ghost" id="R-copy">Copy summary as text</button><button class="btn quiet" id="R-reset">Start over on this device</button></div>
+  <textarea class="copybox" id="R-text" readonly aria-label="Summary text" hidden></textarea>
+</section>
+
+</main>
+<script>
+(function(){
+"use strict";
+var KEY = "lw4-710114-v1";
+var state = load() || {v:1, step:"start", info:{name:"",id:"",group:""}, A:{}, B:{}, C:{}, D:{}, E:{}, checked:{}};
+function load(){ try{ var s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; }catch(e){ return null; } }
+var saveT = null;
+function save(){ clearTimeout(saveT); saveT = setTimeout(function(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }, 250); }
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function parseNum(s){ if (s == null) return NaN; s = String(s).trim().replace(/,/g, "").replace(/%$/, ""); var m = s.match(/^(-?\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/); if (m) return Number(m[1]) / Number(m[2]); return s === "" ? NaN : Number(s); }
+
+/* ---------- navigation ---------- */
+var order = ["start","A","B","C","D","E","R"], stepsNav = $("steps");
+order.forEach(function(s){ var b = document.createElement("button"); b.type = "button"; b.dataset.step = s; b.textContent = $("s-"+s).dataset.title; b.addEventListener("click", function(){ go(s); }); stepsNav.appendChild(b); });
+function refreshNav(){ stepsNav.querySelectorAll("button").forEach(function(b){ if (b.dataset.step === state.step) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current"); b.classList.toggle("done", !!state.checked[b.dataset.step]); }); }
+function go(s){ state.step = s; save(); order.forEach(function(x){ $("s-"+x).classList.toggle("on", x === s); }); refreshNav(); if (s === "R") renderSummary(); try{ window.scrollTo(0,0); }catch(e){} }
+document.querySelectorAll("[data-go]").forEach(function(b){ b.addEventListener("click", function(){ go(b.dataset.go); }); });
+function confirmTap(btn, label, action){ var armed = false, t = null, orig = btn.textContent; btn.addEventListener("click", function(){ if (armed){ clearTimeout(t); armed = false; btn.textContent = orig; action(); return; } armed = true; btn.textContent = label; t = setTimeout(function(){ armed = false; btn.textContent = orig; }, 4000); }); }
+["name","id","group"].forEach(function(k){ var f = $("f-"+k); f.value = state.info[k] || ""; f.addEventListener("input", function(){ state.info[k] = f.value.trim(); updateWho(); save(); }); });
+function updateWho(){ var i = state.info; $("who").textContent = (i.name || "Name not entered") + (i.id ? ", " + i.id : ""); }
+updateWho();
+
+/* ---------- pedigree drawing ---------- */
+function pedigree(host, P){
+  var W = P.w, H = 60 + P.gens.length * 130, y = function(g){ return 50 + g * 130; }, s = "", R = 18;
+  P.gens.forEach(function(lbl, g){ s += "<text x='12' y='" + (y(g) + 6) + "' font-size='16' font-weight='700'>" + lbl + "</text>"; });
+  P.couples.forEach(function(c){ var a = P.ind[c[0]], b = P.ind[c[1]], yy = y(a.g);
+    s += "<line x1='" + (a.x + R) + "' y1='" + yy + "' x2='" + (b.x - R) + "' y2='" + yy + "' stroke='currentColor' stroke-width='2.5'/>";
+    if (c[2] && c[2].length){ var mx = (a.x + b.x) / 2, kids = c[2].map(function(k){ return P.ind[k]; }), ys = y(a.g) + 65;
+      var xs = kids.map(function(k){ return k.x; }), lo = Math.min.apply(null, xs.concat([mx])), hi = Math.max.apply(null, xs.concat([mx]));
+      s += "<line x1='" + mx + "' y1='" + yy + "' x2='" + mx + "' y2='" + ys + "' stroke='currentColor' stroke-width='2.5'/>";
+      s += "<line x1='" + lo + "' y1='" + ys + "' x2='" + hi + "' y2='" + ys + "' stroke='currentColor' stroke-width='2.5'/>";
+      kids.forEach(function(k){ s += "<line x1='" + k.x + "' y1='" + ys + "' x2='" + k.x + "' y2='" + (y(k.g) - R) + "' stroke='currentColor' stroke-width='2.5'/>"; }); } });
+  Object.keys(P.ind).forEach(function(id){ var p = P.ind[id], cy = y(p.g), fill = p.a ? "#1E4D43" : "#FFFFFF";
+    s += p.s === "m" ? "<rect x='" + (p.x - R) + "' y='" + (cy - R) + "' width='" + 2 * R + "' height='" + 2 * R + "' fill='" + fill + "' stroke='#1F2A27' stroke-width='2.5'/>"
+                     : "<circle cx='" + p.x + "' cy='" + cy + "' r='" + R + "' fill='" + fill + "' stroke='#1F2A27' stroke-width='2.5'/>";
+    s += "<text x='" + p.x + "' y='" + (cy + R + 20) + "' font-size='14' text-anchor='middle'>" + id + "</text>"; });
+  $(host).innerHTML = "<svg width='" + W + "' height='" + H + "' viewBox='0 0 " + W + " " + H + "' role='img' aria-label='" + esc(P.label) + "'>" + s + "</svg>"
+    + "<div class='key'><span>□ male</span><span>○ female</span><span>■ ● " + esc(P.shaded) + "</span><span>open = " + esc(P.open) + "</span></div>";
+}
+var PED = {
+  A: {w:580, label:"Pedigree of curly calf syndrome", shaded:"affected", open:"unaffected", gens:["I","II"],
+      ind:{"I-1":{g:0,x:230,s:"m"}, "I-2":{g:0,x:370,s:"f"}, "II-1":{g:1,x:130,s:"m"}, "II-2":{g:1,x:250,s:"f",a:1}, "II-3":{g:1,x:370,s:"m"}, "II-4":{g:1,x:490,s:"f"}},
+      couples:[["I-1","I-2",["II-1","II-2","II-3","II-4"]]]},
+  B: {w:520, label:"Pedigree of polled cattle", shaded:"polled", open:"horned", gens:["I","II","III"],
+      ind:{"I-1":{g:0,x:270,s:"m",a:1}, "I-2":{g:0,x:400,s:"f"}, "II-1":{g:1,x:70,s:"m"}, "II-2":{g:1,x:190,s:"f",a:1}, "II-3":{g:1,x:300,s:"m"}, "II-4":{g:1,x:420,s:"m",a:1},
+           "III-1":{g:2,x:60,s:"m",a:1}, "III-2":{g:2,x:130,s:"f"}, "III-3":{g:2,x:200,s:"f",a:1}},
+      couples:[["I-1","I-2",["II-2","II-3","II-4"]], ["II-1","II-2",["III-1","III-2","III-3"]]]},
+  C: {w:640, label:"Pedigree of haemophilia A in dogs", shaded:"affected", open:"unaffected", gens:["I","II","III"],
+      ind:{"I-1":{g:0,x:230,s:"m"}, "I-2":{g:0,x:360,s:"f"}, "II-1":{g:1,x:70,s:"m",a:1}, "II-2":{g:1,x:180,s:"m"}, "II-3":{g:1,x:290,s:"f"}, "II-4":{g:1,x:400,s:"f"}, "II-5":{g:1,x:520,s:"m"},
+           "III-1":{g:2,x:390,s:"m",a:1}, "III-2":{g:2,x:470,s:"m"}, "III-3":{g:2,x:550,s:"f"}},
+      couples:[["I-1","I-2",["II-1","II-2","II-3","II-4"]], ["II-4","II-5",["III-1","III-2","III-3"]]]}
+};
+pedigree("A-ped", PED.A); pedigree("B-ped", PED.B); pedigree("C-ped", PED.C);
+
+/* ---------- question helpers ---------- */
+function buildQs(part, host, list){
+  var h = "";
+  list.forEach(function(q){
+    h += "<div class='q'>";
+    if (q.t === "mc"){ h += "<p>" + q.n + ". " + q.q + "</p><div class='opts'>"; q.o.forEach(function(o, j){ h += "<label><input type='radio' name='" + part + "-" + q.k + "' value='" + j + "'> <span>" + o + "</span></label>"; }); h += "</div>"; }
+    else h += "<label class='field' for='" + part + "-" + q.k + "'>" + q.n + ". " + q.q + "</label><input type='text' id='" + part + "-" + q.k + "' inputmode='decimal' style='max-width:180px'>";
+    h += "<div class='fb' id='fb-" + part + "-" + q.k + "'></div></div>";
+  });
+  $(host).innerHTML = h;
+  list.forEach(function(q){
+    if (q.t === "mc") document.querySelectorAll("input[name='" + part + "-" + q.k + "']").forEach(function(r){ if (String(state[part][q.k]) === r.value) r.checked = true; r.addEventListener("change", function(){ state[part][q.k] = Number(r.value); save(); }); });
+    else { var e = $(part + "-" + q.k); e.value = state[part][q.k] || ""; e.addEventListener("input", function(){ state[part][q.k] = e.value; save(); }); }
+  });
+}
+function checkList(part, list, show){
+  var n = 0;
+  list.forEach(function(q){
+    var v = state[part][q.k], ok = q.t === "mc" ? v === q.a : (isFinite(parseNum(v)) && Math.abs(parseNum(v) - q.a) <= (q.tol || 0.005));
+    if (ok) n++;
+    if (show){ var f = $("fb-" + part + "-" + q.k); f.className = "fb show " + (ok ? "ok" : "bad"); f.textContent = ok ? "Correct. " + (q.why || "") : "Not yet. " + (q.hint || "Look at the pedigree again."); }
+  });
+  return n;
+}
+var PAT = ["Autosomal dominant","Autosomal recessive","X-linked recessive","X-linked dominant"];
+
+/* ---------- PART A ---------- */
+var AQ = [
+ {n:1, k:"a1", t:"mc", q:"Which pattern fits this pedigree best?", o:PAT, a:1, why:"Two unaffected parents had an affected calf, so the allele is recessive; an affected daughter with an unaffected sire rules out X-linked recessive.", hint:"Start with: can two unaffected parents have an affected calf? Then: is there an affected female whose father is unaffected?"},
+ {n:2, k:"a2", t:"mc", q:"Genotypes of the parents I-1 and I-2 (A = normal, a = curly calf)?", o:["AA × aa","Aa × Aa","AA × Aa"], a:1, why:"Each must pass on an a to II-2."},
+ {n:3, k:"a3", t:"num", q:"II-3 is a normal bull. What is the chance he is a carrier (Aa)?", a:2 / 3, why:"Among unaffected offspring of Aa × Aa, 2 of 3 are Aa.", hint:"Leave out the aa class: he is unaffected."},
+ {n:4, k:"a4", t:"num", q:"II-4 (unaffected) is mated to a bull known to be a carrier. Chance their first calf is affected?", a:1 / 6, why:"2/3 (she is a carrier) × 1/4 (aa from Aa × Aa) = 1/6.", hint:"Multiply the chance she is a carrier by the chance two carriers have an aa calf."}
+];
+buildQs("A", "A-qs", AQ);
+function checkA(show){ return checkList("A", AQ, show); }
+$("A-check").addEventListener("click", function(){ var n = checkA(true); $("A-score").textContent = "Score: " + n + " / " + AQ.length; state.checked.A = true; save(); refreshNav(); });
+
+/* ---------- PART B ---------- */
+var BQ = [
+ {n:1, k:"b1", t:"mc", q:"Which pattern fits this pedigree best?", o:PAT, a:0, why:"Polled appears in every generation, every polled animal has a polled parent, and a polled sire (I-1) has a polled son (II-4): not X-linked.", hint:"Check every polled animal for a polled parent, then look for father-to-son transmission."},
+ {n:2, k:"b2", t:"mc", q:"Genotype of I-1 (P = polled, p = horned)?", o:["PP","Pp","pp"], a:1, why:"He has a horned calf (II-3), so he must carry p."},
+ {n:3, k:"b3", t:"num", q:"III-1 (polled) is mated to a horned cow. Chance their calf is horned?", a:0.5, why:"III-1 is Pp (his sire II-1 is horned, pp); Pp × pp gives ½ pp.", hint:"First work out III-1's genotype from his parents."}
+];
+buildQs("B", "B-qs", BQ);
+function checkB(show){ return checkList("B", BQ, show); }
+$("B-check").addEventListener("click", function(){ var n = checkB(true); $("B-score").textContent = "Score: " + n + " / " + BQ.length; state.checked.B = true; save(); refreshNav(); });
+
+/* ---------- PART C ---------- */
+var CQ = [
+ {n:1, k:"c1", t:"mc", q:"Which pattern fits this pedigree best?", o:PAT, a:2, why:"Only males are affected, affected males have unaffected parents, and the trait passes through unaffected females (II-4) to their sons.", hint:"Who is affected: males, females or both? How did III-1 get the allele?"},
+ {n:2, k:"c2", t:"mc", q:"Genotype of II-4 (X<sup>H</sup> = normal, X<sup>h</sup> = haemophilia)?", o:["X<sup>H</sup>X<sup>H</sup>","X<sup>H</sup>X<sup>h</sup>, certainly a carrier","X<sup>h</sup>X<sup>h</sup>"], a:1, why:"Her son III-1 is affected and got his only X from her."},
+ {n:3, k:"c3", t:"num", q:"II-3 is an unaffected bitch. What is the chance she is a carrier?", a:0.5, why:"Her mother I-2 is a carrier (she had an affected son); each daughter gets one of her two X chromosomes.", hint:"Is I-2 a carrier? Then each daughter has a 1 in 2 chance."},
+ {n:4, k:"c4", t:"num", q:"II-3 is mated to an unaffected dog. Chance that one of their sons is affected?", a:0.25, why:"½ (she is a carrier) × ½ (she passes X<sup>h</sup>) = ¼.", hint:"Multiply the chance she is a carrier by the chance a carrier's son gets X^h."}
+];
+buildQs("C", "C-qs", CQ);
+function checkC(show){ return checkList("C", CQ, show); }
+$("C-check").addEventListener("click", function(){ var n = checkC(true); $("C-score").textContent = "Score: " + n + " / " + CQ.length; state.checked.C = true; save(); refreshNav(); });
+
+/* ---------- PART D ---------- */
+var D1Q = [
+ {n:1, k:"d1", t:"num", q:"Recombination frequency between A and B (%)", a:19, tol:0.05, why:"(92 + 98) ÷ 1,000 × 100 = 19% = 19 cM.", hint:"Recombinants are the two smallest classes: A b and a B."},
+ {n:2, k:"d2", t:"mc", q:"Are A and B linked?", o:["Yes: recombinants are well under 50%","No: they assort independently"], a:0}
+];
+var D2Q = [
+ {n:1, k:"e1", t:"mc", q:"Which two classes are the parental (non-crossover) types?", o:["D E F and d e f","D e F and d E f","D E f and d e F"], a:0, why:"The two largest classes."},
+ {n:2, k:"e2", t:"mc", q:"Which two classes are the double crossovers?", o:["D e f and d E F","D E f and d e F","D e F and d E f"], a:1, why:"The two smallest classes."},
+ {n:3, k:"e3", t:"mc", q:"Which gene is in the middle?", o:["D","E","F"], a:2, why:"Compare D E F with the double crossover D E f: only F has swapped, so F is in the middle. Order: D – F – E.", hint:"In a double crossover only the middle gene changes partners."},
+ {n:4, k:"e4", t:"num", q:"Distance D – F (cM)", a:15, tol:0.05, why:"Crossovers between D and F: D e f + d E F + the doubles = (62 + 58 + 16 + 14) ÷ 1,000 = 15%.", hint:"Count classes where D has a new partner at F, including the double crossovers."},
+ {n:5, k:"e5", t:"num", q:"Distance F – E (cM)", a:25, tol:0.05, why:"(112 + 108 + 16 + 14) ÷ 1,000 = 25%.", hint:"Count classes where F and E have new partners, including the double crossovers."},
+ {n:6, k:"e6", t:"num", q:"Distance D – E (cM), from the two intervals", a:40, tol:0.05, why:"15 + 25 = 40 cM."},
+ {n:7, k:"e7", t:"num", q:"Expected number of double crossovers if crossovers were independent", a:37.5, tol:0.1, why:"0.15 × 0.25 × 1,000 = 37.5; only 30 were seen, so one crossover slightly reduces the chance of another nearby (interference)."}
+];
+var D3Q = [
+ {n:1, k:"f1", t:"num", q:"Breeders use a DNA marker 2 cM from a disease gene to pick carrier-free animals. In what % of offspring could the marker give the wrong answer?", a:2, tol:0.05, why:"2 cM = 2% recombination between marker and gene."}
+];
+buildQs("D", "D1-qs", D1Q); buildQs("D", "D2-qs", D2Q); buildQs("D", "D3-qs", D3Q);
+$("D-draw").addEventListener("click", function(){
+  var mid = ["D","E","F"][state.D.e3], d1 = parseNum(state.D.e4), d2 = parseNum(state.D.e5);
+  if (state.D.e3 == null || !isFinite(d1) || !isFinite(d2) || d1 <= 0 || d2 <= 0){ $("D-map").innerHTML = "<p class='note'>Answer D2 questions 3–5 first.</p>"; return; }
+  var ends = ["D","E","F"].filter(function(g){ return g !== mid; }), tot = d1 + d2, W = 640, sc = (W - 100) / tot, x0 = 50, x1 = x0 + d1 * sc, x2 = x1 + d2 * sc;
+  var s = "<line x1='" + x0 + "' y1='60' x2='" + x2 + "' y2='60' stroke='#1E4D43' stroke-width='10' stroke-linecap='round'/>";
+  [[x0, ends[0]], [x1, mid], [x2, ends[1]]].forEach(function(p){ s += "<line x1='" + p[0] + "' y1='40' x2='" + p[0] + "' y2='80' stroke='#C99A2E' stroke-width='5'/><text x='" + p[0] + "' y='30' font-size='20' font-weight='700' text-anchor='middle' fill='currentColor'>" + p[1] + "</text>"; });
+  s += "<text x='" + ((x0 + x1) / 2) + "' y='108' font-size='16' text-anchor='middle' fill='currentColor'>" + d1 + " cM</text><text x='" + ((x1 + x2) / 2) + "' y='108' font-size='16' text-anchor='middle' fill='currentColor'>" + d2 + " cM</text>";
+  $("D-map").innerHTML = "<svg width='" + W + "' height='120' viewBox='0 0 " + W + " 120' role='img' aria-label='Your gene map'>" + s + "</svg><p class='note'>Your map, as you entered it. Check Part D to see whether it is right.</p>";
+  state.D.drawn = true; save();
+});
+var DALL = D1Q.concat(D2Q).concat(D3Q);
+function checkD(show){ return checkList("D", DALL, show); }
+$("D-check").addEventListener("click", function(){ var n = checkD(true); $("D-score").textContent = "Score: " + n + " / " + DALL.length; state.checked.D = true; save(); refreshNav(); });
+
+/* ---------- PART E ---------- */
+var EQ = [
+ {k:"x1", q:"How did you decide that Pedigree 3 is X-linked rather than autosomal recessive? What extra information would make you more certain?"},
+ {k:"x2", q:"Why are double crossovers the rarest class in a three-point cross, and how do they tell you which gene is in the middle?"}
+];
+(function(){
+  var host = $("E-qs");
+  EQ.forEach(function(q, i){ var d = document.createElement("div"); d.className = "q";
+    d.innerHTML = "<label class='field' for='E-" + q.k + "'>" + (i+1) + ". " + q.q + "</label><textarea id='E-" + q.k + "'></textarea>"; host.appendChild(d);
+    var t = d.querySelector("textarea"); t.value = state.E[q.k] || ""; t.addEventListener("input", function(){ state.E[q.k] = t.value; state.checked.E = true; save(); }); });
+})();
+
+/* ---------- SUMMARY ---------- */
+function renderSummary(){
+  var i = state.info;
+  var rows = [["Name", esc(i.name || "(not entered)")], ["Student ID", esc(i.id || "(not entered)")], ["Lab group", esc(i.group || "(not entered)")],
+    ["Part A · curly calf pedigree", checkA(false) + " / " + AQ.length], ["Part B · polled pedigree", checkB(false) + " / " + BQ.length],
+    ["Part C · haemophilia pedigree", checkC(false) + " / " + CQ.length], ["Part D · gene maps", checkD(false) + " / " + DALL.length]];
+  var h = "<table class='tbl'>" + rows.map(function(r){ return "<tr><th style='width:34%'>" + r[0] + "</th><td>" + r[1] + "</td></tr>"; }).join("") + "</table><h3>Part E · written answers</h3>";
+  EQ.forEach(function(q, n){ h += "<p><b>" + (n+1) + ".</b> " + esc(q.q) + "<br>" + esc(state.E[q.k] || "(no answer)").replace(/\n/g, "<br>") + "</p>"; });
+  h += "<p class='note'>Created " + new Date().toLocaleString() + "</p>";
+  $("R-body").innerHTML = h;
+  var txt = rows.map(function(r){ return r[0] + ": " + r[1].replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,"\""); }).join("\n");
+  EQ.forEach(function(q, n){ txt += "\n\nE" + (n+1) + ". " + q.q + "\n" + (state.E[q.k] || "(no answer)"); });
+  $("R-text").value = txt;
+}
+$("R-copy").addEventListener("click", function(){ var t = $("R-text"), done = function(){ $("R-copy").textContent = "Copied"; setTimeout(function(){ $("R-copy").textContent = "Copy summary as text"; }, 1800); };
+  try{ if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t.value).then(done, function(){ t.hidden = false; t.select(); }); } else { t.hidden = false; t.select(); } }catch(e){ t.hidden = false; t.select(); } });
+confirmTap($("R-reset"), "Tap again to erase everything", function(){ try{ localStorage.removeItem(KEY); }catch(e){} location.reload(); });
+
+go(order.indexOf(state.step) >= 0 ? state.step : "start");
+})();
+</script>
+</body>
+</html>

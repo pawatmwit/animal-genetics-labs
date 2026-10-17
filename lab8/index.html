@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lab Worksheet 8: Translating mRNA · 710 114 Animal Genetics</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Lora:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F6F4EA; --surface:#FFFDF6; --ink:#1E2B27; --muted:#52615B; --line:#DCD5C1;
+  --brand:#2F6F5E; --brand-ink:#FFFFFF; --brand-soft:#E3EEE8; --gold:#B8862A; --gold-soft:#F3E4BE;
+  --ok:#2F7D4F; --ok-soft:#DDEFE3; --bad:#A23B2A; --bad-soft:#F6DEDA;
+  --scope:#13211D; --scope-ring:#2C3F38; --slot:#EEF2EC; --slot-line:#B9CBBF; --slot-ink:#4C5F57;
+  --chr:#DCD3E6; --band:#3E3054; --chr-line:#8D82A2;
+  --head:'Lora','Noto Serif Thai',Georgia,serif; --body:'IBM Plex Sans Thai',system-ui,Arial,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111916; --surface:#18221E; --ink:#E8EEEA; --muted:#A6B3AD; --line:#2D3A35;
+    --brand:#62B39B; --brand-ink:#0D1613; --brand-soft:#1E2E28; --gold:#E0B456; --gold-soft:#3A3120;
+    --ok:#6CC08E; --ok-soft:#173225; --bad:#E58470; --bad-soft:#3A1E19;
+    --scope:#0A110F; --scope-ring:#22312B; --slot:#1D2925; --slot-line:#3B5047; --slot-ink:#A6B3AD;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111916; --surface:#18221E; --ink:#E8EEEA; --muted:#A6B3AD; --line:#2D3A35;
+  --brand:#62B39B; --brand-ink:#0D1613; --brand-soft:#1E2E28; --gold:#E0B456; --gold-soft:#3A3120;
+  --ok:#6CC08E; --ok-soft:#173225; --bad:#E58470; --bad-soft:#3A1E19;
+  --scope:#0A110F; --scope-ring:#22312B; --slot:#1D2925; --slot-line:#3B5047; --slot-ink:#A6B3AD;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 120px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar{max-width:1080px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px}
+.bar h1{font-family:var(--head);font-weight:600;font-size:20px;margin:0;flex:1 1 280px}
+.who{font-size:14px;color:var(--muted)}
+nav.steps{max-width:1080px;margin:0 auto;padding:0 20px 12px;display:flex;gap:6px;overflow-x:auto}
+nav.steps button{flex:none;font:inherit;font-size:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+nav.steps button[aria-current="step"]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+nav.steps button.done::after{content:" ✓";color:var(--ok)}
+nav.steps button[aria-current="step"].done::after{color:var(--brand-ink)}
+main{max-width:1080px;margin:0 auto;padding:24px 20px 80px}
+section.step{display:none}
+section.step.on{display:block}
+h2{font-family:var(--head);font-weight:600;font-size:28px;line-height:1.2;margin:0 0 6px}
+h3{font-size:19px;margin:28px 0 8px}
+.th{color:var(--gold)}
+p.lead{max-width:72ch;color:var(--muted);margin:0 0 18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
+label.field{display:block;font-weight:600;margin:12px 0 4px}
+input[type=text],input[type=number],select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;max-width:420px}
+textarea{max-width:100%;min-height:84px;resize:vertical}
+.q{margin:16px 0}
+.q p{margin:0 0 6px;font-weight:600}
+.opts label{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;border-radius:8px;cursor:pointer}
+.opts label:hover{background:var(--brand-soft)}
+.opts input{margin-top:5px}
+.fb{font-size:15px;margin-top:4px;padding:6px 10px;border-radius:8px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-soft);color:var(--ink)} .fb.bad{background:var(--bad-soft);color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:16px 0}
+button.btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:10px 18px;cursor:pointer;background:var(--brand);color:var(--brand-ink)}
+button.btn.ghost{background:transparent;color:var(--brand);border:1px solid var(--brand)}
+button.btn.quiet{background:transparent;color:var(--muted);border:1px solid var(--line)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.score{font-weight:700}
+.note{font-size:15px;color:var(--muted)}
+.ws{width:100%;height:auto;display:block;border-radius:14px;background:var(--surface);border:1px solid var(--line);touch-action:none;user-select:none;-webkit-user-select:none}
+.chr{cursor:grab}
+.chr.sel .hit{stroke:var(--gold);stroke-width:2.5}
+.chr.dragging{cursor:grabbing}
+.slot{fill:var(--slot);stroke:var(--slot-line);stroke-width:1.2}
+.slot.ok{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.5}
+.slot.bad{fill:var(--bad-soft);stroke:var(--bad);stroke-width:2.5}
+.slotnum{font-family:var(--body);font-size:15px;fill:var(--slot-ink);text-anchor:middle}
+.micro{cursor:pointer}
+.micro.counted ellipse{fill:var(--gold)}
+.tbl{border-collapse:collapse;width:100%;max-width:720px;font-size:16px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:15px;color:var(--muted)}
+.pill{display:inline-block;background:var(--gold-soft);border-radius:999px;padding:2px 10px;font-weight:600;color:var(--ink)}
+.copybox{width:100%;max-width:100%;min-height:160px;font-size:14px}
+@media (max-width:600px){body{font-size:16px} h2{font-size:24px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+
+<style>
+.mrna{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:16px;line-height:1.9;word-break:break-all;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;letter-spacing:1px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:2px;text-transform:uppercase}
+.ct{overflow-x:auto}
+.ct table{border-collapse:collapse;font-size:14px;min-width:560px}
+.ct td,.ct th{border:1px solid var(--line);padding:4px 6px;vertical-align:top}
+.ct .st{color:var(--bad);font-weight:700}.ct .go{color:var(--gold);font-weight:700}
+.links a{color:var(--brand);font-weight:600}
+.seqcmp{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:17px;letter-spacing:3px;line-height:1.8;overflow-x:auto;white-space:nowrap}
+.seqcmp b{display:inline-block;width:70px;letter-spacing:0;font-family:inherit}
+.diff{background:var(--gold);color:#1A1A1A}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <h1>Lab Worksheet 8 · Translating mRNA</h1>
+    <span class="who" id="who">710 114 Animal Genetics</span>
+  </div>
+  <nav class="steps" aria-label="Worksheet parts" id="steps"></nav>
+</header>
+<main>
+
+<section class="step" id="s-start" data-title="Start">
+  <h2>Before you begin <span class="th">· ก่อนเริ่ม</span></h2>
+  <p class="lead">Translate short mRNAs by hand, then translate mRNAs that code for the real A and B chains of cattle insulin and check them with ExPASy Translate. Answers save in this browser, so use the same device for the whole session.</p>
+  <div class="card">
+    <label class="field" for="f-name">Full name</label><input type="text" id="f-name" autocomplete="name">
+    <label class="field" for="f-id">Student ID</label><input type="text" id="f-id" inputmode="numeric">
+    <label class="field" for="f-group">Lab group</label><input type="text" id="f-group">
+  </div>
+  <table class="tbl" aria-label="Parts of this worksheet">
+    <tr><th>Part</th><th>What you do</th><th>Time</th></tr>
+    <tr><td>A</td><td>Short mRNAs · mRNA สั้น</td><td>40 min</td></tr>
+    <tr><td>B</td><td>Cattle insulin A chain by hand · แปลรหัสด้วยมือ</td><td>50 min</td></tr>
+    <tr><td>C</td><td>B chain with ExPASy; compare species · เปรียบเทียบอินซูลิน</td><td>30 min</td></tr>
+    <tr><td>D</td><td>Gene regulation · การควบคุมยีน</td><td>25 min</td></tr>
+    <tr><td>E</td><td>Explain · อธิบาย</td><td>20 min</td></tr>
+  </table>
+  <div class="card"><h3 style="margin-top:0">How to type proteins</h3>
+    <p style="margin:4px 0">Use one-letter codes, e.g. <b>MFKGW</b>, or three-letter codes with dashes, e.g. <b>Met-Phe-Lys-Gly-Trp</b>. Do not type the stop.</p>
+    <p class="note" style="margin:4px 0">Every part has the codon table; tap "Codon table" to open it.</p></div>
+  <div class="row"><button class="btn" data-go="A">Start Part A</button></div>
+</section>
+
+<section class="step" id="s-A" data-title="A · Short mRNAs">
+  <h2>Part A · Short mRNAs <span class="th">· แปลรหัส mRNA สั้น</span></h2>
+  <details class="card ct"><summary><b>Codon table</b></summary><div class="cthost"></div></details>
+  <div id="A-qs"></div>
+  <div class="row"><button class="btn" id="A-check">Check Part A</button><span class="score" id="A-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="B">Next: Part B</button></div>
+</section>
+
+<section class="step" id="s-B" data-title="B · Insulin A chain">
+  <h2>Part B · Cattle insulin A chain, by hand <span class="th">· สายเอของอินซูลินโค</span></h2>
+  <p class="lead">This mRNA codes for the real amino-acid sequence of the cattle insulin A chain. The codons were chosen for this exercise; it is not the cow's own mRNA sequence.</p>
+  <div class="mrna" id="B-mrna"></div>
+  <div class="row"><button class="btn quiet" id="B-copy" type="button">Copy mRNA</button><button class="btn quiet" id="B-copyd" type="button">Copy as DNA (T for U)</button></div>
+  <details class="card ct"><summary><b>Codon table</b></summary><div class="cthost"></div></details>
+  <div id="B-qs"></div>
+  <div class="card links">
+    <h3 style="margin-top:0">Check with ExPASy Translate</h3>
+    <p style="margin:4px 0">Open <a href="https://web.expasy.org/translate/" target="_blank" rel="noopener">web.expasy.org/translate</a>, paste the sequence, and press Translate. Look at the three 5′3′ frames; the protein is highlighted from Met.</p>
+  </div>
+  <div id="B-qs2"></div>
+  <div class="row"><button class="btn" id="B-check">Check Part B</button><span class="score" id="B-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="C">Next: Part C</button></div>
+</section>
+
+<section class="step" id="s-C" data-title="C · Insulin species">
+  <h2>Part C · B chain and species comparison <span class="th">· เปรียบเทียบอินซูลินโค สุกร และคน</span></h2>
+  <p class="lead">Translate this B-chain mRNA with ExPASy (no need to do it by hand), then compare insulin from three species.</p>
+  <div class="mrna" id="C-mrna"></div>
+  <div class="row"><button class="btn quiet" id="C-copy" type="button">Copy mRNA</button><button class="btn quiet" id="C-copyd" type="button">Copy as DNA (T for U)</button></div>
+  <details class="card ct"><summary><b>Codon table</b></summary><div class="cthost"></div></details>
+  <div class="card">
+    <h3 style="margin-top:0">Human and pig insulin</h3>
+    <div class="seqcmp"><b>Human A</b>GIVEQCCTSICSLYQLENYCN<br><b>Pig A</b>GIVEQCCTSICSLYQLENYCN<br><b>Human B</b>FVNQHLCGSHLVEALYLVCGERGFFYTPKT<br><b>Pig B</b>FVNQHLCGSHLVEALYLVCGERGFFYTPKA</div>
+    <p class="note" style="margin:6px 0 0">Your cattle sequences come from Parts B and C. Position A8 = 8th amino acid of the A chain.</p>
+  </div>
+  <div id="C-qs"></div>
+  <div class="row"><button class="btn" id="C-check">Check Part C</button><span class="score" id="C-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="D">Next: Part D</button></div>
+</section>
+
+<section class="step" id="s-D" data-title="D · Regulation">
+  <h2>Part D · Switching genes on <span class="th">· การควบคุมการแสดงออกของยีน</span></h2>
+  <p class="lead">Put the events that switch on the casein gene in a cow's udder in order, then answer the questions.</p>
+  <div id="D-qs"></div>
+  <div class="row"><button class="btn" id="D-check">Check Part D</button><span class="score" id="D-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="E">Next: Part E</button></div>
+</section>
+
+<section class="step" id="s-E" data-title="E · Explain">
+  <h2>Part E · Explain <span class="th">· อธิบาย</span></h2>
+  <p class="lead">Write 2–4 sentences for each, in English or Thai.</p>
+  <div id="E-qs"></div>
+  <div class="row"><button class="btn" data-go="R">See my summary</button></div>
+</section>
+
+<section class="step" id="s-R" data-title="Summary">
+  <h2>Summary <span class="th">· สรุปผล</span></h2>
+  <p class="lead">Take a screenshot of this page, or copy the summary text, and submit it the way your instructor tells you.</p>
+  <div class="card" id="R-body"></div>
+  <div class="row"><button class="btn ghost" id="R-copy">Copy summary as text</button><button class="btn quiet" id="R-reset">Start over on this device</button></div>
+  <textarea class="copybox" id="R-text" readonly aria-label="Summary text" hidden></textarea>
+</section>
+
+</main>
+<script>
+(function(){
+"use strict";
+var MA = "GCACUCGCACAUGGGCAUCGUGGAGCAGUGCUGUGCCAGCGUCUGCUCCCUGUACCAGCUGGAGAACUACUGCAACUAAGCUCCCACUGCA", MB = "GACCUGAGCGCCAUGUUCGUGAACCAGCACCUGUGCGGCUCCCACCUGGUGGAGGCCCUGUACCUCGUGUGCGGGGAGCGCGGCUUCUUCUACACCCCCAAGGCCUAGGCCUCUGACCUC";
+var KEY = "lw8-710114-v1";
+var state = load() || {v:1, step:"start", info:{name:"",id:"",group:""}, A:{}, B:{}, C:{}, D:{}, E:{}, checked:{}};
+function load(){ try{ var s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; }catch(e){ return null; } }
+var saveT = null;
+function save(){ clearTimeout(saveT); saveT = setTimeout(function(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }, 250); }
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function parseNum(s){ if (s == null) return NaN; s = String(s).trim().replace(/,/g, "").replace(/\s+/g, ""); var m = s.match(/^(-?\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/); if (m) return Number(m[1]) / Number(m[2]); return s === "" ? NaN : Number(s); }
+function close(a, b, tol){ return isFinite(a) && Math.abs(a - b) <= tol; }
+
+/* ---------- genetic code ---------- */
+var BASES = "UCAG", AAS = "FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG", CODE = {}, n = 0;
+for (var i = 0; i < 4; i++) for (var j = 0; j < 4; j++) for (var k = 0; k < 4; k++) CODE[BASES[i] + BASES[j] + BASES[k]] = AAS[n++];
+var A3 = {F:"Phe",L:"Leu",I:"Ile",M:"Met",V:"Val",S:"Ser",P:"Pro",T:"Thr",A:"Ala",Y:"Tyr",H:"His",Q:"Gln",N:"Asn",K:"Lys",D:"Asp",E:"Glu",C:"Cys",W:"Trp",R:"Arg",G:"Gly","*":"Stop"};
+var A1 = {}; Object.keys(A3).forEach(function(k){ A1[A3[k].toUpperCase()] = k; });
+function translate(m){ m = m.replace(/T/g, "U"); var s = m.indexOf("AUG"), out = ""; if (s < 0) return ""; for (; s + 3 <= m.length; s += 3){ var c = CODE[m.substr(s, 3)]; if (c === "*") break; out += c; } return out; }
+function prot(v){
+  v = String(v || "").trim(); if (!v) return "";
+  var toks = v.toUpperCase().split(/[^A-Z*]+/).filter(Boolean);
+  if (toks.length > 1 || (toks.length === 1 && A1[toks[0]] && toks[0].length === 3)){
+    var all3 = toks.every(function(x){ return A1[x] || x === "STOP" || x === "*"; });
+    if (all3) return toks.map(function(x){ return x === "STOP" || x === "*" ? "" : A1[x]; }).join("");
+  }
+  return v.toUpperCase().replace(/[^A-Z]/g, "");
+}
+(function(){
+  var h = "<table><tr><th>1st</th>" + BASES.split("").map(function(b){ return "<th>2nd " + b + "</th>"; }).join("") + "</tr>";
+  for (var i = 0; i < 4; i++){ h += "<tr><th>" + BASES[i] + "</th>";
+    for (var j = 0; j < 4; j++){ h += "<td>"; for (var k = 0; k < 4; k++){ var c = BASES[i] + BASES[j] + BASES[k], a = CODE[c]; h += "<div class='" + (a === "*" ? "st" : (c === "AUG" ? "go" : "")) + "'>" + c + " " + A3[a] + " (" + (a === "*" ? "stop" : a) + ")</div>"; } h += "</td>"; }
+    h += "</tr>"; }
+  h += "</table>";
+  document.querySelectorAll(".cthost").forEach(function(el){ el.innerHTML = h; });
+})();
+
+/* ---------- navigation ---------- */
+var order = ["start","A","B","C","D","E","R"], stepsNav = $("steps");
+order.forEach(function(s){ var b = document.createElement("button"); b.type = "button"; b.dataset.step = s; b.textContent = $("s-"+s).dataset.title; b.addEventListener("click", function(){ go(s); }); stepsNav.appendChild(b); });
+function refreshNav(){ stepsNav.querySelectorAll("button").forEach(function(b){ if (b.dataset.step === state.step) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current"); b.classList.toggle("done", !!state.checked[b.dataset.step]); }); }
+function go(s){ state.step = s; save(); order.forEach(function(x){ $("s-"+x).classList.toggle("on", x === s); }); refreshNav(); if (s === "R") renderSummary(); try{ window.scrollTo(0,0); }catch(e){} }
+document.querySelectorAll("[data-go]").forEach(function(b){ b.addEventListener("click", function(){ go(b.dataset.go); }); });
+function confirmTap(btn, label, action){ var armed = false, t = null, orig = btn.textContent; btn.addEventListener("click", function(){ if (armed){ clearTimeout(t); armed = false; btn.textContent = orig; action(); return; } armed = true; btn.textContent = label; t = setTimeout(function(){ armed = false; btn.textContent = orig; }, 4000); }); }
+["name","id","group"].forEach(function(k){ var f = $("f-"+k); f.value = state.info[k] || ""; f.addEventListener("input", function(){ state.info[k] = f.value.trim(); updateWho(); save(); }); });
+function updateWho(){ var i = state.info; $("who").textContent = (i.name || "Name not entered") + (i.id ? ", " + i.id : ""); }
+updateWho();
+function copyBtn(btn, text){ btn.addEventListener("click", function(){ var o = btn.textContent; try{ navigator.clipboard.writeText(text).then(function(){ btn.textContent = "Copied"; setTimeout(function(){ btn.textContent = o; }, 1500); }); }catch(e){} }); }
+function groups(m){ return m.replace(/(.{10})/g, "$1 ").trim(); }
+$("B-mrna").textContent = "5′- " + groups(MA) + " -3′"; $("C-mrna").textContent = "5′- " + groups(MB) + " -3′";
+copyBtn($("B-copy"), MA); copyBtn($("B-copyd"), MA.replace(/U/g, "T")); copyBtn($("C-copy"), MB); copyBtn($("C-copyd"), MB.replace(/U/g, "T"));
+
+/* ---------- generic questions ---------- */
+function buildQs(part, host, list){
+  var h = "";
+  list.forEach(function(q){
+    h += "<div class='q'>";
+    if (q.t === "mc"){ h += "<p>" + q.n + ". " + q.q + "</p><div class='opts'>"; q.o.forEach(function(o, j){ h += "<label><input type='radio' name='" + part + "-" + q.k + "' value='" + j + "'> <span>" + o + "</span></label>"; }); h += "</div>"; }
+    else if (q.t === "sel"){ h += "<label class='field' for='" + part + "-" + q.k + "'>" + q.n + ". " + q.q + "</label><select id='" + part + "-" + q.k + "' style='max-width:200px'><option value=''>Choose…</option>" + q.o.map(function(o, j){ return "<option value='" + j + "'>" + o + "</option>"; }).join("") + "</select>"; }
+    else h += "<label class='field' for='" + part + "-" + q.k + "'>" + q.n + ". " + q.q + "</label><input type='text' id='" + part + "-" + q.k + "' " + (q.t === "num" ? "inputmode='decimal' style='max-width:200px'" : "class='mono' autocomplete='off' spellcheck='false'") + ">";
+    h += "<div class='fb' id='fb-" + part + "-" + q.k + "'></div></div>";
+  });
+  $(host).innerHTML = h;
+  list.forEach(function(q){
+    if (q.t === "mc") document.querySelectorAll("input[name='" + part + "-" + q.k + "']").forEach(function(r){ if (String(state[part][q.k]) === r.value) r.checked = true; r.addEventListener("change", function(){ state[part][q.k] = Number(r.value); save(); }); });
+    else if (q.t === "sel"){ var s = $(part + "-" + q.k); if (state[part][q.k] != null) s.value = String(state[part][q.k]); s.addEventListener("change", function(){ state[part][q.k] = s.value === "" ? null : Number(s.value); save(); }); }
+    else { var e = $(part + "-" + q.k); e.value = state[part][q.k] || ""; e.addEventListener("input", function(){ state[part][q.k] = e.value; save(); }); }
+  });
+}
+function protFeedback(got, want){
+  if (!got) return "Type the protein first.";
+  for (var i = 0; i < Math.max(got.length, want.length); i++) if (got[i] !== want[i]) return "The first difference is at amino acid " + (i + 1) + " (counting Met as 1). Check that codon.";
+  return "";
+}
+function checkList(part, list, show){
+  var n = 0;
+  list.forEach(function(q){
+    var v = state[part][q.k], ok;
+    if (q.t === "mc" || q.t === "sel") ok = v === q.a;
+    else if (q.t === "prot") ok = prot(v) === q.a;
+    else if (q.t === "txt") ok = String(v || "").toUpperCase().replace(/[^A-Z]/g, "") === q.a;
+    else ok = close(parseNum(v), q.a, q.tol || 0);
+    if (ok) n++;
+    if (show){ var f = $("fb-" + part + "-" + q.k); f.className = "fb show " + (ok ? "ok" : "bad");
+      f.textContent = ok ? "Correct. " + (q.why || "") : "Not yet. " + (q.t === "prot" ? protFeedback(prot(v), q.a) : (q.hint || "Check the codon table and try again.")); }
+  });
+  return n;
+}
+
+/* ---------- PART A ---------- */
+var AQ = [
+ {n:1, k:"a1", t:"prot", q:"Translate 5′-GCGCUAUGUUUAAAGGCUGGUAGCCU-3′ (start at the first AUG).", a:translate("GCGCUAUGUUUAAAGGCUGGUAGCCU"), why:"AUG UUU AAA GGC UGG, then UAG stops."},
+ {n:2, k:"a2", t:"prot", q:"mRNA X: 5′-AUGCUUGGAAAAUAA-3′. Translate it.", a:translate("AUGCUUGGAAAAUAA")},
+ {n:3, k:"a3", t:"prot", q:"mRNA Y: 5′-AUGCUGGGCAAGUGA-3′. Translate it.", a:translate("AUGCUGGGCAAGUGA")},
+ {n:4, k:"a4", t:"num", q:"At how many positions do mRNA X and mRNA Y differ?", a:4, why:"The third base of every codon after AUG differs, including the stop codon.", hint:"Line them up and compare base by base."},
+ {n:5, k:"a5", t:"mc", q:"Why do X and Y make the same peptide?", o:["They are the same mRNA","The code is redundant: several codons code for the same amino acid","Ribosomes ignore the third base completely"], a:1, why:"Most differences are in the third base, which often does not change the amino acid."},
+ {n:6, k:"a6", t:"prot", q:"This is a gene's coding strand (DNA): 5′-ATGGAATCTCATTGA-3′. Write the protein it codes for.", a:translate("AUGGAAUCUCAUUGA"), why:"Change T to U, then translate: AUG GAA UCU CAU UGA.", hint:"First turn the coding strand into mRNA by changing T to U."}
+];
+buildQs("A", "A-qs", AQ);
+function checkA(show){ return checkList("A", AQ, show); }
+$("A-check").addEventListener("click", function(){ var n = checkA(true); $("A-score").textContent = "Score: " + n + " / " + AQ.length; state.checked.A = true; save(); refreshNav(); });
+
+/* ---------- PART B ---------- */
+var PA = translate(MA), startA = MA.indexOf("AUG") + 1;
+var BQ = [
+ {n:1, k:"b1", t:"num", q:"At which base (counting from 1 at the 5′ end) does the start codon begin?", a:startA, why:""},
+ {n:2, k:"b2", t:"prot", q:"Translate the mRNA by hand, from Met to just before the stop.", a:PA, why:"Met + the 21 amino acids of the cattle insulin A chain."},
+ {n:3, k:"b3", t:"num", q:"How many codons are read, including the stop codon?", a:PA.length + 1, why:""},
+ {n:4, k:"b4", t:"txt", q:"Which stop codon ends it? (3 letters)", a:"UAA", why:""}
+];
+var BQ2 = [
+ {n:5, k:"b5", t:"mc", q:"In ExPASy, which 5′3′ frame shows the full protein?", o:["Frame 1","Frame 2","Frame 3"], a:((startA - 1) % 3), why:"The AUG starts at base " + startA + ", so the frame is " + (((startA - 1) % 3) + 1) + "."},
+ {n:6, k:"b6", t:"mc", q:"The insulin A chain in a cow's blood starts with G, not M. Why?", o:["The ribosome skips Met in cattle","The real protein is made as preproinsulin and cut; the A chain sits at its end","ExPASy adds Met by mistake"], a:1, why:"This exercise mRNA codes only for the A chain; in the cow it is cut from a larger protein."}
+];
+buildQs("B", "B-qs", BQ); buildQs("B", "B-qs2", BQ2);
+function checkB(show){ return checkList("B", BQ, show) + checkList("B", BQ2, show); }
+$("B-check").addEventListener("click", function(){ var n = checkB(true); $("B-score").textContent = "Score: " + n + " / " + (BQ.length + BQ2.length); state.checked.B = true; save(); refreshNav(); });
+
+/* ---------- PART C ---------- */
+var PB = translate(MB);
+var CQ = [
+ {n:1, k:"c1", t:"prot", q:"Type the protein ExPASy shows, from Met to just before the stop.", a:PB, why:"Met + the 30 amino acids of the cattle insulin B chain."},
+ {n:2, k:"c2", t:"num", q:"Counting all of A and B chains, at how many positions does cattle insulin differ from human?", a:3, why:"A8, A10 and B30."},
+ {n:3, k:"c3", t:"num", q:"At how many positions does pig insulin differ from human?", a:1, why:"Only B30."},
+ {n:4, k:"c4", t:"mc", q:"Which positions differ between cattle and human insulin?", o:["A1, A2, B1","A8, A10, B30","B28, B29, B30"], a:1, why:"Cattle: A8 Ala, A10 Val, B30 Ala; human: Thr, Ile, Thr."},
+ {n:5, k:"c5", t:"num", q:"The cattle B30 codon in this mRNA is GCC (Ala). What is the fewest base changes that make it a Thr codon?", a:1, why:"GCC → ACC (Thr): one change in the first base.", hint:"Find the Thr codons (ACx) in the table."},
+ {n:6, k:"c6", t:"mc", q:"For people with diabetes, pig insulin worked better than cattle insulin mainly because…", o:["pigs make more insulin","it differs from human insulin at fewer positions, so it is less likely to trigger an immune reaction","it has no B chain"], a:1, why:""}
+];
+buildQs("C", "C-qs", CQ);
+function checkC(show){ return checkList("C", CQ, show); }
+$("C-check").addEventListener("click", function(){ var n = checkC(true); $("C-score").textContent = "Score: " + n + " / " + CQ.length; state.checked.C = true; save(); refreshNav(); });
+
+/* ---------- PART D ---------- */
+var EVT = ["STAT5 binds the casein gene's control region and switches transcription on", "Around calving, progesterone falls and prolactin rises", "Casein mRNA is translated on polysomes and casein is secreted into milk", "Prolactin binds its receptor on udder cells", "JAK2 activates STAT5, which moves into the nucleus"];
+var EVTKEY = [4, 1, 5, 2, 3];
+var DQ = [];
+EVT.forEach(function(e, i){ DQ.push({n:i + 1, k:"o" + i, t:"sel", q:"Step number for: <b>" + e + "</b>", o:["1","2","3","4","5"], a:EVTKEY[i] - 1, hint:"Start with the hormone change at calving."}); });
+DQ.push({n:6, k:"d1", t:"mc", q:"An enhancer is…", o:["the start codon of a gene","a DNA region that binds activator proteins and can lie far from the gene","the protein that copies DNA"], a:1, why:""});
+DQ.push({n:7, k:"d2", t:"mc", q:"A cow's liver cells carry the casein gene. Why don't they make casein?", o:["Liver cells lost the casein gene","They lack the udder's prolactin signalling and transcription factors needed at the casein control regions","Casein mRNA cannot be translated in liver"], a:1, why:"Same genome, different set of active factors."});
+DQ.push({n:8, k:"d3", t:"mc", q:"Which of these is a transcription factor itself?", o:["The estrogen receptor","The prolactin receptor","Ovalbumin"], a:0, why:"Estrogen enters the cell; its receptor binds DNA directly."});
+DQ.push({n:9, k:"d4", t:"mc", q:"A mutation deletes an enhancer of the ovalbumin gene but leaves its coding sequence intact. What is most likely?", o:["Ovalbumin's amino-acid sequence changes","Less ovalbumin is made in response to estrogen, but the protein is normal","The hen lays no eggs at all"], a:1, why:"Regulatory changes alter how much protein is made, not its sequence."});
+buildQs("D", "D-qs", DQ);
+function checkD(show){ return checkList("D", DQ, show); }
+$("D-check").addEventListener("click", function(){ var n = checkD(true); $("D-score").textContent = "Score: " + n + " / " + DQ.length; state.checked.D = true; save(); refreshNav(); });
+
+/* ---------- PART E ---------- */
+var EQ = [
+ {k:"e1", q:"mRNAs X and Y in Part A differ at four bases yet make the same peptide. Explain why, and what this means when a single base in a gene changes."},
+ {k:"e2", q:"A bull and a cow both carry casein genes, but only the lactating cow's udder makes casein. Explain using transcription factors, enhancers and hormones."}
+];
+(function(){
+  var host = $("E-qs");
+  EQ.forEach(function(q, i){ var d = document.createElement("div"); d.className = "q";
+    d.innerHTML = "<label class='field' for='E-" + q.k + "'>" + (i+1) + ". " + q.q + "</label><textarea id='E-" + q.k + "'></textarea>"; host.appendChild(d);
+    var t = d.querySelector("textarea"); t.value = state.E[q.k] || ""; t.addEventListener("input", function(){ state.E[q.k] = t.value; state.checked.E = true; save(); }); });
+})();
+
+/* ---------- SUMMARY ---------- */
+function renderSummary(){
+  var i = state.info;
+  var rows = [["Name", esc(i.name || "(not entered)")], ["Student ID", esc(i.id || "(not entered)")], ["Lab group", esc(i.group || "(not entered)")],
+    ["Part A · short mRNAs", checkA(false) + " / " + AQ.length],
+    ["Part B · insulin A chain", checkB(false) + " / " + (BQ.length + BQ2.length)],
+    ["Part C · species comparison", checkC(false) + " / " + CQ.length],
+    ["Part D · gene regulation", checkD(false) + " / " + DQ.length]];
+  var h = "<table class='tbl'>" + rows.map(function(r){ return "<tr><th style='width:34%'>" + r[0] + "</th><td>" + r[1] + "</td></tr>"; }).join("") + "</table><h3>Part E · written answers</h3>";
+  EQ.forEach(function(q, n){ h += "<p><b>" + (n+1) + ".</b> " + esc(q.q) + "<br>" + esc(state.E[q.k] || "(no answer)").replace(/\n/g, "<br>") + "</p>"; });
+  h += "<p class='note'>Created " + new Date().toLocaleString() + "</p>";
+  $("R-body").innerHTML = h;
+  var txt = rows.map(function(r){ return r[0] + ": " + r[1].replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,"\""); }).join("\n");
+  EQ.forEach(function(q, n){ txt += "\n\nE" + (n+1) + ". " + q.q + "\n" + (state.E[q.k] || "(no answer)"); });
+  $("R-text").value = txt;
+}
+$("R-copy").addEventListener("click", function(){ var t = $("R-text"), done = function(){ $("R-copy").textContent = "Copied"; setTimeout(function(){ $("R-copy").textContent = "Copy summary as text"; }, 1800); };
+  try{ if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t.value).then(done, function(){ t.hidden = false; t.select(); }); } else { t.hidden = false; t.select(); } }catch(e){ t.hidden = false; t.select(); } });
+confirmTap($("R-reset"), "Tap again to erase everything", function(){ try{ localStorage.removeItem(KEY); }catch(e){} location.reload(); });
+
+go(order.indexOf(state.step) >= 0 ? state.step : "start");
+})();
+</script>
+</body>
+</html>

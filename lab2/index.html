@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lab Worksheet 2: Virtual beads and chi-square · 710 114 Animal Genetics</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Lora:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F6F4EA; --surface:#FFFDF6; --ink:#1E2B27; --muted:#52615B; --line:#DCD5C1;
+  --brand:#2F6F5E; --brand-ink:#FFFFFF; --brand-soft:#E3EEE8; --gold:#B8862A; --gold-soft:#F3E4BE;
+  --ok:#2F7D4F; --ok-soft:#DDEFE3; --bad:#A23B2A; --bad-soft:#F6DEDA;
+  --scope:#13211D; --scope-ring:#2C3F38; --slot:#EEF2EC; --slot-line:#B9CBBF; --slot-ink:#4C5F57;
+  --chr:#DCD3E6; --band:#3E3054; --chr-line:#8D82A2;
+  --head:'Lora','Noto Serif Thai',Georgia,serif; --body:'IBM Plex Sans Thai',system-ui,Arial,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111916; --surface:#18221E; --ink:#E8EEEA; --muted:#A6B3AD; --line:#2D3A35;
+    --brand:#62B39B; --brand-ink:#0D1613; --brand-soft:#1E2E28; --gold:#E0B456; --gold-soft:#3A3120;
+    --ok:#6CC08E; --ok-soft:#173225; --bad:#E58470; --bad-soft:#3A1E19;
+    --scope:#0A110F; --scope-ring:#22312B; --slot:#1D2925; --slot-line:#3B5047; --slot-ink:#A6B3AD;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111916; --surface:#18221E; --ink:#E8EEEA; --muted:#A6B3AD; --line:#2D3A35;
+  --brand:#62B39B; --brand-ink:#0D1613; --brand-soft:#1E2E28; --gold:#E0B456; --gold-soft:#3A3120;
+  --ok:#6CC08E; --ok-soft:#173225; --bad:#E58470; --bad-soft:#3A1E19;
+  --scope:#0A110F; --scope-ring:#22312B; --slot:#1D2925; --slot-line:#3B5047; --slot-ink:#A6B3AD;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 120px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar{max-width:1080px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px}
+.bar h1{font-family:var(--head);font-weight:600;font-size:20px;margin:0;flex:1 1 280px}
+.who{font-size:14px;color:var(--muted)}
+nav.steps{max-width:1080px;margin:0 auto;padding:0 20px 12px;display:flex;gap:6px;overflow-x:auto}
+nav.steps button{flex:none;font:inherit;font-size:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+nav.steps button[aria-current="step"]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+nav.steps button.done::after{content:" ✓";color:var(--ok)}
+nav.steps button[aria-current="step"].done::after{color:var(--brand-ink)}
+main{max-width:1080px;margin:0 auto;padding:24px 20px 80px}
+section.step{display:none}
+section.step.on{display:block}
+h2{font-family:var(--head);font-weight:600;font-size:28px;line-height:1.2;margin:0 0 6px}
+h3{font-size:19px;margin:28px 0 8px}
+.th{color:var(--gold)}
+p.lead{max-width:72ch;color:var(--muted);margin:0 0 18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
+label.field{display:block;font-weight:600;margin:12px 0 4px}
+input[type=text],input[type=number],select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;max-width:420px}
+textarea{max-width:100%;min-height:84px;resize:vertical}
+.q{margin:16px 0}
+.q p{margin:0 0 6px;font-weight:600}
+.opts label{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;border-radius:8px;cursor:pointer}
+.opts label:hover{background:var(--brand-soft)}
+.opts input{margin-top:5px}
+.fb{font-size:15px;margin-top:4px;padding:6px 10px;border-radius:8px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-soft);color:var(--ink)} .fb.bad{background:var(--bad-soft);color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:16px 0}
+button.btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:10px 18px;cursor:pointer;background:var(--brand);color:var(--brand-ink)}
+button.btn.ghost{background:transparent;color:var(--brand);border:1px solid var(--brand)}
+button.btn.quiet{background:transparent;color:var(--muted);border:1px solid var(--line)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.score{font-weight:700}
+.note{font-size:15px;color:var(--muted)}
+.ws{width:100%;height:auto;display:block;border-radius:14px;background:var(--surface);border:1px solid var(--line);touch-action:none;user-select:none;-webkit-user-select:none}
+.chr{cursor:grab}
+.chr.sel .hit{stroke:var(--gold);stroke-width:2.5}
+.chr.dragging{cursor:grabbing}
+.slot{fill:var(--slot);stroke:var(--slot-line);stroke-width:1.2}
+.slot.ok{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.5}
+.slot.bad{fill:var(--bad-soft);stroke:var(--bad);stroke-width:2.5}
+.slotnum{font-family:var(--body);font-size:15px;fill:var(--slot-ink);text-anchor:middle}
+.micro{cursor:pointer}
+.micro.counted ellipse{fill:var(--gold)}
+.tbl{border-collapse:collapse;width:100%;max-width:720px;font-size:16px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:15px;color:var(--muted)}
+.pill{display:inline-block;background:var(--gold-soft);border-radius:999px;padding:2px 10px;font-weight:600;color:var(--ink)}
+.copybox{width:100%;max-width:100%;min-height:160px;font-size:14px}
+@media (max-width:600px){body{font-size:16px} h2{font-size:24px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+<style>
+.bags{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0}
+.bag{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.bag h4{margin:0 0 8px;font-size:16px}
+.beads{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;max-width:220px}
+.bead{width:100%;aspect-ratio:1;border-radius:50%}
+.b-E{background:#2B2B2B}.b-e{background:#9E3F2B}.b-P{background:#3F826D}.b-p{background:#C99A2E}
+.draw{display:flex;flex-wrap:wrap;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 18px;margin:14px 0}
+.drawn{display:flex;gap:6px;align-items:center}
+.drawn .bead{width:26px;height:26px}
+.big{font-family:var(--head);font-size:26px;font-weight:600}
+.tally{border-collapse:collapse;font-size:16px;min-width:260px}
+.tally td,.tally th{border-bottom:1px solid var(--line);padding:6px 10px;text-align:left}
+.chi{border-collapse:collapse;width:100%;max-width:820px;font-size:16px}
+.chi th,.chi td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:middle}
+.chi input,.chi select{max-width:120px;padding:6px 8px}
+input.ok,select.ok{border:2px solid var(--ok);background:var(--ok-soft)}
+input.bad,select.bad{border:2px solid var(--bad);background:var(--bad-soft)}
+.crit{border-collapse:collapse;font-size:15px}
+.crit td,.crit th{border:1px solid var(--line);padding:4px 10px;text-align:center}
+.prog{height:10px;background:var(--line);border-radius:5px;overflow:hidden;max-width:420px;flex:1 1 200px}
+.prog>div{height:100%;background:var(--brand);width:0}
+.hint{font-size:14px;color:var(--muted)}
+.ttt{display:grid;margin:10px 0 6px}
+.ttt>div{min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;font-weight:600;text-align:center}
+.ttt>.hd{font-weight:700;color:var(--brand);font-size:18px}
+.ttt>.r{border-right:3px solid var(--ink)}
+.ttt>.b{border-bottom:3px solid var(--ink)}
+.ttt input[type=text]{width:100%;max-width:80px;text-align:center;padding:6px 4px;font-weight:600}
+.ttt .lab{font-size:13px;font-weight:500;color:var(--muted)}
+.ttt .hl{color:var(--bad);font-weight:700}
+.wrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin-top:8px}
+.wrow .times{font-size:26px;font-weight:700;color:var(--gold)}
+.wsq{display:flex;flex-direction:column}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <h1>Lab Worksheet 2 · Virtual beads and chi-square</h1>
+    <span class="who" id="who">710 114 Animal Genetics</span>
+  </div>
+  <nav class="steps" aria-label="Worksheet parts" id="steps"></nav>
+</header>
+<main>
+
+<section class="step" id="s-start" data-title="Start">
+  <h2>Before you begin <span class="th">· ก่อนเริ่ม</span></h2>
+  <p class="lead">You will breed virtual cattle by drawing beads from parent bags, count the calves, and test the counts with a chi-square test. You do the chi-square by hand with a calculator; the worksheet checks each step. Answers save in this browser, so use the same device for the whole session.</p>
+  <div class="card">
+    <label class="field" for="f-name">Full name</label><input type="text" id="f-name" autocomplete="name">
+    <label class="field" for="f-id">Student ID</label><input type="text" id="f-id" inputmode="numeric">
+    <label class="field" for="f-group">Lab group</label><input type="text" id="f-group">
+  </div>
+  <table class="tbl" aria-label="Parts of this worksheet">
+    <tr><th>Part</th><th>What you do</th><th>Time</th></tr>
+    <tr><td>A</td><td>Probability warm-up · ความน่าจะเป็น</td><td>20 min</td></tr>
+    <tr><td>B</td><td>One gene: Ee × Ee, 100 calves, χ² · การผสมลักษณะเดียว</td><td>60 min</td></tr>
+    <tr><td>C</td><td>Two genes: EePp × EePp, 160 calves, χ² · การผสมสองลักษณะ</td><td>70 min</td></tr>
+    <tr><td>D</td><td>Explain your results · อธิบายผล</td><td>30 min</td></tr>
+  </table>
+  <p class="note">E = black coat, e = red coat (MC1R gene). P = polled, p = horned (POLLED gene). Every draw is random, so your counts will differ from your classmates'.</p>
+  <div class="row"><button class="btn" data-go="A">Start Part A</button></div>
+</section>
+
+<section class="step" id="s-A" data-title="A · Probability">
+  <h2>Part A · Probability warm-up <span class="th">· ความน่าจะเป็น</span></h2>
+  <p class="lead">Type each answer as a fraction (for example 3/16) or a decimal (0.1875). Then check your answers.</p>
+  <div id="A-qs"></div>
+  <div class="row"><button class="btn" id="A-check">Check Part A</button><span class="score" id="A-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="B">Next: Part B</button></div>
+</section>
+
+<section class="step" id="s-B" data-title="B · One gene">
+  <h2>Part B · One gene: Ee × Ee <span class="th">· การผสมลักษณะเดียว</span></h2>
+  <p class="lead">Each parent is a black carrier (Ee). Its bag holds equal numbers of E and e beads. Each calf gets one bead from the sire's bag and one from the dam's bag. Breed 100 calves.</p>
+  <div id="B-fill"></div>
+  <div class="bags" id="B-bags"></div>
+  <div class="draw">
+    <button class="btn" id="B-d1">Breed 1 calf</button><button class="btn ghost" id="B-d10">Breed 10</button><button class="btn quiet" id="B-dall" disabled>Breed the rest</button>
+    <div class="prog" aria-hidden="true"><div id="B-prog"></div></div><span id="B-n">0 / 100</span>
+  </div>
+  <div class="two">
+    <div class="card"><h3 style="margin-top:0">Last calf</h3><div id="B-last" class="drawn"><span class="note">No calves yet.</span></div></div>
+    <div class="card"><h3 style="margin-top:0">Your herd so far</h3><table class="tally" id="B-tally"></table></div>
+  </div>
+  <div class="card" id="B-chiwrap">
+    <h3 style="margin-top:0">Chi-square test: do your calves fit 3 black : 1 red?</h3>
+    <p class="note">H₀: the calves follow 3 : 1. Round each value to 2 decimal places. The critical value table is below.</p>
+    <table class="chi" id="B-chi"></table>
+    <div class="two" style="margin-top:10px">
+      <div><label class="field" for="B-df">Degrees of freedom (df)</label><input type="number" id="B-df"></div>
+      <div><label class="field" for="B-cv">Critical value at p = 0.05</label><input type="text" id="B-cv" inputmode="decimal"></div>
+      <div><label class="field" for="B-dec">Decision</label><select id="B-dec"><option value="">Choose</option><option value="keep">Fail to reject H₀: the calves fit 3 : 1</option><option value="reject">Reject H₀: the calves do not fit 3 : 1</option></select></div>
+    </div>
+    <div class="row"><button class="btn" id="B-check">Check my chi-square</button><span class="score" id="B-score"></span></div>
+    <div class="fb" id="B-fb"></div>
+  </div>
+  <div class="card"><h3 style="margin-top:0">Critical values of χ² (ค่าวิกฤต)</h3>
+    <table class="crit"><tr><th>df</th><th>p = 0.05</th><th>p = 0.01</th></tr><tr><td>1</td><td>3.84</td><td>6.63</td></tr><tr><td>2</td><td>5.99</td><td>9.21</td></tr><tr><td>3</td><td>7.81</td><td>11.34</td></tr><tr><td>4</td><td>9.49</td><td>13.28</td></tr></table></div>
+  <div class="row"><button class="btn ghost" data-go="C">Next: Part C</button></div>
+</section>
+
+<section class="step" id="s-C" data-title="C · Two genes">
+  <h2>Part C · Two genes: EePp × EePp <span class="th">· การผสมสองลักษณะ</span></h2>
+  <p class="lead">Both parents are black and polled, and carry e and p. Each parent now has two bags: one for coat colour, one for horns. Each calf gets one colour bead and one horn bead from each parent. Breed 160 calves.</p>
+  <div id="C-fill"></div>
+  <div class="bags" id="C-bags"></div>
+  <div class="draw">
+    <button class="btn" id="C-d1">Breed 1 calf</button><button class="btn ghost" id="C-d10">Breed 10</button><button class="btn quiet" id="C-dall" disabled>Breed the rest</button>
+    <div class="prog" aria-hidden="true"><div id="C-prog"></div></div><span id="C-n">0 / 160</span>
+  </div>
+  <div class="two">
+    <div class="card"><h3 style="margin-top:0">Last calf</h3><div id="C-last" class="drawn"><span class="note">No calves yet.</span></div></div>
+    <div class="card"><h3 style="margin-top:0">Your herd so far</h3><table class="tally" id="C-tally"></table></div>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Chi-square test: do your calves fit 9 : 3 : 3 : 1?</h3>
+    <p class="note">H₀: the calves follow 9 : 3 : 3 : 1. Round each value to 2 decimal places.</p>
+    <table class="chi" id="C-chi"></table>
+    <div class="two" style="margin-top:10px">
+      <div><label class="field" for="C-df">Degrees of freedom (df)</label><input type="number" id="C-df"></div>
+      <div><label class="field" for="C-cv">Critical value at p = 0.05</label><input type="text" id="C-cv" inputmode="decimal"></div>
+      <div><label class="field" for="C-dec">Decision</label><select id="C-dec"><option value="">Choose</option><option value="keep">Fail to reject H₀: the calves fit 9 : 3 : 3 : 1</option><option value="reject">Reject H₀: the calves do not fit 9 : 3 : 3 : 1</option></select></div>
+    </div>
+    <div class="row"><button class="btn" id="C-check">Check my chi-square</button><span class="score" id="C-score"></span></div>
+    <div class="fb" id="C-fb"></div>
+  </div>
+  <div class="row"><button class="btn ghost" data-go="D">Next: Part D</button></div>
+</section>
+
+<section class="step" id="s-D" data-title="D · Explain">
+  <h2>Part D · Explain your results <span class="th">· อธิบายผล</span></h2>
+  <p class="lead">One quick question, then two short written answers. Write 2–4 sentences each, in English or Thai.</p>
+  <div id="D-mcq"></div>
+  <div class="row"><button class="btn" id="D-check">Check the question</button><span class="score" id="D-score"></span></div>
+  <div id="D-qs"></div>
+  <div class="row"><button class="btn" data-go="R">See my summary</button></div>
+</section>
+
+<section class="step" id="s-R" data-title="Summary">
+  <h2>Summary <span class="th">· สรุปผล</span></h2>
+  <p class="lead">Take a screenshot of this page, or copy the summary text, and submit it the way your instructor tells you.</p>
+  <div class="card" id="R-body"></div>
+  <div class="row"><button class="btn ghost" id="R-copy">Copy summary as text</button><button class="btn quiet" id="R-reset">Start over on this device</button></div>
+  <textarea class="copybox" id="R-text" readonly aria-label="Summary text" hidden></textarea>
+</section>
+
+</main>
+<script>
+(function(){
+"use strict";
+var KEY = "lw2-710114-v1";
+var state = load() || {v:1, step:"start", info:{name:"",id:"",group:""}, A:{}, B:{draws:[], chi:{}}, C:{draws:[], chi:{}}, D:{}, checked:{}};
+function load(){ try{ var s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; }catch(e){ return null; } }
+var saveT = null;
+function save(){ clearTimeout(saveT); saveT = setTimeout(function(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }, 250); }
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function rnd(){ try{ var a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] / 4294967296; }catch(e){ return Math.random(); } }
+
+/* ---------- navigation ---------- */
+var order = ["start","A","B","C","D","R"];
+var stepsNav = $("steps");
+order.forEach(function(s){
+  var b = document.createElement("button"); b.type = "button"; b.dataset.step = s;
+  b.textContent = $("s-"+s).dataset.title; b.addEventListener("click", function(){ go(s); }); stepsNav.appendChild(b);
+});
+function refreshNav(){
+  stepsNav.querySelectorAll("button").forEach(function(b){
+    if (b.dataset.step === state.step) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current");
+    b.classList.toggle("done", !!state.checked[b.dataset.step]);
+  });
+}
+function go(s){
+  state.step = s; save();
+  order.forEach(function(x){ $("s-"+x).classList.toggle("on", x === s); });
+  refreshNav(); if (s === "R") renderSummary();
+  try{ window.scrollTo(0,0); }catch(e){}
+}
+document.querySelectorAll("[data-go]").forEach(function(b){ b.addEventListener("click", function(){ go(b.dataset.go); }); });
+function confirmTap(btn, label, action){
+  var armed = false, t = null, orig = btn.textContent;
+  btn.addEventListener("click", function(){
+    if (armed){ clearTimeout(t); armed = false; btn.textContent = orig; action(); return; }
+    armed = true; btn.textContent = label; t = setTimeout(function(){ armed = false; btn.textContent = orig; }, 4000);
+  });
+}
+
+/* ---------- start ---------- */
+["name","id","group"].forEach(function(k){
+  var f = $("f-"+k); f.value = state.info[k] || "";
+  f.addEventListener("input", function(){ state.info[k] = f.value.trim(); updateWho(); save(); });
+});
+function updateWho(){ var i = state.info; $("who").textContent = (i.name || "Name not entered") + (i.id ? ", " + i.id : ""); }
+updateWho();
+
+/* ---------- numbers ---------- */
+function parseNum(s){
+  if (s == null) return NaN; s = String(s).trim().replace(",", ".");
+  var m = s.match(/^(-?\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/); if (m) return Number(m[1]) / Number(m[2]);
+  return s === "" ? NaN : Number(s);
+}
+function close(a, b, tol){ return isFinite(a) && Math.abs(a - b) <= tol; }
+
+/* ---------- cow head (same drawing as the slides) ---------- */
+function cow(kind, horned, w){
+  var c = kind === "red" ? ["#9E3F2B","#D9A48F","#C27B64"] : ["#2B2B2B","#5E5A57","#4A4644"];
+  var p = "";
+  if (horned){ ["M94 56 C 76 46, 54 34, 42 10","M146 56 C 164 46, 186 34, 198 10"].forEach(function(d){
+    p += '<path d="'+d+'" stroke="#E9DFC7" stroke-width="17" stroke-linecap="round" fill="none"/>'; }); }
+  p += '<ellipse cx="52" cy="86" rx="38" ry="17" transform="rotate(-18 52 86)" fill="'+c[0]+'"/><ellipse cx="188" cy="86" rx="38" ry="17" transform="rotate(18 188 86)" fill="'+c[0]+'"/>';
+  p += '<ellipse cx="50" cy="87" rx="24" ry="8" transform="rotate(-18 50 87)" fill="'+c[2]+'"/><ellipse cx="190" cy="87" rx="24" ry="8" transform="rotate(18 190 87)" fill="'+c[2]+'"/>';
+  p += '<path d="M120 38 C 162 38, 180 68, 178 106 C 176 144, 164 170, 158 188 L 82 188 C 76 170, 64 144, 62 106 C 60 68, 78 38, 120 38 Z" fill="'+c[0]+'"/>';
+  p += '<ellipse cx="120" cy="188" rx="46" ry="30" fill="'+c[1]+'"/><ellipse cx="103" cy="192" rx="7" ry="5" fill="#2A1A14"/><ellipse cx="137" cy="192" rx="7" ry="5" fill="#2A1A14"/>';
+  p += '<circle cx="94" cy="108" r="9" fill="#FBF8EF"/><circle cx="146" cy="108" r="9" fill="#FBF8EF"/><circle cx="95" cy="109" r="5" fill="#1A1A1A"/><circle cx="145" cy="109" r="5" fill="#1A1A1A"/>';
+  var label = (horned ? "Horned " : "Polled ") + kind + " calf";
+  return '<svg role="img" aria-label="'+label+'" width="'+w+'" height="'+Math.round(w*230/240)+'" viewBox="0 0 240 230">'+p+'</svg>';
+}
+function bead(a){ return '<span class="bead b-'+a+'" title="'+a+'"></span>'; }
+function bagHTML(title, a, b){
+  var s = '<div class="bag"><h4>'+title+'</h4><div class="beads">';
+  var arr = []; for (var i = 0; i < 50; i++){ arr.push(a); arr.push(b); }
+  arr.sort(function(){ return 0.5 - Math.random(); });
+  arr.forEach(function(x){ s += bead(x); });
+  return s + '</div><p class="hint" style="margin:6px 0 0">50 '+a+' + 50 '+b+'</p></div>';
+}
+
+/* ---------- tic-tac-toe Punnett squares ---------- */
+function canon(g){
+  g = String(g || "").replace(/\s+/g, "");
+  if (!/^[A-Za-z]+$/.test(g)) return g;
+  var loci = {}, order = [];
+  for (var i = 0; i < g.length; i++){ var ch = g[i], k = ch.toLowerCase(); if (!(k in loci)){ loci[k] = []; order.push(k); } loci[k].push(ch); }
+  return order.sort().map(function(k){ return loci[k].sort(function(a, b){ var A = a !== a.toLowerCase(), B = b !== b.toLowerCase(); return A === B ? 0 : (A ? -1 : 1); }).join(""); }).join("");
+}
+function tttHTML(top, side, cell, cw, hw){
+  var n = top.length, m = side.length; cw = cw || 96; hw = hw || 64;
+  var h = '<div class="ttt" style="grid-template-columns:' + hw + 'px repeat(' + n + ',' + cw + 'px)">';
+  for (var r = -1; r < m; r++) for (var c = -1; c < n; c++){
+    var cls = (c < n - 1 ? " r" : "") + (r < m - 1 ? " b" : "") + ((r < 0 || c < 0) ? " hd" : "");
+    var inner = (r < 0 && c < 0) ? "" : (r < 0 ? top[c] : (c < 0 ? side[r] : cell(r, c)));
+    h += '<div class="' + cls.trim() + '">' + inner + '</div>';
+  }
+  return h + '</div>';
+}
+/* a worked square: top/side alleles, label(geno) -> [text, highlight] */
+function workedSquare(sq){
+  return '<div class="wsq"><p class="note" style="margin:0">' + sq.title + '</p>' + tttHTML(sq.top, sq.side, function(r, c){
+    var g = sq.join ? sq.join(sq.side[r], sq.top[c]) : sq.side[r] + sq.top[c];
+    var lab = sq.label(g);
+    return '<span class="' + (lab[1] ? "hl" : "") + '">' + g + '</span><span class="lab' + (lab[1] ? " hl" : "") + '">' + lab[0] + '</span>';
+  }, sq.cw || 92, 56) + '</div>';
+}
+function workedBlock(q){
+  if (!q.ws) return "";
+  return '<div class="wrow">' + q.ws.map(workedSquare).join('<span class="times">×</span>') + '</div>' + (q.wsNote ? '<p class="note" style="margin:4px 0 0">' + q.wsNote + '</p>' : "");
+}
+/* show feedback with a worked square once correct, or after two wrong tries */
+function feedbackWithSquare(part, q, ok, why, hint){
+  var t = state[part].tries || (state[part].tries = {});
+  if (!ok) t[q.k] = (t[q.k] || 0) + 1;
+  var f = $("fb-" + part + "-" + q.k); if (!f) return;
+  var showSq = ok || t[q.k] >= 2;
+  f.className = "fb show " + (ok ? "ok" : "bad");
+  f.innerHTML = esc((ok ? "Correct. " + why : "Not yet. " + hint + (showSq ? " Worked square:" : " The worked square appears after your next try."))) + (showSq ? workedBlock(q) : "");
+}
+
+/* fillable square, auto-checked */
+var FILLS = [];
+function Fillable(cfg){
+  var part = cfg.part, id = cfg.id, n = cfg.top.length, m = cfg.side.length;
+  var st = state[part].fill || (state[part].fill = {}); var v = st[id] || (st[id] = {});
+  function inp(k, lab){ return '<input type="text" id="' + id + "-" + k + '" aria-label="' + lab + '" autocomplete="off" spellcheck="false">'; }
+  var asks = (cfg.ask || []).map(function(a){
+    return "<label class='field' for='" + id + "-q-" + a.k + "'>" + a.q + "</label><input type='text' inputmode='decimal' id='" + id + "-q-" + a.k + "' style='max-width:160px'>";
+  }).join("");
+  var html = '<div class="card"><h3 style="margin-top:0">' + cfg.title + '</h3><p class="note">' + cfg.note + '</p>' +
+    tttHTML(cfg.top.map(function(_, c){ return inp("t" + c, "gamete across " + (c + 1)); }), cfg.side.map(function(_, r){ return inp("s" + r, "gamete down " + (r + 1)); }),
+      function(r, c){ return inp("c" + r + "_" + c, "box row " + (r + 1) + " column " + (c + 1)); }, cfg.cw, cfg.hw) + asks +
+    '<div class="row"><button class="btn ghost" id="' + id + '-check" type="button">Check my square</button><span class="score" id="' + id + '-score"></span></div><div class="fb" id="' + id + '-fb"></div></div>';
+  $(cfg.host).insertAdjacentHTML("beforeend", html);
+  var keys = [];
+  for (var c = 0; c < n; c++) keys.push("t" + c);
+  for (var r = 0; r < m; r++) keys.push("s" + r);
+  for (r = 0; r < m; r++) for (c = 0; c < n; c++) keys.push("c" + r + "_" + c);
+  (cfg.ask || []).forEach(function(a){ keys.push("q-" + a.k); });
+  keys.forEach(function(k){ var e = $(id + "-" + k); e.value = v[k] || ""; e.addEventListener("input", function(){ v[k] = e.value; e.classList.remove("ok", "bad"); save(); }); });
+  this.check = function(show){
+    var good = 0, total = 0, msgs = [];
+    function mark(k, ok){ total++; if (ok) good++; if (show){ var e = $(id + "-" + k); e.classList.remove("ok", "bad"); e.classList.add(ok ? "ok" : "bad"); } return ok; }
+    var tIn = cfg.top.map(function(_, c){ return canon(v["t" + c]); }), sIn = cfg.side.map(function(_, r){ return canon(v["s" + r]); });
+    var okT = tIn.slice().sort().join() === cfg.top.map(canon).sort().join();
+    var okS = sIn.slice().sort().join() === cfg.side.map(canon).sort().join();
+    tIn.forEach(function(_, c){ mark("t" + c, okT); }); sIn.forEach(function(_, r){ mark("s" + r, okS); });
+    if (!okT || !okS) msgs.push("Each parent's gametes carry one allele of each gene; list every kind once.");
+    var uT = okT ? tIn : cfg.top.map(canon), uS = okS ? sIn : cfg.side.map(canon);
+    var cellsOk = true;
+    for (var r = 0; r < m; r++) for (var c = 0; c < n; c++){ if (!mark("c" + r + "_" + c, canon(v["c" + r + "_" + c]) === canon(uS[r] + uT[c]))) cellsOk = false; }
+    if (!cellsOk) msgs.push("Each box = the gamete on its row + the gamete above its column.");
+    (cfg.ask || []).forEach(function(a){ if (!mark("q-" + a.k, close(parseNum(v["q-" + a.k]), a.a, 0.006))) msgs.push(a.hint); });
+    if (show){
+      var fb = $(id + "-fb"); fb.className = "fb show " + (good === total ? "ok" : "bad");
+      fb.textContent = good === total ? "All correct." : msgs.filter(function(x, i){ return msgs.indexOf(x) === i; }).slice(0, 2).join(" ");
+      $(id + "-score").textContent = "Correct: " + good + " / " + total;
+    }
+    return {good: good, total: total};
+  };
+  var self = this;
+  $(id + "-check").addEventListener("click", function(){ self.check(true); save(); });
+  FILLS.push(this);
+}
+function fillLine(){
+  var g = 0, t = 0; FILLS.forEach(function(f){ var r = f.check(false); g += r.good; t += r.total; });
+  return g + " / " + t + " boxes and answers correct";
+}
+
+/* ---------- PART A ---------- */
+var AQ = [
+ {k:"a1", q:"Ee × Ee: chance that a calf is <b>red</b>?", a:0.25},
+ {k:"a2", q:"Ee × Ee: chance that a calf is <b>black</b>?", a:0.75},
+ {k:"a3", q:"Ee × Ee: chance of <b>two red calves in a row</b>?", a:0.0625},
+ {k:"a4", q:"EePp × EePp: chance of a <b>red, polled</b> calf?", a:0.1875},
+ {k:"a5", q:"EePp × eepp: chance of a <b>red, horned</b> calf?", a:0.25},
+ {k:"a6", q:"Pp × Pp: chance that <b>at least one</b> of 3 calves is horned?", a:37/64},
+ {k:"a7", q:"Pp × pp: chance that a calf is <b>polled</b>?", a:0.5}
+];
+var colourLab = function(target){ return function(g){ var ph = g.indexOf("E") < 0 ? "red" : "black"; return [ph, ph === target]; }; };
+var hornLab = function(target){ return function(g){ var ph = g.indexOf("P") >= 0 ? "polled" : "horned"; return [ph, ph === target]; }; };
+function SQ(title, top, side, lab){ return {title:title, top:top, side:side, label:lab, join:function(a, b){ return canon(a + b); }}; }
+var EE = ["E","e"], PP = ["P","p"];
+var WS2 = {
+ a1:{ws:[SQ("Ee × Ee", EE, EE, colourLab("red"))], note:"1 red box out of 4 = ¼."},
+ a2:{ws:[SQ("Ee × Ee", EE, EE, colourLab("black"))], note:"3 black boxes out of 4 = ¾."},
+ a3:{ws:[SQ("Ee × Ee", EE, EE, colourLab("red"))], note:"Each calf is red with chance ¼. Two in a row: ¼ × ¼ = 1/16."},
+ a4:{ws:[SQ("colour: Ee × Ee", EE, EE, colourLab("red")), SQ("horns: Pp × Pp", PP, PP, hornLab("polled"))], note:"Red ¼ × polled ¾ = 3/16."},
+ a5:{ws:[SQ("colour: Ee × ee", EE, ["e","e"], colourLab("red")), SQ("horns: Pp × pp", PP, ["p","p"], hornLab("horned"))], note:"Red ½ × horned ½ = ¼."},
+ a6:{ws:[SQ("Pp × Pp", PP, PP, hornLab("horned"))], note:"No horned calf in 3: (¾)³ = 27/64. At least one horned: 1 − 27/64 = 37/64."},
+ a7:{ws:[SQ("Pp × pp", PP, ["p","p"], hornLab("polled"))], note:"2 polled boxes out of 4 = ½."}
+};
+AQ.forEach(function(q){ if (WS2[q.k]){ q.ws = WS2[q.k].ws; q.wsNote = WS2[q.k].note; } });
+var AWHY = {a1:"ee needs e from both parents: ½ × ½ = ¼.", a2:"EE or Ee: ¼ + ½ = ¾.", a3:"¼ × ¼ = 1/16 = 0.0625.", a4:"red ¼ × polled ¾ = 3/16 = 0.1875.",
+  a5:"Ee × ee gives red ½; Pp × pp gives horned ½; ½ × ½ = ¼.", a6:"1 − (¾)³ = 37/64 ≈ 0.578.", a7:"Pp × pp gives Pp and pp, ½ each."};
+(function(){
+  var h = "";
+  AQ.forEach(function(q, i){
+    h += "<div class='q'><label class='field' for='A-"+q.k+"'>"+(i+1)+". "+q.q+"</label><input type='text' id='A-"+q.k+"' inputmode='decimal' style='max-width:200px'><div class='fb' id='fb-A-"+q.k+"'></div></div>";
+  });
+  $("A-qs").innerHTML = h;
+  AQ.forEach(function(q){ var e = $("A-"+q.k); e.value = state.A[q.k] || ""; e.addEventListener("input", function(){ state.A[q.k] = e.value; save(); }); });
+})();
+function checkA(show){
+  var n = 0;
+  AQ.forEach(function(q){
+    var ok = close(parseNum(state.A[q.k]), q.a, 0.005); if (ok) n++;
+    if (show) feedbackWithSquare("A", q, ok, AWHY[q.k], "Hint: decide whether you need the product rule (and) or the sum rule (or).");
+  });
+  return n;
+}
+$("A-check").addEventListener("click", function(){ var n = checkA(true); $("A-score").textContent = "Score: " + n + " / " + AQ.length; state.checked.A = true; save(); refreshNav(); });
+
+/* ---------- simulation engine ---------- */
+function Sim(cfg){
+  var self = this; this.cfg = cfg; this.st = state[cfg.part];
+  $(cfg.part+"-bags").innerHTML = cfg.bags.map(function(b){ return bagHTML(b[0], b[1], b[2]); }).join("");
+  $(cfg.part+"-d1").addEventListener("click", function(){ self.breed(1); });
+  $(cfg.part+"-d10").addEventListener("click", function(){ self.breed(10); });
+  $(cfg.part+"-dall").addEventListener("click", function(){ self.breed(cfg.n); });
+  this.buildChi(); this.render();
+}
+Sim.prototype.breed = function(k){
+  var d = this.st.draws, n = this.cfg.n;
+  for (var i = 0; i < k && d.length < n; i++) d.push(this.cfg.one());
+  save(); this.render(true);
+};
+Sim.prototype.counts = function(){
+  var c = {}; this.cfg.cats.forEach(function(x){ c[x.key] = 0; });
+  var self = this; this.st.draws.forEach(function(g){ c[self.cfg.cat(g)]++; }); return c;
+};
+Sim.prototype.render = function(anim){
+  var d = this.st.draws, n = this.cfg.n, p = this.cfg.part, c = this.counts();
+  $(p+"-n").textContent = d.length + " / " + n;
+  $(p+"-prog").style.width = (100*d.length/n) + "%";
+  $(p+"-d1").disabled = $(p+"-d10").disabled = d.length >= n;
+  $(p+"-dall").disabled = d.length < 20 || d.length >= n;
+  if (d.length){ $(p+"-last").innerHTML = this.cfg.showLast(d[d.length-1]); }
+  var rows = "<tr><th>Calves</th><th>Count</th></tr>";
+  this.cfg.cats.forEach(function(x){ rows += "<tr><td>"+x.label+"</td><td><b>"+c[x.key]+"</b></td></tr>"; });
+  if (this.cfg.extraTally) rows += this.cfg.extraTally(d);
+  rows += "<tr><td>Total</td><td><b>"+d.length+"</b></td></tr>";
+  $(p+"-tally").innerHTML = rows;
+  var done = d.length >= n;
+  $(p+"-check").disabled = !done;
+  if (!done) $(p+"-score").textContent = "Breed all " + n + " calves first.";
+  else if ($(p+"-score").textContent.indexOf("Breed all") === 0) $(p+"-score").textContent = "";
+};
+Sim.prototype.buildChi = function(){
+  var p = this.cfg.part, st = this.st, h = "<tr><th>Calves</th><th>Observed (O)</th><th>Expected (E)</th><th>(O − E)² / E</th></tr>";
+  this.cfg.cats.forEach(function(x){
+    h += "<tr><td>"+x.label+"</td>" + ["o","e","t"].map(function(f){ return "<td><input type='text' inputmode='decimal' id='"+p+"-"+f+"-"+x.key+"' aria-label='"+x.label+" "+f+"'></td>"; }).join("") + "</tr>";
+  });
+  h += "<tr><td><b>χ² (total)</b></td><td></td><td></td><td><input type='text' inputmode='decimal' id='"+p+"-chi2' aria-label='chi-square total'></td></tr>";
+  $(p+"-chi").innerHTML = h;
+  var ids = []; this.cfg.cats.forEach(function(x){ ["o","e","t"].forEach(function(f){ ids.push(p+"-"+f+"-"+x.key); }); });
+  ids.push(p+"-chi2", p+"-df", p+"-cv", p+"-dec");
+  ids.forEach(function(id){ var e = $(id); e.value = st.chi[id] || ""; e.addEventListener(e.tagName === "SELECT" ? "change" : "input", function(){ st.chi[id] = e.value; e.classList.remove("ok","bad"); save(); }); });
+  var self = this; $(p+"-check").addEventListener("click", function(){ self.check(true); state.checked[p] = true; save(); refreshNav(); });
+};
+Sim.prototype.check = function(show){
+  var p = this.cfg.part, st = this.st, c = this.counts(), n = this.cfg.n, good = 0, total = 0, trueChi = 0, sumTerms = 0, msgs = [];
+  function mark(id, ok){ total++; if (ok) good++; if (show){ var e = $(id); e.classList.remove("ok","bad"); e.classList.add(ok ? "ok" : "bad"); } return ok; }
+  var self = this;
+  this.cfg.cats.forEach(function(x){
+    var O = c[x.key], E = n * x.frac, term = (O - E)*(O - E)/E; trueChi += term;
+    var so = parseNum(st.chi[p+"-o-"+x.key]), se = parseNum(st.chi[p+"-e-"+x.key]), stt = parseNum(st.chi[p+"-t-"+x.key]);
+    var okO = mark(p+"-o-"+x.key, so === O);
+    var okE = mark(p+"-e-"+x.key, close(se, E, 0.01));
+    var useO = isFinite(so) ? so : O, useE = isFinite(se) && se > 0 ? se : E;
+    var studentTerm = (useO - useE)*(useO - useE)/useE;
+    var okT = mark(p+"-t-"+x.key, close(stt, studentTerm, Math.max(0.011, 0.01*studentTerm)) && okO && okE);
+    if (isFinite(stt)) sumTerms += stt;
+    if (!okO) msgs.push("Copy the observed counts from your herd table.");
+    else if (!okE) msgs.push("Expected = total calves × the fraction for that group.");
+    else if (!okT) msgs.push("Check (O − E)² ÷ E for " + x.label.replace(/<[^>]+>/g,"") + ".");
+  });
+  var sc = parseNum(st.chi[p+"-chi2"]);
+  var okChi = mark(p+"-chi2", close(sc, trueChi, Math.max(0.03, 0.01*trueChi)));
+  if (!okChi) msgs.push("χ² is the sum of the last column.");
+  var okDf = mark(p+"-df", parseNum(st.chi[p+"-df"]) === this.cfg.df);
+  if (!okDf) msgs.push("df = number of groups − 1.");
+  var okCv = mark(p+"-cv", close(parseNum(st.chi[p+"-cv"]), this.cfg.cv, 0.005));
+  if (!okCv) msgs.push("Read the critical value from the table, on the row for your df.");
+  var rightDec = trueChi >= this.cfg.cv ? "reject" : "keep";
+  var okDec = mark(p+"-dec", st.chi[p+"-dec"] === rightDec);
+  if (!okDec) msgs.push("Compare your χ² with the critical value: below it, fail to reject H₀.");
+  if (show){
+    var fb = $(p+"-fb"); fb.className = "fb show " + (good === total ? "ok" : "bad");
+    fb.textContent = good === total ? ("All correct. Your χ² = " + trueChi.toFixed(2) + " with df = " + this.cfg.df + ".") : msgs.filter(function(m, i){ return msgs.indexOf(m) === i; }).slice(0, 3).join(" ");
+    $(p+"-score").textContent = "Steps correct: " + good + " / " + total;
+  }
+  return {good:good, total:total, chi:trueChi, dec:rightDec};
+};
+
+/* ---------- PART B: Ee × Ee ---------- */
+var SB = new Sim({part:"B", n:100, df:1, cv:3.84,
+  bags:[["Sire's bag (Ee)","E","e"],["Dam's bag (Ee)","E","e"]],
+  one:function(){ return (rnd() < 0.5 ? "E" : "e") + (rnd() < 0.5 ? "E" : "e"); },
+  cats:[{key:"black", label:"black (E_)", frac:0.75},{key:"red", label:"red (ee)", frac:0.25}],
+  cat:function(g){ return g.indexOf("E") >= 0 ? "black" : "red"; },
+  showLast:function(g){ var gt = g.split("").sort().join("");
+    return bead(g[0]) + bead(g[1]) + cow(g.indexOf("E") >= 0 ? "black" : "red", false, 70) + '<span class="big">' + gt + '</span>'; },
+  extraTally:function(d){ var ee = 0, Ee = 0, EE = 0; d.forEach(function(g){ var s = g.split("").sort().join(""); if (s === "EE") EE++; else if (s === "Ee") Ee++; else ee++; });
+    return '<tr><td class="hint">genotypes EE / Ee / ee</td><td class="hint">'+EE+' / '+Ee+' / '+ee+'</td></tr>'; }
+});
+
+/* ---------- PART C: EePp × EePp ---------- */
+var SC = new Sim({part:"C", n:160, df:3, cv:7.81,
+  bags:[["Sire: colour bag (Ee)","E","e"],["Sire: horn bag (Pp)","P","p"],["Dam: colour bag (Ee)","E","e"],["Dam: horn bag (Pp)","P","p"]],
+  one:function(){ return (rnd() < 0.5 ? "E" : "e") + (rnd() < 0.5 ? "E" : "e") + (rnd() < 0.5 ? "P" : "p") + (rnd() < 0.5 ? "P" : "p"); },
+  cats:[{key:"bp", label:"black polled", frac:9/16},{key:"bh", label:"black horned", frac:3/16},{key:"rp", label:"red polled", frac:3/16},{key:"rh", label:"red horned", frac:1/16}],
+  cat:function(g){ var b = g.slice(0,2).indexOf("E") >= 0, pl = g.slice(2).indexOf("P") >= 0; return (b ? "b" : "r") + (pl ? "p" : "h"); },
+  showLast:function(g){ var b = g.slice(0,2).indexOf("E") >= 0, pl = g.slice(2).indexOf("P") >= 0;
+    var gt = g.slice(0,2).split("").sort().join("") + g.slice(2).split("").sort().join("");
+    return bead(g[0]) + bead(g[1]) + bead(g[2]) + bead(g[3]) + cow(b ? "black" : "red", !pl, 70) + '<span class="big">' + gt + '</span>'; }
+});
+
+/* ---------- PART D ---------- */
+var DQ = {k:"d0", q:"Suppose a class of 100 students all run Part B correctly, and the bags really do give 3 : 1. About how many students will still get χ² ≥ 3.84 and reject H₀?",
+  o:["None of them","About 5","About 50"], a:1, why:"p = 0.05 means a true hypothesis is rejected by chance about 5 times in 100."};
+(function(){
+  var h = "<div class='q'><p>1. " + DQ.q + "</p><div class='opts'>";
+  DQ.o.forEach(function(o, j){ h += "<label><input type='radio' name='D-d0' value='"+j+"'"+(state.D.d0 === j ? " checked" : "")+"> <span>"+o+"</span></label>"; });
+  $("D-mcq").innerHTML = h + "</div><div class='fb' id='fb-D'></div></div>";
+  $("D-mcq").querySelectorAll("input").forEach(function(inp){ inp.addEventListener("change", function(){ state.D.d0 = Number(inp.value); save(); }); });
+})();
+function checkD(show){ var ok = state.D.d0 === DQ.a; if (show){ var f = $("fb-D"); f.className = "fb show " + (ok ? "ok" : "bad"); f.textContent = (ok ? "Correct. " : "Not yet. ") + DQ.why; } return ok ? 1 : 0; }
+$("D-check").addEventListener("click", function(){ var n = checkD(true); $("D-score").textContent = "Score: " + n + " / 1"; save(); });
+var EQ = [
+ {k:"d1", q:"Did you reject H₀ in Part B? A classmate used the same bags and got different counts and a different χ². Explain why, and what \"fail to reject H₀\" does and does not tell you."},
+ {k:"d2", q:"In Part C the colour bead and the horn bead were drawn from separate bags. Which of Mendel's laws does this represent, and when would it not be true for real genes?"}
+];
+(function(){
+  var host = $("D-qs");
+  EQ.forEach(function(q, i){
+    var d = document.createElement("div"); d.className = "q";
+    d.innerHTML = "<label class='field' for='D-"+q.k+"'>" + (i+2) + ". " + q.q + "</label><textarea id='D-"+q.k+"'></textarea>";
+    host.appendChild(d);
+    var t = d.querySelector("textarea"); t.value = state.D[q.k] || "";
+    t.addEventListener("input", function(){ state.D[q.k] = t.value; state.checked.D = true; save(); });
+  });
+})();
+
+/* ---------- fill-in Punnett squares ---------- */
+new Fillable({part:"B", id:"fB", host:"B-fill", title:"Predict first: fill the Punnett square for Ee × Ee",
+  note:"Type each parent's gametes in the header boxes (one allele each), then fill every box with the calf's genotype.",
+  top:["E","e"], side:["E","e"], ask:[{k:"red", q:"What fraction of the calves should be red?", a:0.25, hint:"Count the ee boxes."}]});
+new Fillable({part:"C", id:"fC", host:"C-fill", title:"Predict first: fill the Punnett square for EePp × EePp",
+  note:"Each gamete carries one allele of each gene, for example EP. Fill all 16 boxes.", top:["EP","Ep","eP","ep"], side:["EP","Ep","eP","ep"], cw:84, hw:64,
+  ask:[{k:"bp", q:"How many of the 16 boxes are black and polled?", a:9, hint:"Black polled boxes have at least one E and at least one P."},
+       {k:"rh", q:"How many are red and horned?", a:1, hint:"Red horned needs eepp."}]});
+
+/* ---------- SUMMARY ---------- */
+function simLine(sim){
+  var c = sim.counts(), d = sim.st.draws.length;
+  if (d < sim.cfg.n) return "not finished (" + d + " of " + sim.cfg.n + " calves)";
+  var r = sim.check(false);
+  return sim.cfg.cats.map(function(x){ return x.label + " " + c[x.key]; }).join(", ") + "; true χ² = " + r.chi.toFixed(2) + "; steps correct " + r.good + " / " + r.total;
+}
+function renderSummary(){
+  var i = state.info;
+  var rows = [["Name", esc(i.name || "(not entered)")], ["Student ID", esc(i.id || "(not entered)")], ["Lab group", esc(i.group || "(not entered)")],
+    ["Part A · probability", checkA(false) + " / " + AQ.length],
+    ["Part B · Ee × Ee", esc(simLine(SB))], ["Part C · EePp × EePp", esc(simLine(SC))],
+    ["Part D · question 1", checkD(false) + " / 1"], ["Punnett squares (fill-in)", fillLine()]];
+  var h = "<table class='tbl'>" + rows.map(function(r){ return "<tr><th style='width:30%'>" + r[0] + "</th><td>" + r[1] + "</td></tr>"; }).join("") + "</table><h3>Part D · written answers</h3>";
+  EQ.forEach(function(q, n){ h += "<p><b>" + (n+2) + ".</b> " + esc(q.q) + "<br>" + esc(state.D[q.k] || "(no answer)").replace(/\n/g, "<br>") + "</p>"; });
+  h += "<p class='note'>Created " + new Date().toLocaleString() + "</p>";
+  $("R-body").innerHTML = h;
+  var txt = rows.map(function(r){ return r[0] + ": " + r[1].replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,"\""); }).join("\n");
+  EQ.forEach(function(q, n){ txt += "\n\nD" + (n+2) + ". " + q.q + "\n" + (state.D[q.k] || "(no answer)"); });
+  $("R-text").value = txt;
+}
+$("R-copy").addEventListener("click", function(){
+  var t = $("R-text"), done = function(){ $("R-copy").textContent = "Copied"; setTimeout(function(){ $("R-copy").textContent = "Copy summary as text"; }, 1800); };
+  try{ if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t.value).then(done, function(){ t.hidden = false; t.select(); }); } else { t.hidden = false; t.select(); } }
+  catch(e){ t.hidden = false; t.select(); }
+});
+confirmTap($("R-reset"), "Tap again to erase everything", function(){ try{ localStorage.removeItem(KEY); }catch(e){} location.reload(); });
+
+go(order.indexOf(state.step) >= 0 ? state.step : "start");
+})();
+</script>
+</body>
+</html>

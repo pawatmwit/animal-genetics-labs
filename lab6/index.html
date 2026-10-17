@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lab Worksheet 6: Copying DNA · 710 114 Animal Genetics</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Lora:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F6F4EA; --surface:#FFFDF6; --ink:#1E2B27; --muted:#52615B; --line:#DCD5C1;
+  --brand:#2F6F5E; --brand-ink:#FFFFFF; --brand-soft:#E3EEE8; --gold:#B8862A; --gold-soft:#F3E4BE;
+  --ok:#2F7D4F; --ok-soft:#DDEFE3; --bad:#A23B2A; --bad-soft:#F6DEDA;
+  --scope:#13211D; --scope-ring:#2C3F38; --slot:#EEF2EC; --slot-line:#B9CBBF; --slot-ink:#4C5F57;
+  --chr:#DCD3E6; --band:#3E3054; --chr-line:#8D82A2;
+  --head:'Lora','Noto Serif Thai',Georgia,serif; --body:'IBM Plex Sans Thai',system-ui,Arial,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111916; --surface:#18221E; --ink:#E8EEEA; --muted:#A6B3AD; --line:#2D3A35;
+    --brand:#62B39B; --brand-ink:#0D1613; --brand-soft:#1E2E28; --gold:#E0B456; --gold-soft:#3A3120;
+    --ok:#6CC08E; --ok-soft:#173225; --bad:#E58470; --bad-soft:#3A1E19;
+    --scope:#0A110F; --scope-ring:#22312B; --slot:#1D2925; --slot-line:#3B5047; --slot-ink:#A6B3AD;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111916; --surface:#18221E; --ink:#E8EEEA; --muted:#A6B3AD; --line:#2D3A35;
+  --brand:#62B39B; --brand-ink:#0D1613; --brand-soft:#1E2E28; --gold:#E0B456; --gold-soft:#3A3120;
+  --ok:#6CC08E; --ok-soft:#173225; --bad:#E58470; --bad-soft:#3A1E19;
+  --scope:#0A110F; --scope-ring:#22312B; --slot:#1D2925; --slot-line:#3B5047; --slot-ink:#A6B3AD;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 120px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar{max-width:1080px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px}
+.bar h1{font-family:var(--head);font-weight:600;font-size:20px;margin:0;flex:1 1 280px}
+.who{font-size:14px;color:var(--muted)}
+nav.steps{max-width:1080px;margin:0 auto;padding:0 20px 12px;display:flex;gap:6px;overflow-x:auto}
+nav.steps button{flex:none;font:inherit;font-size:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+nav.steps button[aria-current="step"]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+nav.steps button.done::after{content:" ✓";color:var(--ok)}
+nav.steps button[aria-current="step"].done::after{color:var(--brand-ink)}
+main{max-width:1080px;margin:0 auto;padding:24px 20px 80px}
+section.step{display:none}
+section.step.on{display:block}
+h2{font-family:var(--head);font-weight:600;font-size:28px;line-height:1.2;margin:0 0 6px}
+h3{font-size:19px;margin:28px 0 8px}
+.th{color:var(--gold)}
+p.lead{max-width:72ch;color:var(--muted);margin:0 0 18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
+label.field{display:block;font-weight:600;margin:12px 0 4px}
+input[type=text],input[type=number],select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;max-width:420px}
+textarea{max-width:100%;min-height:84px;resize:vertical}
+.q{margin:16px 0}
+.q p{margin:0 0 6px;font-weight:600}
+.opts label{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;border-radius:8px;cursor:pointer}
+.opts label:hover{background:var(--brand-soft)}
+.opts input{margin-top:5px}
+.fb{font-size:15px;margin-top:4px;padding:6px 10px;border-radius:8px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-soft);color:var(--ink)} .fb.bad{background:var(--bad-soft);color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:16px 0}
+button.btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:10px 18px;cursor:pointer;background:var(--brand);color:var(--brand-ink)}
+button.btn.ghost{background:transparent;color:var(--brand);border:1px solid var(--brand)}
+button.btn.quiet{background:transparent;color:var(--muted);border:1px solid var(--line)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.score{font-weight:700}
+.note{font-size:15px;color:var(--muted)}
+.ws{width:100%;height:auto;display:block;border-radius:14px;background:var(--surface);border:1px solid var(--line);touch-action:none;user-select:none;-webkit-user-select:none}
+.chr{cursor:grab}
+.chr.sel .hit{stroke:var(--gold);stroke-width:2.5}
+.chr.dragging{cursor:grabbing}
+.slot{fill:var(--slot);stroke:var(--slot-line);stroke-width:1.2}
+.slot.ok{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.5}
+.slot.bad{fill:var(--bad-soft);stroke:var(--bad);stroke-width:2.5}
+.slotnum{font-family:var(--body);font-size:15px;fill:var(--slot-ink);text-anchor:middle}
+.micro{cursor:pointer}
+.micro.counted ellipse{fill:var(--gold)}
+.tbl{border-collapse:collapse;width:100%;max-width:720px;font-size:16px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:15px;color:var(--muted)}
+.pill{display:inline-block;background:var(--gold-soft);border-radius:999px;padding:2px 10px;font-weight:600;color:var(--ink)}
+.copybox{width:100%;max-width:100%;min-height:160px;font-size:14px}
+@media (max-width:600px){body{font-size:16px} h2{font-size:24px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+<style>
+.seqrow{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:6px 0}
+.seqrow .end{font-weight:700;color:var(--gold);width:28px;text-align:center}
+.bt{width:30px;height:30px;line-height:30px;border-radius:6px;text-align:center;font-weight:700;color:#FFFFFF;font-size:15px;border:0;padding:0;font-family:inherit}
+.bA{background:#D9822B}.bT{background:#2F8F83}.bG{background:#3A6EA5}.bC{background:#C9A12E}
+button.bt{cursor:pointer}
+.bt.flag{outline:3px solid var(--bad);outline-offset:2px}
+.bt.good{outline:3px solid var(--ok);outline-offset:2px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:2px;text-transform:uppercase}
+.tubes{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-end;margin:10px 0}
+.tubes figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:14px;color:var(--muted)}
+.tubes svg{transition:opacity .6s}
+.grid6{display:grid;grid-template-columns:150px repeat(2,minmax(150px,1fr));gap:8px;align-items:center}
+.grid6 .hd{font-weight:700;color:var(--brand)}
+.pcrbox{display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+.meter{height:16px;border-radius:8px;background:var(--line);flex:1;min-width:200px;overflow:hidden}
+.meter > div{height:100%;background:var(--gold);width:0;transition:width .3s}
+.big{font-size:26px;font-weight:700;color:var(--brand)}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <h1>Lab Worksheet 6 · Copying DNA</h1>
+    <span class="who" id="who">710 114 Animal Genetics</span>
+  </div>
+  <nav class="steps" aria-label="Worksheet parts" id="steps"></nav>
+</header>
+<main>
+
+<section class="step" id="s-start" data-title="Start">
+  <h2>Before you begin <span class="th">· ก่อนเริ่ม</span></h2>
+  <p class="lead">Four simulations of DNA copying: the Meselson–Stahl experiment, a replication fork, proofreading and PCR. Answers are checked as you go and saved in this browser, so use the same device for the whole session.</p>
+  <div class="card">
+    <label class="field" for="f-name">Full name</label><input type="text" id="f-name" autocomplete="name">
+    <label class="field" for="f-id">Student ID</label><input type="text" id="f-id" inputmode="numeric">
+    <label class="field" for="f-group">Lab group</label><input type="text" id="f-group">
+  </div>
+  <table class="tbl" aria-label="Parts of this worksheet">
+    <tr><th>Part</th><th>What you do</th><th>Time</th></tr>
+    <tr><td>A</td><td>Virtual Meselson–Stahl experiment · การทดลองเสมือน</td><td>40 min</td></tr>
+    <tr><td>B</td><td>Build a replication fork · ส้อมจำลอง</td><td>45 min</td></tr>
+    <tr><td>C</td><td>Proofreading · การตรวจทาน</td><td>30 min</td></tr>
+    <tr><td>D</td><td>PCR simulator · จำลอง PCR</td><td>30 min</td></tr>
+    <tr><td>E</td><td>Explain · อธิบาย</td><td>20 min</td></tr>
+  </table>
+  <div class="row"><button class="btn" data-go="A">Start Part A</button></div>
+</section>
+
+<section class="step" id="s-A" data-title="A · Meselson–Stahl">
+  <h2>Part A · Virtual Meselson–Stahl experiment <span class="th">· ไนโตรเจนหนักและการปั่นเหวี่ยง</span></h2>
+  <p class="lead">E. coli grew for many generations on heavy nitrogen (¹⁵N), then moved to light nitrogen (¹⁴N). Predict the bands each model would give, then spin the tubes. Your predictions lock when you spin.</p>
+  <div class="card">
+    <h3 style="margin-top:0">A1 · Your predictions</h3>
+    <div class="grid6" id="A-pred"></div>
+    <div class="row"><button class="btn" id="A-spin">Spin the tubes</button><span class="score" id="A-predscore"></span></div>
+    <div class="fb" id="A-predfb"></div>
+    <div class="tubes" id="A-tubes" aria-live="polite"></div>
+  </div>
+  <div id="A-qs"></div>
+  <div class="row"><button class="btn" id="A-check">Check Part A</button><span class="score" id="A-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="B">Next: Part B</button></div>
+</section>
+
+<section class="step" id="s-B" data-title="B · Fork">
+  <h2>Part B · Build a replication fork <span class="th">· สร้างสายใหม่ที่ส้อมจำลอง</span></h2>
+  <p class="lead">This stretch of DNA is being opened from the left; the fork moves to the right.</p>
+  <div class="card">
+    <div class="seqrow" id="B-top"></div>
+    <div class="seqrow" id="B-bot"></div>
+    <p class="note" style="margin:6px 0 0">Fork moves →</p>
+  </div>
+  <div id="B-qs"></div>
+  <div class="row"><button class="btn" id="B-check">Check Part B</button><span class="score" id="B-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="C">Next: Part C</button></div>
+</section>
+
+<section class="step" id="s-C" data-title="C · Proofreading">
+  <h2>Part C · Proofreading <span class="th">· หาและแก้เบสที่ผิด</span></h2>
+  <p class="lead">A polymerase copied the template below but made exactly <b>three</b> mistakes. Your strand is different from your neighbour's.</p>
+  <div class="card">
+    <p class="note" style="margin:0">Template (3′ → 5′)</p><div class="seqrow" id="C-tpl"></div>
+    <p class="note" style="margin:8px 0 0">New strand (5′ → 3′): tap the bases you think are wrong</p><div class="seqrow" id="C-new"></div>
+    <p class="note" id="C-count"></p>
+  </div>
+  <div id="C-qs"></div>
+  <div class="row"><button class="btn" id="C-check">Check Part C</button><span class="score" id="C-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="D">Next: Part D</button></div>
+</section>
+
+<section class="step" id="s-D" data-title="D · PCR">
+  <h2>Part D · PCR simulator <span class="th">· จำลอง PCR</span></h2>
+  <p class="lead">Each cycle: denature (heat), anneal (primers bind), extend (Taq builds). Run cycles and watch the copies double.</p>
+  <div class="card">
+    <div class="pcrbox">
+      <label for="D-n0" style="font-weight:600">Starting copies</label><input type="text" id="D-n0" inputmode="numeric" style="max-width:120px" value="1">
+      <button class="btn ghost" id="D-one" type="button">Run 1 cycle</button>
+      <button class="btn ghost" id="D-ten" type="button">Run 10 cycles</button>
+      <button class="btn quiet" id="D-reset" type="button">Reset</button>
+    </div>
+    <p class="note" id="D-step" style="margin:10px 0 4px">Ready.</p>
+    <div class="pcrbox"><span class="big" id="D-cyc">Cycle 0</span><span class="big" id="D-copies">1 copy</span></div>
+    <div class="pcrbox" style="margin-top:8px"><span class="note">log scale up to 10¹²</span><div class="meter"><div id="D-meter"></div></div></div>
+  </div>
+  <div id="D-qs"></div>
+  <div class="row"><button class="btn" id="D-check">Check Part D</button><span class="score" id="D-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="E">Next: Part E</button></div>
+</section>
+
+<section class="step" id="s-E" data-title="E · Explain">
+  <h2>Part E · Explain <span class="th">· อธิบาย</span></h2>
+  <p class="lead">Write 2–4 sentences for each, in English or Thai.</p>
+  <div id="E-qs"></div>
+  <div class="row"><button class="btn" data-go="R">See my summary</button></div>
+</section>
+
+<section class="step" id="s-R" data-title="Summary">
+  <h2>Summary <span class="th">· สรุปผล</span></h2>
+  <p class="lead">Take a screenshot of this page, or copy the summary text, and submit it the way your instructor tells you.</p>
+  <div class="card" id="R-body"></div>
+  <div class="row"><button class="btn ghost" id="R-copy">Copy summary as text</button><button class="btn quiet" id="R-reset">Start over on this device</button></div>
+  <textarea class="copybox" id="R-text" readonly aria-label="Summary text" hidden></textarea>
+</section>
+
+</main>
+<script>
+(function(){
+"use strict";
+var KEY = "lw6-710114-v1";
+var state = load() || {v:1, step:"start", info:{name:"",id:"",group:""}, A:{pred:{}, spun:false}, B:{}, C:{}, D:{}, E:{}, checked:{}};
+function load(){ try{ var s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; }catch(e){ return null; } }
+var saveT = null;
+function save(){ clearTimeout(saveT); saveT = setTimeout(function(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }, 250); }
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function parseNum(s){ if (s == null) return NaN; s = String(s).trim().replace(/,/g, "").replace(/\s+/g, ""); var m = s.match(/^(-?\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/); if (m) return Number(m[1]) / Number(m[2]); return s === "" ? NaN : Number(s); }
+function close(a, b, tol){ return isFinite(a) && Math.abs(a - b) <= tol; }
+var PAIRS = {A:"T", T:"A", G:"C", C:"G"};
+function clean(s){ return String(s || "").toUpperCase().replace(/[^A-Z]/g, ""); }
+function comp(s){ return s.split("").map(function(b){ return PAIRS[b] || "?"; }).join(""); }
+function tiles(seq, l, r){ var h = '<span class="end">' + l + '</span>'; for (var i = 0; i < seq.length; i++) h += '<span class="bt b' + seq[i] + '">' + seq[i] + '</span>'; return h + '<span class="end">' + r + '</span>'; }
+
+/* ---------- navigation ---------- */
+var order = ["start","A","B","C","D","E","R"], stepsNav = $("steps");
+order.forEach(function(s){ var b = document.createElement("button"); b.type = "button"; b.dataset.step = s; b.textContent = $("s-"+s).dataset.title; b.addEventListener("click", function(){ go(s); }); stepsNav.appendChild(b); });
+function refreshNav(){ stepsNav.querySelectorAll("button").forEach(function(b){ if (b.dataset.step === state.step) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current"); b.classList.toggle("done", !!state.checked[b.dataset.step]); }); }
+function go(s){ state.step = s; save(); order.forEach(function(x){ $("s-"+x).classList.toggle("on", x === s); }); refreshNav(); if (s === "R") renderSummary(); try{ window.scrollTo(0,0); }catch(e){} }
+document.querySelectorAll("[data-go]").forEach(function(b){ b.addEventListener("click", function(){ go(b.dataset.go); }); });
+function confirmTap(btn, label, action){ var armed = false, t = null, orig = btn.textContent; btn.addEventListener("click", function(){ if (armed){ clearTimeout(t); armed = false; btn.textContent = orig; action(); return; } armed = true; btn.textContent = label; t = setTimeout(function(){ armed = false; btn.textContent = orig; }, 4000); }); }
+["name","id","group"].forEach(function(k){ var f = $("f-"+k); f.value = state.info[k] || ""; f.addEventListener("input", function(){ state.info[k] = f.value.trim(); updateWho(); save(); }); });
+function updateWho(){ var i = state.info; $("who").textContent = (i.name || "Name not entered") + (i.id ? ", " + i.id : ""); }
+updateWho();
+
+/* generic question builder: q = {k, t:'num'|'txt'|'mc', q, a, tol, o, why, hint} */
+function buildQs(part, host, list){
+  var h = "";
+  list.forEach(function(q, i){
+    h += "<div class='q'>";
+    if (q.t === "mc"){ h += "<p>" + (i+1) + ". " + q.q + "</p><div class='opts'>"; q.o.forEach(function(o, j){ h += "<label><input type='radio' name='" + part + "-" + q.k + "' value='" + j + "'> <span>" + o + "</span></label>"; }); h += "</div>"; }
+    else if (q.t === "sel"){ h += "<label class='field' for='" + part + "-" + q.k + "'>" + (i+1) + ". " + q.q + "</label><select id='" + part + "-" + q.k + "' style='max-width:340px'><option value=''>Choose…</option>" + q.o.map(function(o, j){ return "<option value='" + j + "'>" + o + "</option>"; }).join("") + "</select>"; }
+    else h += "<label class='field' for='" + part + "-" + q.k + "'>" + (i+1) + ". " + q.q + "</label><input type='text' id='" + part + "-" + q.k + "' " + (q.t === "txt" ? "class='mono' autocomplete='off' spellcheck='false'" : "inputmode='decimal' style='max-width:220px'") + ">";
+    h += "<div class='fb' id='fb-" + part + "-" + q.k + "'></div></div>";
+  });
+  $(host).innerHTML = h;
+  list.forEach(function(q){
+    if (q.t === "mc") document.querySelectorAll("input[name='" + part + "-" + q.k + "']").forEach(function(r){ if (String(state[part][q.k]) === r.value) r.checked = true; r.addEventListener("change", function(){ state[part][q.k] = Number(r.value); save(); }); });
+    else if (q.t === "sel"){ var s = $(part + "-" + q.k); if (state[part][q.k] != null) s.value = String(state[part][q.k]); s.addEventListener("change", function(){ state[part][q.k] = s.value === "" ? null : Number(s.value); save(); }); }
+    else { var e = $(part + "-" + q.k); e.value = state[part][q.k] || ""; e.addEventListener("input", function(){ state[part][q.k] = e.value; save(); }); }
+  });
+}
+function okQ(part, q){
+  var v = state[part][q.k];
+  var a = typeof q.a === "function" ? q.a() : q.a;
+  if (q.t === "mc" || q.t === "sel") return v === a;
+  if (q.t === "txt") return clean(v) === a;
+  var x = parseNum(v);
+  if (q.rel) return isFinite(x) && Math.abs(x - a) <= Math.abs(a) * q.rel;
+  return close(x, a, q.tol || 0);
+}
+function checkList(part, list, show){
+  var n = 0;
+  list.forEach(function(q){
+    var ok = okQ(part, q); if (ok) n++;
+    if (show){ var f = $("fb-" + part + "-" + q.k); f.className = "fb show " + (ok ? "ok" : "bad"); f.textContent = ok ? "Correct. " + (q.why || "") : "Not yet. " + (q.hint || "Check the lecture slides and try again."); }
+  });
+  return n;
+}
+
+/* ---------- PART A ---------- */
+var BANDS = ["one heavy band", "one hybrid band", "one light band", "heavy + light bands", "hybrid + light bands", "one band between hybrid and light"];
+var MODELS = [["con","Conservative"],["semi","Semi-conservative"],["dis","Dispersive"]];
+var KEYA = {con1:3, con2:3, semi1:1, semi2:4, dis1:1, dis2:5};
+(function(){
+  var h = "<div class='hd'>Model</div><div class='hd'>After 1 generation</div><div class='hd'>After 2 generations</div>";
+  MODELS.forEach(function(m){
+    h += "<div><b>" + m[1] + "</b></div>";
+    [1,2].forEach(function(g){ var id = m[0] + g; h += "<select id='A-p-" + id + "' aria-label='" + m[1] + ", generation " + g + "'><option value=''>Choose…</option>" + BANDS.map(function(b, j){ return "<option value='" + j + "'>" + b + "</option>"; }).join("") + "</select>"; });
+  });
+  $("A-pred").innerHTML = h;
+  Object.keys(KEYA).forEach(function(id){ var s = $("A-p-" + id); if (state.A.pred[id] != null) s.value = String(state.A.pred[id]); s.disabled = !!state.A.spun; s.addEventListener("change", function(){ state.A.pred[id] = s.value === "" ? null : Number(s.value); save(); }); });
+})();
+function tubeSVG(bands, label){
+  var pos = {light:0.42, hybrid:0.55, heavy:0.68}, h = '<svg width="70" height="178" viewBox="0 0 110 280" role="img" aria-label="' + label + '"><path d="M20 10 L 20 230 Q 20 268 55 268 Q 90 268 90 230 L 90 10" fill="#EEF4F1" stroke="#3B4A45" stroke-width="4"/><rect x="12" y="2" width="86" height="12" rx="4" fill="#3B4A45"/>';
+  bands.forEach(function(b){ var y = 14 + 254 * pos[b[0]]; h += '<rect x="24" y="' + (y - b[1] / 2).toFixed(1) + '" width="62" height="' + b[1] + '" rx="3" fill="#1E4D43"/>'; });
+  return h + '</svg>';
+}
+function drawTubes(){
+  if (!state.A.spun){ $("A-tubes").innerHTML = ""; return; }
+  var g = [["Gen 0", [["heavy",9]], "one heavy band"], ["Gen 1", [["hybrid",9]], "one hybrid band"], ["Gen 2", [["hybrid",7],["light",7]], "hybrid and light, equal"], ["Gen 3", [["hybrid",4],["light",10]], "hybrid and light, 1 : 3"]];
+  $("A-tubes").innerHTML = g.map(function(x){ return "<figure>" + tubeSVG(x[1], x[0] + ": " + x[2]) + "<figcaption><b>" + x[0] + "</b><br>" + x[2] + "</figcaption></figure>"; }).join("");
+}
+function predScore(show){
+  var n = 0;
+  Object.keys(KEYA).forEach(function(id){ var ok = state.A.pred[id] === KEYA[id]; if (ok) n++; if (show){ var s = $("A-p-" + id); s.classList.remove("ok","bad"); s.classList.add(ok ? "ok" : "bad"); } });
+  return n;
+}
+function showPred(){
+  if (!state.A.spun) return;
+  var n = predScore(true);
+  $("A-predscore").textContent = "Predictions correct: " + n + " / 6";
+  var f = $("A-predfb"); f.className = "fb show " + (n === 6 ? "ok" : "bad");
+  f.textContent = n === 6 ? "All six predictions were right." : "Compare your predictions with the lecture: conservative keeps whole old helices; dispersive mixes pieces, so it never gives two separate bands.";
+}
+$("A-spin").addEventListener("click", function(){
+  var filled = Object.keys(KEYA).every(function(id){ return state.A.pred[id] != null; });
+  if (!filled && !state.A.spun){ var f = $("A-predfb"); f.className = "fb show bad"; f.textContent = "Make all six predictions first."; return; }
+  state.A.spun = true; Object.keys(KEYA).forEach(function(id){ $("A-p-" + id).disabled = true; }); save(); drawTubes(); showPred();
+});
+drawTubes(); showPred();
+var AQ = [
+ {k:"a2", t:"mc", q:"Which model fits the tubes you just saw?", o:["Conservative","Semi-conservative","Dispersive"], a:1, why:"Hybrid at generation 1, then hybrid + light."},
+ {k:"a3", t:"num", q:"After which generation could conservative copying be ruled out?", a:1, tol:0, why:"Conservative would show heavy + light at generation 1; they saw one hybrid band."},
+ {k:"a4", t:"num", q:"After which generation could dispersive copying be ruled out?", a:2, tol:0, why:"Dispersive would show one band between hybrid and light at generation 2."},
+ {k:"a5", t:"num", q:"After 4 generations on ¹⁴N, what fraction of DNA molecules is hybrid? (decimal or fraction)", a:0.125, tol:0.002, why:"2 of 2⁴ = 16 molecules: 2/16 = 1/8.", hint:"After n generations there are 2ⁿ molecules and always 2 hybrids."},
+ {k:"a6", t:"num", q:"After 3 generations, what fraction is light?", a:0.75, tol:0.002, why:"6 of 8 molecules are light.", hint:"Light = total minus the 2 hybrids."}
+];
+buildQs("A", "A-qs", AQ);
+function checkA(show){ return checkList("A", AQ, show) + (state.A.spun ? predScore(false) : 0); }
+$("A-check").addEventListener("click", function(){ var n = checkA(true); showPred(); $("A-score").textContent = "Score: " + n + " / " + (AQ.length + 6) + (state.A.spun ? "" : " (spin the tubes to score your predictions)"); state.checked.A = true; save(); refreshNav(); });
+
+/* ---------- PART B ---------- */
+var TOP = "TACCGGATAGCA";            // written 3' -> 5', left to right
+var BOT = comp(TOP);                  // 5' -> 3', left to right
+$("B-top").innerHTML = '<span class="note" style="width:150px">top template</span>' + tiles(TOP, "3′", "5′");
+$("B-bot").innerHTML = '<span class="note" style="width:150px">bottom template</span>' + tiles(BOT, "5′", "3′");
+var STEPS = ["Ligase seals the gaps", "Primase lays an RNA primer", "Helicase unzips the helix", "DNA polymerase extends from the 3′ end", "SSB proteins hold the strands apart", "Primers are replaced with DNA"];
+var STEPKEY = [6, 3, 1, 4, 2, 5];
+var ENZ = ["Helicase","SSB proteins","Topoisomerase","Primase","DNA polymerase","Ligase"];
+var JOBS = [["Relieves twisting ahead of the fork", 2], ["Joins Okazaki fragments", 5], ["Makes RNA primers", 3], ["Breaks hydrogen bonds between bases", 0], ["Adds nucleotides and proofreads", 4], ["Keeps single strands from re-pairing", 1]];
+var BQ = [
+ {k:"b1", t:"mc", q:"The fork moves to the right. Which template gives the <b>leading</b> strand?", o:["Top template (3′ → 5′ left to right)","Bottom template (5′ → 3′ left to right)"], a:0, why:"Its new strand grows 5′ → 3′ to the right, the same way the fork moves.", hint:"A new strand grows 5′ → 3′ and runs opposite to its template."},
+ {k:"b2", t:"txt", q:"Type the new strand made on the <b>top</b> template, left to right (it runs 5′ → 3′).", a:BOT, why:"It matches the bottom template base for base.", hint:"Pair each base: A↔T, G↔C."},
+ {k:"b3", t:"txt", q:"Type the new strand made on the <b>bottom</b> template, written 5′ → 3′.", a:comp(BOT).split("").reverse().join(""), why:"Pair each base, then write it from its 5′ end (right) to its 3′ end (left).", hint:"Pair the bases first, then reverse the order so it reads 5′ → 3′."},
+ {k:"b4", t:"num", q:"A 1,800-nt stretch of lagging strand is made in fragments of 150 nt. How many RNA primers does it need?", a:12, tol:0, why:"1,800 ÷ 150 = 12 fragments, one primer each.", hint:"One primer per Okazaki fragment."}
+];
+STEPS.forEach(function(s, i){ BQ.push({k:"s" + i, t:"sel", q:"Order of events: <b>" + s + "</b> happens at step…", o:["1","2","3","4","5","6"], a:STEPKEY[i] - 1, why:"", hint:"Open, prime, extend, finish."}); });
+JOBS.forEach(function(j, i){ BQ.push({k:"e" + i, t:"sel", q:"Which enzyme: <b>" + j[0] + "</b>?", o:ENZ, a:j[1], why:"", hint:"Check the enzyme table on the Class 6 slides."}); });
+buildQs("B", "B-qs", BQ);
+function checkB(show){ return checkList("B", BQ, show); }
+$("B-check").addEventListener("click", function(){ var n = checkB(true); $("B-score").textContent = "Score: " + n + " / " + BQ.length; state.checked.B = true; save(); refreshNav(); });
+
+/* ---------- PART C ---------- */
+function rnd(){ return Math.random(); }
+if (!state.C.tpl){
+  var L = 24, tpl = "", i;
+  for (i = 0; i < L; i++) tpl += "ACGT"[Math.floor(rnd() * 4)];
+  var good = comp(tpl), bad = good.split(""), pos = [];
+  while (pos.length < 3){ var p = 2 + Math.floor(rnd() * (L - 4)); if (pos.indexOf(p) < 0 && pos.every(function(q){ return Math.abs(q - p) > 1; })) pos.push(p); }
+  pos.forEach(function(p){ var wrong = "ACGT".replace(good[p], "").replace(PAIRS[good[p]], ""); bad[p] = wrong[Math.floor(rnd() * wrong.length)]; });
+  state.C.tpl = tpl; state.C.newS = bad.join(""); state.C.errs = pos.sort(function(a, b){ return a - b; }); state.C.flags = []; save();
+}
+$("C-tpl").innerHTML = tiles(state.C.tpl, "3′", "5′");
+function drawNew(show){
+  var h = '<span class="end">5′</span>';
+  for (var i = 0; i < state.C.newS.length; i++){
+    var b = state.C.newS[i], fl = state.C.flags.indexOf(i) >= 0;
+    var cls = "bt b" + b + (fl ? " flag" : "") + (show && state.C.errs.indexOf(i) >= 0 && fl ? " good" : "");
+    h += '<button type="button" class="' + cls + '" data-i="' + i + '" aria-pressed="' + fl + '" aria-label="position ' + (i + 1) + ', ' + b + '">' + b + '</button>';
+  }
+  $("C-new").innerHTML = h + '<span class="end">3′</span>';
+  $("C-count").textContent = "Flagged: " + state.C.flags.length + " of 3";
+  $("C-new").querySelectorAll("button").forEach(function(btn){ btn.addEventListener("click", function(){ var i = Number(btn.dataset.i), k = state.C.flags.indexOf(i); if (k >= 0) state.C.flags.splice(k, 1); else state.C.flags.push(i); save(); drawNew(false); }); });
+}
+drawNew(false);
+var CQ = [
+ {k:"c2", t:"txt", q:"Type the <b>corrected</b> new strand (5′ → 3′, all 24 bases).", a:function(){ return comp(state.C.tpl); }, why:"Every base now pairs with the template.", hint:"Fix only the three wrong bases; keep the rest."},
+ {k:"c3", t:"mc", q:"During copying, which activity removes a wrong base straight away?", o:["Ligase","The polymerase's 3′ → 5′ exonuclease (proofreading)","Primase","Helicase"], a:1, why:"The polymerase backs up and cuts out its own mistake."},
+ {k:"c4", t:"mc", q:"Mismatch repair corrects which strand?", o:["The old (template) strand","The new strand","Whichever strand is shorter","Both strands"], a:1, why:"The old strand holds the correct information."},
+ {k:"c5", t:"mc", q:"How does E. coli tell the new strand from the old one?", o:["The new strand is longer","The old strand carries methyl tags; the new strand does not yet","The new strand is made of RNA","The old strand is heavier"], a:1, why:"Methylation marks the old strand for a short time after copying."},
+ {k:"c6", t:"num", q:"At 1 error per 10⁹ bp, about how many new errors does one cattle cell division make? (5.4 × 10⁹ bp copied)", a:5.4, tol:0.6, why:"5.4 × 10⁹ × 10⁻⁹ ≈ 5.", hint:"Multiply base pairs copied by the error rate."}
+];
+buildQs("C", "C-qs", CQ);
+function flagScore(){ var hit = state.C.flags.filter(function(i){ return state.C.errs.indexOf(i) >= 0; }).length; var falseF = state.C.flags.length - hit; return Math.max(0, hit - falseF); }
+function checkC(show){
+  var n = flagScore() + checkList("C", CQ, show);
+  if (show){ drawNew(true); }
+  return n;
+}
+$("C-check").addEventListener("click", function(){
+  var n = checkC(true), hit = flagScore();
+  $("C-count").textContent = "Mistakes found: " + hit + " of 3" + (state.C.flags.length > 3 ? " (wrong flags cancel right ones)" : "") + (hit === 3 ? ". Well done." : ". Compare each base with its template partner.");
+  $("C-score").textContent = "Score: " + n + " / " + (3 + CQ.length); state.checked.C = true; save(); refreshNav();
+});
+
+/* ---------- PART D ---------- */
+var cyc = 0, timer = null;
+var STEP_TXT = ["Denature at 95 °C: strands separate", "Anneal at 55 °C: primers bind", "Extend at 72 °C: Taq builds new strands"];
+function n0(){ var x = parseInt($("D-n0").value, 10); return isFinite(x) && x > 0 ? x : 1; }
+function drawPCR(){
+  var c = n0() * Math.pow(2, cyc);
+  $("D-cyc").textContent = "Cycle " + cyc;
+  $("D-copies").textContent = (c >= 1e6 ? c.toExponential(2).replace("e+", " × 10^") : c.toLocaleString()) + (c === 1 ? " copy" : " copies");
+  $("D-meter").style.width = Math.min(100, Math.log10(c) / 12 * 100) + "%";
+}
+function runCycles(k){
+  if (timer) return; var left = k, phase = 0;
+  timer = setInterval(function(){
+    $("D-step").textContent = STEP_TXT[phase];
+    phase++;
+    if (phase === 3){ phase = 0; cyc++; left--; drawPCR(); if (left === 0){ clearInterval(timer); timer = null; $("D-step").textContent = "Done: " + cyc + " cycles."; } }
+  }, k > 1 ? 70 : 350);
+}
+$("D-one").addEventListener("click", function(){ runCycles(1); });
+$("D-ten").addEventListener("click", function(){ runCycles(10); });
+$("D-reset").addEventListener("click", function(){ if (timer){ clearInterval(timer); timer = null; } cyc = 0; $("D-step").textContent = "Ready."; drawPCR(); });
+$("D-n0").addEventListener("input", drawPCR);
+drawPCR();
+var TEMPS = ["37 °C", "55 °C", "72 °C", "95 °C"];
+var DQ = [
+ {k:"d1", t:"num", q:"Starting with 10 copies, how many copies after 25 cycles? (full number or e-notation, e.g. 3.4e8)", a:10 * Math.pow(2, 25), rel:0.01, why:"10 × 2²⁵ = 335,544,320.", hint:"copies = N₀ × 2ⁿ."},
+ {k:"d2", t:"num", q:"Starting with 1 copy, what is the fewest cycles to reach at least 1,000,000 copies?", a:20, tol:0, why:"2²⁰ = 1,048,576; 2¹⁹ is only 524,288.", hint:"Use the simulator, or 2¹⁰ ≈ 1,000."},
+ {k:"d3", t:"sel", q:"Temperature for <b>denaturation</b>:", o:TEMPS, a:3, why:"Heat separates the strands."},
+ {k:"d4", t:"sel", q:"Temperature for <b>annealing</b>:", o:TEMPS, a:1, why:"Cool enough for primers to bind."},
+ {k:"d5", t:"sel", q:"Temperature for <b>extension</b>:", o:TEMPS, a:2, why:"Taq works best near 72 °C."},
+ {k:"d6", t:"mc", q:"In PCR, what does the job of helicase?", o:["Primers","Heat","Ligase","Magnesium ions"], a:1, why:"High temperature breaks the hydrogen bonds."},
+ {k:"d7", t:"mc", q:"Why is Taq polymerase used instead of a cow's DNA polymerase?", o:["It works without primers","It survives 95 °C heating every cycle","It copies RNA","It is cheaper to buy"], a:1, why:"It comes from a hot-spring bacterium, Thermus aquaticus."}
+];
+buildQs("D", "D-qs", DQ);
+function checkD(show){ return checkList("D", DQ, show); }
+$("D-check").addEventListener("click", function(){ var n = checkD(true); $("D-score").textContent = "Score: " + n + " / " + DQ.length; state.checked.D = true; save(); refreshNav(); });
+
+/* ---------- PART E ---------- */
+var EQ = [
+ {k:"e1", q:"Explain why the lagging strand has to be made in pieces. Use the words antiparallel and 5′ → 3′."},
+ {k:"e2", q:"Give two ways PCR is like replication in a cell, and two ways it is different."}
+];
+(function(){
+  var host = $("E-qs");
+  EQ.forEach(function(q, i){ var d = document.createElement("div"); d.className = "q";
+    d.innerHTML = "<label class='field' for='E-" + q.k + "'>" + (i+1) + ". " + q.q + "</label><textarea id='E-" + q.k + "'></textarea>"; host.appendChild(d);
+    var t = d.querySelector("textarea"); t.value = state.E[q.k] || ""; t.addEventListener("input", function(){ state.E[q.k] = t.value; state.checked.E = true; save(); }); });
+})();
+
+/* ---------- SUMMARY ---------- */
+function renderSummary(){
+  var i = state.info;
+  var rows = [["Name", esc(i.name || "(not entered)")], ["Student ID", esc(i.id || "(not entered)")], ["Lab group", esc(i.group || "(not entered)")],
+    ["Part A · Meselson–Stahl", checkA(false) + " / " + (AQ.length + 6) + (state.A.spun ? "" : " (tubes not spun)")],
+    ["Part B · replication fork", checkB(false) + " / " + BQ.length],
+    ["Part C · proofreading", checkC(false) + " / " + (3 + CQ.length)],
+    ["Part D · PCR", checkD(false) + " / " + DQ.length]];
+  var h = "<table class='tbl'>" + rows.map(function(r){ return "<tr><th style='width:34%'>" + r[0] + "</th><td>" + r[1] + "</td></tr>"; }).join("") + "</table><h3>Part E · written answers</h3>";
+  EQ.forEach(function(q, n){ h += "<p><b>" + (n+1) + ".</b> " + esc(q.q) + "<br>" + esc(state.E[q.k] || "(no answer)").replace(/\n/g, "<br>") + "</p>"; });
+  h += "<p class='note'>Created " + new Date().toLocaleString() + "</p>";
+  $("R-body").innerHTML = h;
+  var txt = rows.map(function(r){ return r[0] + ": " + r[1].replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,"\""); }).join("\n");
+  EQ.forEach(function(q, n){ txt += "\n\nE" + (n+1) + ". " + q.q + "\n" + (state.E[q.k] || "(no answer)"); });
+  $("R-text").value = txt;
+}
+$("R-copy").addEventListener("click", function(){ var t = $("R-text"), done = function(){ $("R-copy").textContent = "Copied"; setTimeout(function(){ $("R-copy").textContent = "Copy summary as text"; }, 1800); };
+  try{ if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t.value).then(done, function(){ t.hidden = false; t.select(); }); } else { t.hidden = false; t.select(); } }catch(e){ t.hidden = false; t.select(); } });
+confirmTap($("R-reset"), "Tap again to erase everything", function(){ try{ localStorage.removeItem(KEY); }catch(e){} location.reload(); });
+
+go(order.indexOf(state.step) >= 0 ? state.step : "start");
+})();
+</script>
+</body>
+</html>

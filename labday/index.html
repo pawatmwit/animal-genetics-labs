@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lab Day Record Sheet: Sexing chicks by DNA · 710 114 Animal Genetics</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Lora:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F6F4EA; --surface:#FFFDF6; --ink:#1E2B27; --muted:#52615B; --line:#DCD5C1;
+  --brand:#2F6F5E; --brand-ink:#FFFFFF; --brand-soft:#E3EEE8; --gold:#B8862A; --gold-soft:#F3E4BE;
+  --ok:#2F7D4F; --ok-soft:#DDEFE3; --bad:#A23B2A; --bad-soft:#F6DEDA;
+  --scope:#13211D; --scope-ring:#2C3F38; --slot:#EEF2EC; --slot-line:#B9CBBF; --slot-ink:#4C5F57;
+  --chr:#DCD3E6; --band:#3E3054; --chr-line:#8D82A2;
+  --head:'Lora','Noto Serif Thai',Georgia,serif; --body:'IBM Plex Sans Thai',system-ui,Arial,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111916; --surface:#18221E; --ink:#E8EEEA; --muted:#A6B3AD; --line:#2D3A35;
+    --brand:#62B39B; --brand-ink:#0D1613; --brand-soft:#1E2E28; --gold:#E0B456; --gold-soft:#3A3120;
+    --ok:#6CC08E; --ok-soft:#173225; --bad:#E58470; --bad-soft:#3A1E19;
+    --scope:#0A110F; --scope-ring:#22312B; --slot:#1D2925; --slot-line:#3B5047; --slot-ink:#A6B3AD;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111916; --surface:#18221E; --ink:#E8EEEA; --muted:#A6B3AD; --line:#2D3A35;
+  --brand:#62B39B; --brand-ink:#0D1613; --brand-soft:#1E2E28; --gold:#E0B456; --gold-soft:#3A3120;
+  --ok:#6CC08E; --ok-soft:#173225; --bad:#E58470; --bad-soft:#3A1E19;
+  --scope:#0A110F; --scope-ring:#22312B; --slot:#1D2925; --slot-line:#3B5047; --slot-ink:#A6B3AD;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 120px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar{max-width:1080px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px}
+.bar h1{font-family:var(--head);font-weight:600;font-size:20px;margin:0;flex:1 1 280px}
+.who{font-size:14px;color:var(--muted)}
+nav.steps{max-width:1080px;margin:0 auto;padding:0 20px 12px;display:flex;gap:6px;overflow-x:auto}
+nav.steps button{flex:none;font:inherit;font-size:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+nav.steps button[aria-current="step"]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+nav.steps button.done::after{content:" ✓";color:var(--ok)}
+nav.steps button[aria-current="step"].done::after{color:var(--brand-ink)}
+main{max-width:1080px;margin:0 auto;padding:24px 20px 80px}
+section.step{display:none}
+section.step.on{display:block}
+h2{font-family:var(--head);font-weight:600;font-size:28px;line-height:1.2;margin:0 0 6px}
+h3{font-size:19px;margin:28px 0 8px}
+.th{color:var(--gold)}
+p.lead{max-width:72ch;color:var(--muted);margin:0 0 18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
+label.field{display:block;font-weight:600;margin:12px 0 4px}
+input[type=text],input[type=number],select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;max-width:420px}
+textarea{max-width:100%;min-height:84px;resize:vertical}
+.q{margin:16px 0}
+.q p{margin:0 0 6px;font-weight:600}
+.opts label{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;border-radius:8px;cursor:pointer}
+.opts label:hover{background:var(--brand-soft)}
+.opts input{margin-top:5px}
+.fb{font-size:15px;margin-top:4px;padding:6px 10px;border-radius:8px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-soft);color:var(--ink)} .fb.bad{background:var(--bad-soft);color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:16px 0}
+button.btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:10px 18px;cursor:pointer;background:var(--brand);color:var(--brand-ink)}
+button.btn.ghost{background:transparent;color:var(--brand);border:1px solid var(--brand)}
+button.btn.quiet{background:transparent;color:var(--muted);border:1px solid var(--line)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.score{font-weight:700}
+.note{font-size:15px;color:var(--muted)}
+.ws{width:100%;height:auto;display:block;border-radius:14px;background:var(--surface);border:1px solid var(--line);touch-action:none;user-select:none;-webkit-user-select:none}
+.chr{cursor:grab}
+.chr.sel .hit{stroke:var(--gold);stroke-width:2.5}
+.chr.dragging{cursor:grabbing}
+.slot{fill:var(--slot);stroke:var(--slot-line);stroke-width:1.2}
+.slot.ok{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.5}
+.slot.bad{fill:var(--bad-soft);stroke:var(--bad);stroke-width:2.5}
+.slotnum{font-family:var(--body);font-size:15px;fill:var(--slot-ink);text-anchor:middle}
+.micro{cursor:pointer}
+.micro.counted ellipse{fill:var(--gold)}
+.tbl{border-collapse:collapse;width:100%;max-width:720px;font-size:16px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:15px;color:var(--muted)}
+.pill{display:inline-block;background:var(--gold-soft);border-radius:999px;padding:2px 10px;font-weight:600;color:var(--ink)}
+.copybox{width:100%;max-width:100%;min-height:160px;font-size:14px}
+@media (max-width:600px){body{font-size:16px} h2{font-size:24px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+
+<style>
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.chk{display:flex;gap:10px;align-items:flex-start;margin:6px 0}
+.chk input{margin-top:5px;width:20px;height:20px;flex:none}
+.ptab{border-collapse:collapse;width:100%;max-width:760px}
+.ptab td,.ptab th{border:1px solid var(--line);padding:6px;text-align:center}
+.ptab input{max-width:110px;text-align:center}
+.timer{font-size:34px;font-weight:700;color:var(--brand);font-family:ui-monospace,Menlo,Consolas,monospace}
+.wells{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.well{min-width:54px;padding:6px 4px;border-radius:8px;background:#22302C;color:#FFF3C8;text-align:center;font-weight:700;font-size:14px}
+.well.ctl{background:#2F5A70}.well.lad{background:#7C5A12}
+.res{display:grid;grid-template-columns:120px 150px 170px 1fr;gap:8px;align-items:center;margin:4px 0}
+.res .hd{font-weight:700;color:var(--brand)}
+.valid{font-weight:700;padding:8px 12px;border-radius:10px;display:inline-block}
+.valid.ok{background:#DDEFE6;color:#1E6B4A}.valid.bad{background:#F6DDD9;color:#9E3F2B}
+@media (max-width:640px){.res{grid-template-columns:90px 1fr;}.res .opt{grid-column:2}}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <h1>Lab Day · Sexing chicks by DNA</h1>
+    <span class="who" id="who">710 114 Animal Genetics</span>
+  </div>
+  <nav class="steps" aria-label="Lab day steps" id="steps"></nav>
+</header>
+<main>
+
+<section class="step" id="s-start" data-title="Start">
+  <h2>Before you begin <span class="th">· ก่อนเริ่ม</span></h2>
+  <p class="lead">Your record for today's CHD1 test: feather DNA (HotSHOT), PCR with primers 2550F/2718R, and a gel. Fill it in as you go; it saves in this browser, so keep using the same device.</p>
+  <div class="card">
+    <label class="field" for="f-name">Full name(s) of your group</label><input type="text" id="f-name">
+    <label class="field" for="f-id">Student ID(s)</label><input type="text" id="f-id">
+    <label class="field" for="f-group">Bench / group number</label><input type="text" id="f-group">
+    <label class="field" for="f-round">Round (time slot)</label><input type="text" id="f-round">
+  </div>
+  <div class="card"><h3 style="margin-top:0">Safety check · ความปลอดภัย</h3><div id="safety"></div></div>
+  <div class="row"><button class="btn" data-go="A">Start: sample log</button></div>
+</section>
+
+<section class="step" id="s-A" data-title="A · Samples">
+  <h2>Part A · Sample log <span class="th">· บันทึกตัวอย่าง</span></h2>
+  <div class="card">
+    <label class="field" for="A-n">How many chicks does your group test?</label>
+    <input type="text" id="A-n" inputmode="numeric" style="max-width:120px">
+    <p class="note">Up to 22 chicks (two gels). Controls are added automatically: H+ known hen DNA, C+ known cock DNA, W water.</p>
+    <table class="ptab"><thead><tr><th>Tube</th><th>Chick ID / band number</th><th>Feather received</th></tr></thead><tbody id="A-tab"></tbody></table>
+  </div>
+  <div class="row"><button class="btn ghost" data-go="B">Next: extraction</button></div>
+</section>
+
+<section class="step" id="s-B" data-title="B · Extract">
+  <h2>Part B · DNA extraction (HotSHOT) <span class="th">· สกัดดีเอ็นเอ</span></h2>
+  <p class="lead">Follow the volumes in your instructor's protocol; the values below are the usual HotSHOT ones.</p>
+  <div class="card" id="B-steps"></div>
+  <div class="card">
+    <h3 style="margin-top:0">Heating timer</h3>
+    <p class="note" style="margin:0 0 6px">Start when the tubes go into the 95 °C block.</p>
+    <div class="row" style="align-items:center"><span class="timer" id="B-timer">30:00</span>
+      <button class="btn ghost" id="B-start" type="button">Start 30 min</button><button class="btn quiet" id="B-reset" type="button">Reset</button></div>
+  </div>
+  <div class="row"><button class="btn ghost" data-go="C">Next: PCR set-up</button></div>
+</section>
+
+<section class="step" id="s-C" data-title="C · PCR">
+  <h2>Part C · PCR set-up <span class="th">· เตรียม PCR</span></h2>
+  <div class="card">
+    <h3 style="margin-top:0">Your master mix</h3>
+    <p class="note" style="margin:0 0 8px">One 25 µL reaction per tube. Make 10% extra. Work out each total yourself, then check.</p>
+    <p id="C-nline" style="font-weight:600"></p>
+    <table class="ptab"><thead><tr><th>Reagent</th><th>Per reaction (µL)</th><th>Your total (µL)</th><th></th></tr></thead><tbody id="C-tab"></tbody></table>
+    <div class="row"><button class="btn ghost" id="C-check" type="button">Check my totals</button><span class="score" id="C-score"></span></div>
+    <p class="note">Then: put 23 µL of master mix in each PCR tube, add 2 µL of DNA (water for W), close, spin briefly, load the cycler.</p>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Tubes loaded</h3>
+    <div id="C-tubes"></div>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Cycler program (touchdown)</h3>
+    <table class="ptab"><tr><th>Step</th><th>Temperature</th><th>Time</th><th>Cycles</th></tr>
+      <tr><td>Start</td><td>94 °C</td><td>2 min</td><td>1</td></tr>
+      <tr><td>Touchdown</td><td>94 °C / 60 → 51 °C (−1 °C per cycle) / 72 °C</td><td>30 s / 30 s / 40 s</td><td>10</td></tr>
+      <tr><td>Main</td><td>94 °C / 50 °C / 72 °C</td><td>30 s / 30 s / 40 s</td><td>30</td></tr>
+      <tr><td>Final</td><td>72 °C, then hold 4 °C</td><td>5 min</td><td>1</td></tr></table>
+    <p class="note">Use the program in your instructor's protocol if it differs.</p>
+  </div>
+  <div class="row"><button class="btn ghost" data-go="D">Next: gel</button></div>
+</section>
+
+<section class="step" id="s-D" data-title="D · Gel">
+  <h2>Part D · Gel <span class="th">· รันเจล</span></h2>
+  <div class="card">
+    <h3 style="margin-top:0">Loading plan</h3>
+    <p class="note" style="margin:0 0 6px">15 wells per gel. Each gel carries the ladder and all three controls.</p>
+    <div id="D-plan"></div>
+  </div>
+  <div class="card" id="D-steps"></div>
+  <div class="row"><button class="btn ghost" data-go="E">Next: results</button></div>
+</section>
+
+<section class="step" id="s-E" data-title="E · Results">
+  <h2>Part E · Read the gel <span class="th">· อ่านผล</span></h2>
+  <p class="lead">For each lane, count the bands you see. Then make your call for each chick.</p>
+  <div class="card">
+    <div class="res"><span class="hd">Lane</span><span class="hd">Bands seen</span><span class="hd">Your call</span><span class="hd opt">Note</span></div>
+    <div id="E-rows"></div>
+  </div>
+  <div class="card"><div id="E-valid"></div><div id="E-counts" style="margin-top:8px"></div></div>
+  <div class="row"><button class="btn" id="E-check" type="button">Check my calls</button><span class="score" id="E-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="F">Next: reflect</button></div>
+</section>
+
+<section class="step" id="s-F" data-title="F · Reflect">
+  <h2>Part F · Reflect <span class="th">· สะท้อนผล</span></h2>
+  <div id="F-qs"></div>
+  <div class="row"><button class="btn" data-go="R">See my record</button></div>
+</section>
+
+<section class="step" id="s-R" data-title="Record">
+  <h2>Lab record <span class="th">· สรุปบันทึก</span></h2>
+  <p class="lead">Take a screenshot or copy the text, and submit it with a photo of your gel the way your instructor tells you.</p>
+  <div class="card" id="R-body"></div>
+  <div class="row"><button class="btn ghost" id="R-copy">Copy record as text</button><button class="btn quiet" id="R-reset">Start over on this device</button></div>
+  <textarea class="copybox" id="R-text" readonly aria-label="Record text" hidden></textarea>
+</section>
+
+</main>
+<script>
+(function(){
+"use strict";
+var KEY = "labday-710114-v1";
+var state = load() || {v:1, step:"start", info:{}, safety:{}, A:{n:"", ids:{}, got:{}}, B:{done:{}}, C:{tot:{}, tubes:{}}, D:{done:{}}, E:{bands:{}, call:{}}, F:{}, checked:{}};
+function load(){ try{ var s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; }catch(e){ return null; } }
+var saveT = null;
+function save(){ clearTimeout(saveT); saveT = setTimeout(function(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }, 250); }
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function parseNum(s){ if (s == null) return NaN; s = String(s).trim().replace(/,/g, ""); return s === "" ? NaN : Number(s); }
+
+/* ---------- navigation ---------- */
+var order = ["start","A","B","C","D","E","F","R"], stepsNav = $("steps");
+order.forEach(function(s){ var b = document.createElement("button"); b.type = "button"; b.dataset.step = s; b.textContent = $("s-"+s).dataset.title; b.addEventListener("click", function(){ go(s); }); stepsNav.appendChild(b); });
+function refreshNav(){ stepsNav.querySelectorAll("button").forEach(function(b){ if (b.dataset.step === state.step) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current"); b.classList.toggle("done", !!state.checked[b.dataset.step]); }); }
+function go(s){ state.step = s; save(); order.forEach(function(x){ $("s-"+x).classList.toggle("on", x === s); }); refreshNav();
+  if (s === "A") drawA(); if (s === "C") drawC(); if (s === "D") drawD(); if (s === "E") drawE(); if (s === "R") renderRecord(); try{ window.scrollTo(0,0); }catch(e){} }
+document.querySelectorAll("[data-go]").forEach(function(b){ b.addEventListener("click", function(){ go(b.dataset.go); }); });
+function confirmTap(btn, label, action){ var armed = false, t = null, orig = btn.textContent; btn.addEventListener("click", function(){ if (armed){ clearTimeout(t); armed = false; btn.textContent = orig; action(); return; } armed = true; btn.textContent = label; t = setTimeout(function(){ armed = false; btn.textContent = orig; }, 4000); }); }
+["name","id","group","round"].forEach(function(k){ var f = $("f-"+k); f.value = state.info[k] || ""; f.addEventListener("input", function(){ state.info[k] = f.value.trim(); updateWho(); save(); }); });
+function updateWho(){ var i = state.info; $("who").textContent = (i.group ? "Group " + i.group + " · " : "") + (i.name || "Names not entered"); }
+updateWho();
+
+function checklist(host, store, items, mark){
+  $(host).innerHTML = items.map(function(t, i){ return "<label class='chk'><input type='checkbox' data-i='" + i + "'" + (store[i] ? " checked" : "") + "><span>" + t + "</span></label>"; }).join("");
+  $(host).querySelectorAll("input").forEach(function(c){ c.addEventListener("change", function(){ store[c.dataset.i] = c.checked; if (mark) state.checked[mark] = items.every(function(_, j){ return store[j]; }); save(); refreshNav(); }); });
+}
+checklist("safety", state.safety, ["Lab coat on and closed shoes", "Gloves on; long hair tied back", "I know where the eyewash and the first-aid kit are", "I have read the instructor's protocol for today"], "start");
+
+/* ---------- samples ---------- */
+function nChicks(){ var n = parseInt(state.A.n, 10); return isFinite(n) && n > 0 ? Math.min(n, 22) : 0; }
+function lanes(){ var L = []; for (var i = 1; i <= nChicks(); i++) L.push({k:"S" + i, label:(state.A.ids[i] || "Chick " + i), ctl:false}); return L; }
+$("A-n").value = state.A.n || ""; $("A-n").addEventListener("input", function(){ state.A.n = $("A-n").value; save(); drawA(); });
+function drawA(){
+  var n = nChicks(), h = "";
+  for (var i = 1; i <= n; i++) h += "<tr><td>" + i + "</td><td><input type='text' data-k='" + i + "' class='aid' value='" + esc(state.A.ids[i] || "") + "' placeholder='e.g. band 101' style='max-width:220px'></td><td><input type='checkbox' data-g='" + i + "'" + (state.A.got[i] ? " checked" : "") + "></td></tr>";
+  h += "<tr><td>H+</td><td>known hen DNA (from instructor)</td><td>–</td></tr><tr><td>C+</td><td>known cock DNA (from instructor)</td><td>–</td></tr><tr><td>W</td><td>water, no DNA</td><td>–</td></tr>";
+  $("A-tab").innerHTML = h;
+  $("A-tab").querySelectorAll("input.aid").forEach(function(e){ e.addEventListener("input", function(){ state.A.ids[e.dataset.k] = e.value; save(); }); });
+  $("A-tab").querySelectorAll("input[data-g]").forEach(function(e){ e.addEventListener("change", function(){ state.A.got[e.dataset.g] = e.checked; state.checked.A = n > 0 && lanes().every(function(_, j){ return state.A.got[j + 1]; }); save(); refreshNav(); }); });
+}
+
+/* ---------- extraction ---------- */
+checklist("B-steps", state.B.done, [
+  "Cut 2–5 mm of the feather base (the quill with pulp) into a labelled 1.5 mL tube, one tube per chick.",
+  "Add 75 µL alkaline lysis reagent (25 mM NaOH, 0.2 mM EDTA). The feather tip must be under the liquid.",
+  "Close tubes and heat at 95 °C for 30 min (use the timer).",
+  "Cool for 2–3 min, then add 75 µL neutralising reagent (40 mM Tris-HCl, pH 5.5) and mix.",
+  "Spin briefly. Use 2 µL of the liquid as PCR template; keep the rest on ice."], "B");
+var tmr = null, left = 1800;
+function showT(){ var m = Math.floor(left / 60), s = left % 60; $("B-timer").textContent = (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s; }
+$("B-start").addEventListener("click", function(){ if (tmr) return; tmr = setInterval(function(){ left--; showT(); if (left <= 0){ clearInterval(tmr); tmr = null; $("B-timer").textContent = "Done: take tubes out"; } }, 1000); });
+$("B-reset").addEventListener("click", function(){ if (tmr){ clearInterval(tmr); tmr = null; } left = 1800; showT(); });
+showT();
+
+/* ---------- PCR ---------- */
+var REAG = [["2× PCR master mix", 12.5], ["Primer 2550F (10 µM)", 1.0], ["Primer 2718R (10 µM)", 1.0], ["Nuclease-free water", 8.5]];
+function nRx(){ return nChicks() + 3; }
+function want(i){ return Math.round(REAG[i][1] * nRx() * 1.1 * 10) / 10; }
+function drawC(){
+  $("C-nline").textContent = "Reactions: " + nChicks() + " chicks + 3 controls = " + nRx() + " (make " + (nRx() * 1.1).toFixed(1) + " reactions' worth).";
+  $("C-tab").innerHTML = REAG.map(function(r, i){ return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td><td><input type='text' inputmode='decimal' id='C-t" + i + "' value='" + esc(state.C.tot[i] || "") + "'></td><td id='C-m" + i + "'></td></tr>"; }).join("")
+    + "<tr><td>DNA (added to each tube separately)</td><td>2.0</td><td>–</td><td></td></tr>";
+  REAG.forEach(function(_, i){ var e = $("C-t" + i); e.addEventListener("input", function(){ state.C.tot[i] = e.value; save(); }); });
+  var L = lanes().map(function(l){ return l.label; }).concat(["H+", "C+", "W"]);
+  $("C-tubes").innerHTML = L.map(function(l, i){ return "<label class='chk'><input type='checkbox' data-t='" + i + "'" + (state.C.tubes[i] ? " checked" : "") + "><span>" + esc(l) + ": 23 µL mix + 2 µL " + (l === "W" ? "water" : "DNA") + "</span></label>"; }).join("");
+  $("C-tubes").querySelectorAll("input").forEach(function(c){ c.addEventListener("change", function(){ state.C.tubes[c.dataset.t] = c.checked; save(); }); });
+}
+function checkC(show){
+  var n = 0;
+  REAG.forEach(function(_, i){ var ok = nChicks() > 0 && Math.abs(parseNum(state.C.tot[i]) - want(i)) <= 0.15; if (ok) n++;
+    if (show){ $("C-m" + i).innerHTML = ok ? "<span class='valid ok'>OK</span>" : "<span class='valid bad'>" + want(i) + "?</span>"; } });
+  return n;
+}
+$("C-check").addEventListener("click", function(){ var n = checkC(true); $("C-score").textContent = n + " / 4 correct"; state.checked.C = n === 4; save(); refreshNav(); });
+
+/* ---------- gel ---------- */
+function gels(){ var S = lanes(), out = [], per = 11; for (var g = 0; g < Math.max(1, Math.ceil(S.length / per)); g++) out.push(S.slice(g * per, g * per + per)); return out; }
+function drawD(){
+  $("D-plan").innerHTML = gels().map(function(G, g){
+    return "<p style='margin:8px 0 2px'><b>Gel " + (g + 1) + "</b></p><div class='wells'><span class='well lad'>L</span><span class='well ctl'>H+</span><span class='well ctl'>C+</span><span class='well ctl'>W</span>"
+      + G.map(function(l){ return "<span class='well'>" + esc(l.label) + "</span>"; }).join("") + "</div>"; }).join("");
+}
+checklist("D-steps", state.D.done, [
+  "2% agarose in 1× TAE, with DNA stain, comb in; set 20–30 min.",
+  "Gel in the tank, wells at the black (−) end, covered by buffer.",
+  "Mix 5 µL of each PCR product with 1 µL 6× loading dye; load in the plan's order, ladder first.",
+  "Run at about 100 V until the dye is two-thirds down the gel.",
+  "Image under blue or UV light (shield your eyes). Photograph the gel for your report."], "D");
+
+/* ---------- results ---------- */
+var BANDS = ["0", "1", "2", "3 or more"], CALLS = ["Hen (ZW)", "Cock (ZZ)", "Repeat"];
+function allLanes(){ return [{k:"H", label:"H+ known hen", ctl:true}, {k:"Cc", label:"C+ known cock", ctl:true}, {k:"W", label:"W water", ctl:true}].concat(lanes()); }
+function drawE(){
+  $("E-rows").innerHTML = allLanes().map(function(l){
+    var b = state.E.bands[l.k], c = state.E.call[l.k];
+    return "<div class='res'><span>" + esc(l.label) + "</span><select data-b='" + l.k + "'><option value=''>…</option>" + BANDS.map(function(x, j){ return "<option value='" + j + "'" + (String(b) === String(j) ? " selected" : "") + ">" + x + "</option>"; }).join("") + "</select>"
+      + (l.ctl ? "<span class='note'>control</span>" : "<select data-c='" + l.k + "'><option value=''>…</option>" + CALLS.map(function(x, j){ return "<option value='" + j + "'" + (String(c) === String(j) ? " selected" : "") + ">" + x + "</option>"; }).join("") + "</select>")
+      + "<span class='note opt' id='E-n-" + l.k + "'></span></div>";
+  }).join("");
+  $("E-rows").querySelectorAll("select[data-b]").forEach(function(s){ s.addEventListener("change", function(){ state.E.bands[s.dataset.b] = s.value === "" ? null : Number(s.value); save(); validity(); }); });
+  $("E-rows").querySelectorAll("select[data-c]").forEach(function(s){ s.addEventListener("change", function(){ state.E.call[s.dataset.c] = s.value === "" ? null : Number(s.value); save(); }); });
+  validity();
+}
+function runValid(){ var b = state.E.bands; return b.H === 2 && b.Cc === 1 && b.W === 0; }
+function validity(){
+  var b = state.E.bands, filled = ["H", "Cc", "W"].every(function(k){ return b[k] != null; });
+  if (!filled){ $("E-valid").innerHTML = "<span class='note'>Score the three controls first.</span>"; return; }
+  var msgs = [];
+  if (b.H !== 2) msgs.push("known hen should show 2 bands");
+  if (b.Cc !== 1) msgs.push("known cock should show 1 band");
+  if (b.W !== 0) msgs.push("water must show no bands (contamination)");
+  $("E-valid").innerHTML = msgs.length ? "<span class='valid bad'>Run not valid: " + msgs.join("; ") + ". Call every chick 'Repeat' and tell the instructor.</span>" : "<span class='valid ok'>Controls OK: the run is valid.</span>";
+}
+function ruleCall(k){ var bb = state.E.bands[k]; if (!runValid()) return 2; if (bb === 2) return 0; if (bb === 1) return 1; return 2; }
+function checkE(show){
+  var n = 0, S = lanes(), hen = 0, cock = 0, rep = 0;
+  S.forEach(function(l){ var ok = state.E.bands[l.k] != null && state.E.call[l.k] === ruleCall(l.k); if (ok) n++;
+    var rc = ruleCall(l.k); if (rc === 0) hen++; else if (rc === 1) cock++; else rep++;
+    if (show){ var e = $("E-n-" + l.k); if (e) e.innerHTML = ok ? "<span class='valid ok'>consistent</span>" : "<span class='valid bad'>check: " + (state.E.bands[l.k] == null ? "score bands" : CALLS[rc]) + "</span>"; } });
+  if (show) $("E-counts").textContent = "Following the rule: " + hen + " hens, " + cock + " cocks, " + rep + " to repeat.";
+  return {n:n, total:S.length, hen:hen, cock:cock, rep:rep};
+}
+$("E-check").addEventListener("click", function(){ var r = checkE(true); $("E-score").textContent = r.n + " / " + r.total + " calls consistent"; state.checked.E = r.total > 0 && r.n === r.total; save(); refreshNav(); });
+
+/* ---------- reflect ---------- */
+var FQ = [{k:"f1", q:"Did your controls behave as expected? If not, what do you think went wrong, and what would you do?"},
+          {k:"f2", q:"Name one step where an error could creep in (contamination, mix-up, weak bands) and how you would prevent it next time."}];
+(function(){ var host = $("F-qs"); FQ.forEach(function(q, i){ var d = document.createElement("div"); d.className = "q";
+  d.innerHTML = "<label class='field' for='F-" + q.k + "'>" + (i+1) + ". " + q.q + "</label><textarea id='F-" + q.k + "'></textarea>"; host.appendChild(d);
+  var t = d.querySelector("textarea"); t.value = state.F[q.k] || ""; t.addEventListener("input", function(){ state.F[q.k] = t.value; state.checked.F = true; save(); refreshNav(); }); }); })();
+
+/* ---------- record ---------- */
+function renderRecord(){
+  var i = state.info, r = checkE(false), S = lanes();
+  var rows = [["Group", esc(i.group || "")], ["Names", esc(i.name || "")], ["IDs", esc(i.id || "")], ["Round", esc(i.round || "")],
+    ["Safety check", Object.keys(state.safety).filter(function(k){ return state.safety[k]; }).length + " / 4 ticked"],
+    ["Chicks tested", String(S.length)], ["Extraction steps done", Object.keys(state.B.done).filter(function(k){ return state.B.done[k]; }).length + " / 5"],
+    ["Master-mix totals correct", checkC(false) + " / 4"], ["Run valid (controls)", runValid() ? "yes" : "no"],
+    ["Result", r.hen + " hens, " + r.cock + " cocks, " + r.rep + " to repeat"], ["Calls consistent with bands", r.n + " / " + r.total]];
+  var h = "<table class='tbl'>" + rows.map(function(x){ return "<tr><th style='width:34%'>" + x[0] + "</th><td>" + x[1] + "</td></tr>"; }).join("") + "</table>";
+  h += "<h3>Lane by lane</h3><table class='tbl'><tr><th>Lane</th><th>Bands</th><th>Call</th></tr>" + allLanes().map(function(l){ var b = state.E.bands[l.k], c = state.E.call[l.k];
+    return "<tr><td>" + esc(l.label) + "</td><td>" + (b == null ? "–" : BANDS[b]) + "</td><td>" + (l.ctl ? "control" : (c == null ? "–" : CALLS[c])) + "</td></tr>"; }).join("") + "</table>";
+  h += "<h3>Reflection</h3>" + FQ.map(function(q, n){ return "<p><b>" + (n + 1) + ".</b> " + esc(q.q) + "<br>" + esc(state.F[q.k] || "(no answer)").replace(/\n/g, "<br>") + "</p>"; }).join("");
+  h += "<p class='note'>Created " + new Date().toLocaleString() + "</p>";
+  $("R-body").innerHTML = h;
+  var txt = rows.map(function(x){ return x[0] + ": " + x[1].replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,"\""); }).join("\n");
+  txt += "\n\nLanes:\n" + allLanes().map(function(l){ var b = state.E.bands[l.k], c = state.E.call[l.k]; return l.label + ": " + (b == null ? "-" : BANDS[b]) + " band(s); " + (l.ctl ? "control" : (c == null ? "-" : CALLS[c])); }).join("\n");
+  FQ.forEach(function(q, n){ txt += "\n\nR" + (n + 1) + ". " + q.q + "\n" + (state.F[q.k] || "(no answer)"); });
+  $("R-text").value = txt;
+}
+$("R-copy").addEventListener("click", function(){ var t = $("R-text"), done = function(){ $("R-copy").textContent = "Copied"; setTimeout(function(){ $("R-copy").textContent = "Copy record as text"; }, 1800); };
+  try{ if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t.value).then(done, function(){ t.hidden = false; t.select(); }); } else { t.hidden = false; t.select(); } }catch(e){ t.hidden = false; t.select(); } });
+confirmTap($("R-reset"), "Tap again to erase everything", function(){ try{ localStorage.removeItem(KEY); }catch(e){} location.reload(); });
+
+go(order.indexOf(state.step) >= 0 ? state.step : "start");
+})();
+</script>
+</body>
+</html>
