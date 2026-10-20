@@ -85,6 +85,21 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .copybox{width:100%;max-width:100%;min-height:160px;font-size:14px}
 @media (max-width:600px){body{font-size:16px} h2{font-size:24px}}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
+.dd{list-style:none;padding:0;margin:8px 0;display:flex;flex-direction:column;gap:8px;counter-reset:dd}
+.dditem{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);touch-action:none;cursor:grab;user-select:none;counter-increment:dd}
+.dditem::before{content:counter(dd);font-weight:700;color:var(--brand);min-width:1.4em}
+.dditem.drag{outline:3px solid var(--gold);cursor:grabbing}
+.dditem.ok{border-color:#1E6B4A;background:#DDEFE6}.dditem.bad{border-color:#9E3F2B;background:#F6DDD9}
+.ddh{color:var(--muted,#5E6E68);font-size:20px}.ddt{flex:1}
+.ddb{display:flex;gap:4px}.ddb button{border:1px solid var(--line);background:transparent;border-radius:6px;padding:4px 8px;cursor:pointer;color:inherit}
+.ddb button:disabled{opacity:.3;cursor:default}
+.mt{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:640px){.mt{grid-template-columns:1fr}}
+.mtcol{display:flex;flex-direction:column;gap:8px}
+.mtn,.mtf{display:flex;gap:10px;align-items:center;text-align:left;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:inherit;cursor:pointer;font:inherit}
+.mtn.on{outline:3px solid var(--gold)}.mtn.paired,.mtf.paired{border-color:var(--brand)}
+.mtn.ok{background:#DDEFE6;border-color:#1E6B4A}.mtn.bad{background:#F6DDD9;border-color:#9E3F2B}
+.badge{display:inline-flex;min-width:26px;height:26px;border-radius:13px;align-items:center;justify-content:center;background:var(--brand);color:#fff;font-weight:700;font-size:14px;flex:none}
 </style>
 
 
@@ -100,10 +115,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .seqcmp b{display:inline-block;width:70px;letter-spacing:0;font-family:inherit}
 .diff{background:var(--gold);color:#1A1A1A}
 </style>
-</head>
+<!--BIL-CSS--><style>.th2{display:block;font-size:.9em;font-weight:400;color:var(--muted,#5E6E68);margin-top:2px;line-height:1.45}
+.th2.inl{display:inline;margin:0 0 0 .4em;font-size:.85em}
+button .th2,.btn .th2{color:inherit;opacity:.85}
+.fb .th2{color:inherit;opacity:.9}
+.homebtn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--brand);text-decoration:none;font-weight:700;font-size:14px;white-space:nowrap}
+.homebtn:hover{border-color:var(--brand)}
+.sitefoot{margin:40px auto 24px;max-width:880px;padding:18px 20px;border-top:1px solid var(--line);text-align:center;font-size:13px;line-height:1.6;color:var(--muted,#5E6E68)}
+.sitefoot p{margin:2px 0}.sitefoot b{color:var(--brand)}
+</style><!--/BIL-CSS--></head>
 <body>
 <header>
-  <div class="bar">
+  <div class="bar"><!--BIL-HOME--><a class="homebtn" href="../index.html">← Home · หน้าหลัก</a><!--/BIL-HOME-->
     <h1>Lab Worksheet 8 · Translating mRNA</h1>
     <span class="who" id="who">710 114 Animal Genetics</span>
   </div>
@@ -176,6 +199,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <section class="step" id="s-D" data-title="D · Regulation">
   <h2>Part D · Switching genes on <span class="th">· การควบคุมการแสดงออกของยีน</span></h2>
   <p class="lead">Put the events that switch on the casein gene in a cow's udder in order, then answer the questions.</p>
+  <div class="card"><h3 style="margin-top:0">Put the five events in order</h3><p class="note" style="margin:0 0 4px">Drag the cards, or use ▲ ▼, so that the first event is at the top.</p><div id="D-order"></div><div class="fb" id="fb-D-order"></div></div>
   <div id="D-qs"></div>
   <div class="row"><button class="btn" id="D-check">Check Part D</button><span class="score" id="D-score"></span></div>
   <div class="row"><button class="btn ghost" data-go="E">Next: Part E</button></div>
@@ -197,6 +221,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 </section>
 
 </main>
+<!--BIL-FOOT--><footer class="sitefoot no-th">
+  <p><b>Asst. Prof. Pawat Seritrakul, PhD</b> · ผศ.ดร.ภวัต เสรีตระกูล</p>
+  <p>710 114 Animal Genetics · พันธุศาสตร์สัตว์</p>
+  <p>Animal Science Program · หลักสูตรสัตวศาสตร์</p>
+  <p>Faculty of Animal Sciences and Agricultural Technology, Silpakorn University · คณะสัตวศาสตร์และเทคโนโลยีการเกษตร มหาวิทยาลัยศิลปากร</p>
+</footer>
+<!--/BIL-FOOT-->
+
 <script>
 (function(){
 "use strict";
@@ -330,18 +362,77 @@ buildQs("C", "C-qs", CQ);
 function checkC(show){ return checkList("C", CQ, show); }
 $("C-check").addEventListener("click", function(){ var n = checkC(true); $("C-score").textContent = "Score: " + n + " / " + CQ.length; state.checked.C = true; save(); refreshNav(); });
 
+/* ---------- drag-and-drop ordering and tap-to-pair matching ---------- */
+function ddOrder(host, items, store, key, onChange){
+  if (!store[key] || store[key].length !== items.length){
+    var o = items.map(function(_, i){ return i; }), seed = items.length * 7 + 3;
+    for (var i = o.length - 1; i > 0; i--){ seed = (seed * 9301 + 49297) % 233280; var j = Math.floor(seed / 233280 * (i + 1)); var t = o[i]; o[i] = o[j]; o[j] = t; }
+    if (o.every(function(v, i){ return v === i; })) o.reverse();
+    store[key] = o;
+  }
+  var dragging = null;
+  function draw(marks){
+    var h = "<ol class='dd'>" + store[key].map(function(it, pos){
+      var m = marks ? (marks[pos] ? " ok" : " bad") : "";
+      return "<li class='dditem" + m + "' data-it='" + it + "'><span class='ddh' aria-hidden='true'>⠿</span><span class='ddt'>" + items[it] + "</span>"
+        + "<span class='ddb'><button type='button' class='ddup' aria-label='Move up'" + (pos === 0 ? " disabled" : "") + ">▲</button><button type='button' class='dddn' aria-label='Move down'" + (pos === items.length - 1 ? " disabled" : "") + ">▼</button></span></li>"; }).join("") + "</ol>";
+    host.innerHTML = h;
+    host.querySelectorAll(".dditem").forEach(function(li, pos){
+      li.querySelector(".ddup").addEventListener("click", function(){ move(pos, pos - 1); });
+      li.querySelector(".dddn").addEventListener("click", function(){ move(pos, pos + 1); });
+      li.addEventListener("pointerdown", function(e){ if (e.target.closest("button")) return; dragging = Number(li.dataset.it); li.classList.add("drag"); try{ li.setPointerCapture(e.pointerId); }catch(_){} e.preventDefault(); });
+      li.addEventListener("pointermove", function(e){ if (dragging === null) return; var el = document.elementFromPoint(e.clientX, e.clientY); var tgt = el && el.closest ? el.closest(".dditem") : null;
+        if (tgt && tgt.parentNode === li.parentNode){ var from = store[key].indexOf(dragging), to = store[key].indexOf(Number(tgt.dataset.it)); if (from !== to){ move(from, to, true); } } });
+      li.addEventListener("pointerup", function(){ if (dragging !== null){ dragging = null; draw(); onChange && onChange(); } });
+    });
+    if (dragging !== null){ var cur = host.querySelector(".dditem[data-it='" + dragging + "']"); if (cur) cur.classList.add("drag"); }
+  }
+  function move(from, to, keepDrag){ if (to < 0 || to >= items.length) return; var a = store[key]; var v = a.splice(from, 1)[0]; a.splice(to, 0, v); draw(); if (!keepDrag) onChange && onChange(); }
+  draw();
+  return {score:function(correct){ return store[key].filter(function(it, pos){ return it === correct[pos]; }).length; },
+          show:function(correct){ draw(store[key].map(function(it, pos){ return it === correct[pos]; })); }};
+}
+function tapMatch(host, names, funcs, store, key, onChange){
+  store[key] = store[key] || {};
+  var sel = null, order = funcs.map(function(_, i){ return i; }).sort(function(a, b){ return ((a * 5 + 3) % funcs.length) - ((b * 5 + 3) % funcs.length); });
+  function draw(marks){
+    var used = {}; Object.keys(store[key]).forEach(function(n){ used[store[key][n]] = Number(n); });
+    var h = "<div class='mt'><div class='mtcol'><p class='note'>Names · ชื่อ</p>" + names.map(function(nm, i){ var paired = store[key][i] != null, m = marks ? (marks[i] ? " ok" : " bad") : "";
+      return "<button type='button' class='mtn" + (sel === i ? " on" : "") + (paired ? " paired" : "") + m + "' data-n='" + i + "'><span class='badge'>" + (i + 1) + "</span>" + nm + "</button>"; }).join("")
+      + "</div><div class='mtcol'><p class='note'>Jobs · หน้าที่</p>" + order.map(function(f){ var who = used[f];
+      return "<button type='button' class='mtf" + (who != null ? " paired" : "") + "' data-f='" + f + "'><span class='badge'>" + (who != null ? who + 1 : "·") + "</span>" + funcs[f] + "</button>"; }).join("") + "</div></div>"
+      + "<p class='note'>Tap a name, then tap its job. Tap a matched job again to undo. · แตะชื่อ แล้วแตะหน้าที่ที่คู่กัน แตะหน้าที่ที่จับคู่แล้วซ้ำเพื่อยกเลิก</p>";
+    host.innerHTML = h;
+    host.querySelectorAll(".mtn").forEach(function(b){ b.addEventListener("click", function(){ var i = Number(b.dataset.n); sel = sel === i ? null : i; draw(); }); });
+    host.querySelectorAll(".mtf").forEach(function(b){ b.addEventListener("click", function(){ var f = Number(b.dataset.f);
+      var who = null; Object.keys(store[key]).forEach(function(n){ if (store[key][n] === f) who = Number(n); });
+      if (sel === null){ if (who != null){ delete store[key][who]; draw(); onChange && onChange(); } return; }
+      if (who != null) delete store[key][who];
+      store[key][sel] = f; sel = null; draw(); onChange && onChange(); }); });
+  }
+  draw();
+  return {score:function(correct){ return names.filter(function(_, i){ return store[key][i] === correct[i]; }).length; },
+          show:function(correct){ draw(names.map(function(_, i){ return store[key][i] === correct[i]; })); }};
+}
+
 /* ---------- PART D ---------- */
 var EVT = ["STAT5 binds the casein gene's control region and switches transcription on", "Around calving, progesterone falls and prolactin rises", "Casein mRNA is translated on polysomes and casein is secreted into milk", "Prolactin binds its receptor on udder cells", "JAK2 activates STAT5, which moves into the nucleus"];
 var EVTKEY = [4, 1, 5, 2, 3];
 var DQ = [];
-EVT.forEach(function(e, i){ DQ.push({n:i + 1, k:"o" + i, t:"sel", q:"Step number for: <b>" + e + "</b>", o:["1","2","3","4","5"], a:EVTKEY[i] - 1, hint:"Start with the hormone change at calving."}); });
-DQ.push({n:6, k:"d1", t:"mc", q:"An enhancer is…", o:["the start codon of a gene","a DNA region that binds activator proteins and can lie far from the gene","the protein that copies DNA"], a:1, why:""});
-DQ.push({n:7, k:"d2", t:"mc", q:"A cow's liver cells carry the casein gene. Why don't they make casein?", o:["Liver cells lost the casein gene","They lack the udder's prolactin signalling and transcription factors needed at the casein control regions","Casein mRNA cannot be translated in liver"], a:1, why:"Same genome, different set of active factors."});
-DQ.push({n:8, k:"d3", t:"mc", q:"Which of these is a transcription factor itself?", o:["The estrogen receptor","The prolactin receptor","Ovalbumin"], a:0, why:"Estrogen enters the cell; its receptor binds DNA directly."});
-DQ.push({n:9, k:"d4", t:"mc", q:"A mutation deletes an enhancer of the ovalbumin gene but leaves its coding sequence intact. What is most likely?", o:["Ovalbumin's amino-acid sequence changes","Less ovalbumin is made in response to estrogen, but the protein is normal","The hen lays no eggs at all"], a:1, why:"Regulatory changes alter how much protein is made, not its sequence."});
+var EVTORD = EVTKEY.map(function(_, i){ return i; }).sort(function(a, b){ return EVTKEY[a] - EVTKEY[b]; });
+var dOrder = ddOrder($("D-order"), EVT, state.D, "ord", save);
+DQ.push({n:1, k:"d1", t:"mc", q:"An enhancer is…", o:["the start codon of a gene","a DNA region that binds activator proteins and can lie far from the gene","the protein that copies DNA"], a:1, why:""});
+DQ.push({n:2, k:"d2", t:"mc", q:"A cow's liver cells carry the casein gene. Why don't they make casein?", o:["Liver cells lost the casein gene","They lack the udder's prolactin signalling and transcription factors needed at the casein control regions","Casein mRNA cannot be translated in liver"], a:1, why:"Same genome, different set of active factors."});
+DQ.push({n:3, k:"d3", t:"mc", q:"Which of these is a transcription factor itself?", o:["The estrogen receptor","The prolactin receptor","Ovalbumin"], a:0, why:"Estrogen enters the cell; its receptor binds DNA directly."});
+DQ.push({n:4, k:"d4", t:"mc", q:"A mutation deletes an enhancer of the ovalbumin gene but leaves its coding sequence intact. What is most likely?", o:["Ovalbumin's amino-acid sequence changes","Less ovalbumin is made in response to estrogen, but the protein is normal","The hen lays no eggs at all"], a:1, why:"Regulatory changes alter how much protein is made, not its sequence."});
 buildQs("D", "D-qs", DQ);
-function checkD(show){ return checkList("D", DQ, show); }
-$("D-check").addEventListener("click", function(){ var n = checkD(true); $("D-score").textContent = "Score: " + n + " / " + DQ.length; state.checked.D = true; save(); refreshNav(); });
+function checkD(show){
+  var o = dOrder.score(EVTORD);
+  if (show){ dOrder.show(EVTORD); var f = $("fb-D-order"); f.className = "fb show " + (o === 5 ? "ok" : "bad");
+    f.textContent = o === 5 ? "Correct. Hormones change, prolactin binds, JAK2 activates STAT5, STAT5 switches on casein, casein is made." : "Not yet. " + o + " of 5 in the right place. Start with the hormone change at calving."; }
+  return o + checkList("D", DQ, show);
+}
+$("D-check").addEventListener("click", function(){ var n = checkD(true); $("D-score").textContent = "Score: " + n + " / " + (DQ.length + 5); state.checked.D = true; save(); refreshNav(); });
 
 /* ---------- PART E ---------- */
 var EQ = [
@@ -362,7 +453,7 @@ function renderSummary(){
     ["Part A · short mRNAs", checkA(false) + " / " + AQ.length],
     ["Part B · insulin A chain", checkB(false) + " / " + (BQ.length + BQ2.length)],
     ["Part C · species comparison", checkC(false) + " / " + CQ.length],
-    ["Part D · gene regulation", checkD(false) + " / " + DQ.length]];
+    ["Part D · gene regulation", checkD(false) + " / " + (DQ.length + 5)]];
   var h = "<table class='tbl'>" + rows.map(function(r){ return "<tr><th style='width:34%'>" + r[0] + "</th><td>" + r[1] + "</td></tr>"; }).join("") + "</table><h3>Part E · written answers</h3>";
   EQ.forEach(function(q, n){ h += "<p><b>" + (n+1) + ".</b> " + esc(q.q) + "<br>" + esc(state.E[q.k] || "(no answer)").replace(/\n/g, "<br>") + "</p>"; });
   h += "<p class='note'>Created " + new Date().toLocaleString() + "</p>";
@@ -378,5 +469,52 @@ confirmTap($("R-reset"), "Tap again to erase everything", function(){ try{ local
 go(order.indexOf(state.step) >= 0 ? state.step : "start");
 })();
 </script>
+
+<!--BIL-JS--><script>window.__TH = {"Check": "ตรวจคำตอบ", "Choose": "เลือก", "Choose…": "เลือก…", "Copy summary as text": "คัดลอกสรุปเป็นข้อความ", "Count": "นับ", "Critical value at p = 0.05": "ค่าวิกฤตที่ p = 0.05", "Decision": "ผลการตัดสิน", "Degrees of freedom (df)": "องศาอิสระ (df)", "Expected (E)": "ค่าคาดหวัง (E)", "Full name": "ชื่อ-นามสกุล", "Lab group": "กลุ่มปฏิบัติการ", "Observed (O)": "ค่าที่สังเกตได้ (O)", "One": "หนึ่ง", "Part": "ส่วน", "Reset": "เริ่มใหม่", "Run": "รัน", "See my summary": "ดูสรุปของฉัน", "Start": "เริ่ม", "Start over on this device": "เริ่มใหม่ทั้งหมดบนเครื่องนี้", "Steps": "ขั้นตอน", "Student ID": "รหัสนักศึกษา", "Take a screenshot of this page, or copy the summary text, and submit it the way your instructor tells you.": "ถ่ายภาพหน้าจอหน้านี้ หรือคัดลอกข้อความสรุป แล้วส่งตามที่อาจารย์กำหนด", "Time": "เวลา", "Total": "รวม", "What you do": "สิ่งที่ทำ", "Write 2–4 sentences for each, in English or Thai, using your own results.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย โดยใช้ผลของตัวเอง", "Write 2–4 sentences for each, in English or Thai.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย", "χ² (total)": "χ² (รวม)", "Check my chi-square": "ตรวจค่าไคสแควร์ของฉัน", "Check my square": "ตรวจตารางของฉัน", "About 5": "ประมาณ 5", "Name": "ชื่อ", "Lab group number": "หมายเลขกลุ่ม", "Copy record as text": "คัดลอกบันทึกเป็นข้อความ", "Copy result as text": "คัดลอกผลเป็นข้อความ", "Before you begin": "ก่อนเริ่ม", "Yes": "ใช่", "No": "ไม่ใช่", "Clear": "ล้าง", "Back": "ย้อนกลับ", "Next": "ถัดไป", "New set": "ชุดใหม่", "See results": "ดูผล", "Full name(s) of your group": "ชื่อ-นามสกุลสมาชิกกลุ่ม", "Student ID(s)": "รหัสนักศึกษา", "Bench / group number": "โต๊ะ / หมายเลขกลุ่ม", "Round (time slot)": "รอบ (ช่วงเวลา)", "Name (optional)": "ชื่อ (ไม่บังคับ)", "Student ID (optional)": "รหัสนักศึกษา (ไม่บังคับ)", "Group (optional)": "กลุ่ม (ไม่บังคับ)", "Erase all on this device": "ลบทั้งหมดบนเครื่องนี้", "Drag the cards, or use ▲ ▼, so that step 1 is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้ขั้นที่ 1 อยู่บนสุด", "Drag the cards, or use ▲ ▼, so that the first event is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้เหตุการณ์แรกอยู่บนสุด", "Each parent's gametes carry one allele of each gene; list every kind once. Each box = the gamete on its row + the gamete above its column.": "เซลล์สืบพันธุ์ของพ่อแม่แต่ละตัวมีอัลลีลของแต่ละยีนหนึ่งตัว เขียนแต่ละแบบครั้งเดียว แต่ละช่อง = เซลล์สืบพันธุ์ของแถว + เซลล์สืบพันธุ์ของคอลัมน์", "Red boxes need another look. Tip: a cross with single-comb Hen D (rrpp) shows exactly which alleles the rooster carries.": "ช่องสีแดงต้องดูใหม่ เคล็ดลับ: ผสมกับไก่ตัวเมีย D หงอนจักร (rrpp) จะเห็นชัดว่าไก่ตัวผู้มีอัลลีลใด", "Your sequence should be 8–30 letters, using only A, C, G and T. Tick the box once your model is folded and shown.": "ลำดับควรยาว 8-30 ตัวอักษร ใช้เฉพาะ A, C, G และ T ทำเครื่องหมายในช่องเมื่อพับแบบจำลองและให้อาจารย์ดูแล้ว", "Finish Part A1 first.": "ทำส่วน A1 ให้เสร็จก่อน", "Lab Worksheet 8 · Translating mRNA": "ใบงานปฏิบัติการที่ 8 · การแปลรหัส mRNA", "Translate short mRNAs by hand, then translate mRNAs that code for the real A and B chains of cattle insulin and check them with ExPASy Translate. Answers save in this browser, so use the same device for the whole session.": "แปลรหัส mRNA สั้น ๆ ด้วยมือ แล้วแปลรหัส mRNA ที่เป็นรหัสของสาย A และ B ของอินซูลินโคจริง และตรวจด้วย ExPASy Translate คำตอบบันทึกในเบราว์เซอร์นี้ จึงควรใช้อุปกรณ์เดิมตลอดคาบ", "How to type proteins": "วิธีพิมพ์โปรตีน", "Use one-letter codes, e.g. MFKGW, or three-letter codes with dashes, e.g. Met-Phe-Lys-Gly-Trp. Do not type the stop.": "ใช้รหัสตัวอักษรเดียว เช่น MFKGW หรือรหัสสามตัวอักษรคั่นด้วยขีด เช่น Met-Phe-Lys-Gly-Trp ไม่ต้องพิมพ์โคดอนหยุด", "Every part has the codon table; tap \"Codon table\" to open it.": "ทุกส่วนมีตารางโคดอน แตะ \"Codon table\" เพื่อเปิด", "1st": "ตำแหน่งที่ 1", "2nd U": "ตำแหน่งที่ 2 U", "2nd C": "ตำแหน่งที่ 2 C", "2nd A": "ตำแหน่งที่ 2 A", "2nd G": "ตำแหน่งที่ 2 G", "1. Translate 5′-GCGCUAUGUUUAAAGGCUGGUAGCCU-3′ (start at the first AUG).": "1. แปลรหัส 5′-GCGCUAUGUUUAAAGGCUGGUAGCCU-3′ (เริ่มที่ AUG ตัวแรก)", "2. mRNA X: 5′-AUGCUUGGAAAAUAA-3′. Translate it.": "2. mRNA X: 5′-AUGCUUGGAAAAUAA-3′ แปลรหัส", "3. mRNA Y: 5′-AUGCUGGGCAAGUGA-3′. Translate it.": "3. mRNA Y: 5′-AUGCUGGGCAAGUGA-3′ แปลรหัส", "4. At how many positions do mRNA X and mRNA Y differ?": "4. mRNA X และ Y ต่างกันกี่ตำแหน่ง", "5. Why do X and Y make the same peptide?": "5. ทำไม X และ Y จึงได้เพปไทด์เดียวกัน", "They are the same mRNA": "เป็น mRNA เดียวกัน", "The code is redundant: several codons code for the same amino acid": "รหัสพันธุกรรมมีความซ้ำซ้อน: หลายโคดอนเป็นรหัสของกรดอะมิโนเดียวกัน", "Ribosomes ignore the third base completely": "ไรโบโซมไม่สนใจเบสที่สามเลย", "6. This is a gene's coding strand (DNA): 5′-ATGGAATCTCATTGA-3′. Write the protein it codes for.": "6. นี่คือสายรหัส (ดีเอ็นเอ) ของยีน: 5′-ATGGAATCTCATTGA-3′ เขียนโปรตีนที่เป็นรหัส", "This mRNA codes for the real amino-acid sequence of the cattle insulin A chain. The codons were chosen for this exercise; it is not the cow's own mRNA sequence.": "mRNA นี้เป็นรหัสของลำดับกรดอะมิโนจริงของสาย A อินซูลินโค โคดอนเลือกขึ้นสำหรับแบบฝึกนี้ ไม่ใช่ลำดับ mRNA จริงของโค", "Copy mRNA": "คัดลอก mRNA", "Copy as DNA (T for U)": "คัดลอกเป็นดีเอ็นเอ (T แทน U)", "1. At which base (counting from 1 at the 5′ end) does the start codon begin?": "1. โคดอนเริ่มอยู่ที่เบสที่เท่าใด (นับ 1 จากปลาย 5′)", "2. Translate the mRNA by hand, from Met to just before the stop.": "2. แปลรหัส mRNA ด้วยมือ ตั้งแต่ Met จนก่อนโคดอนหยุด", "3. How many codons are read, including the stop codon?": "3. อ่านกี่โคดอน รวมโคดอนหยุด", "4. Which stop codon ends it? (3 letters)": "4. โคดอนหยุดใดปิดท้าย (3 ตัวอักษร)", "Check with ExPASy Translate": "ตรวจด้วย ExPASy Translate", "Open web.expasy.org/translate, paste the sequence, and press Translate. Look at the three 5′3′ frames; the protein is highlighted from Met.": "เปิด web.expasy.org/translate วางลำดับ แล้วกด Translate ดูกรอบ 5′3′ ทั้งสาม โปรตีนจะถูกเน้นตั้งแต่ Met", "5. In ExPASy, which 5′3′ frame shows the full protein?": "5. ใน ExPASy กรอบ 5′3′ ใดแสดงโปรตีนครบ", "Frame 1": "กรอบ 1", "Frame 2": "กรอบ 2", "Frame 3": "กรอบ 3", "6. The insulin A chain in a cow's blood starts with G, not M. Why?": "6. สาย A ของอินซูลินในเลือดโคเริ่มด้วย G ไม่ใช่ M เพราะอะไร", "The ribosome skips Met in cattle": "ไรโบโซมข้าม Met ในโค", "The real protein is made as preproinsulin and cut; the A chain sits at its end": "โปรตีนจริงสร้างเป็นพรีโปรอินซูลินแล้วถูกตัด สาย A อยู่ที่ปลาย", "ExPASy adds Met by mistake": "ExPASy เติม Met ผิดพลาด", "Translate this B-chain mRNA with ExPASy (no need to do it by hand), then compare insulin from three species.": "แปลรหัส mRNA สาย B นี้ด้วย ExPASy (ไม่ต้องทำด้วยมือ) แล้วเปรียบเทียบอินซูลินจากสามสปีชีส์", "Human and pig insulin": "อินซูลินคนและสุกร", "Your cattle sequences come from Parts B and C. Position A8 = 8th amino acid of the A chain.": "ลำดับของโคมาจากส่วน B และ C ตำแหน่ง A8 = กรดอะมิโนตัวที่ 8 ของสาย A", "1. Type the protein ExPASy shows, from Met to just before the stop.": "1. พิมพ์โปรตีนที่ ExPASy แสดง ตั้งแต่ Met จนก่อนโคดอนหยุด", "2. Counting all of A and B chains, at how many positions does cattle insulin differ from human?": "2. นับทั้งสาย A และ B อินซูลินโคต่างจากของคนกี่ตำแหน่ง", "3. At how many positions does pig insulin differ from human?": "3. อินซูลินสุกรต่างจากของคนกี่ตำแหน่ง", "4. Which positions differ between cattle and human insulin?": "4. ตำแหน่งใดที่ต่างกันระหว่างอินซูลินโคกับคน", "5. The cattle B30 codon in this mRNA is GCC (Ala). What is the fewest base changes that make it a Thr codon?": "5. โคดอน B30 ของโคใน mRNA นี้คือ GCC (Ala) ต้องเปลี่ยนเบสน้อยที่สุดกี่ตำแหน่งจึงเป็นโคดอนของ Thr", "6. For people with diabetes, pig insulin worked better than cattle insulin mainly because…": "6. สำหรับผู้ป่วยเบาหวาน อินซูลินสุกรใช้ได้ดีกว่าอินซูลินโค ส่วนใหญ่เพราะ…", "pigs make more insulin": "สุกรสร้างอินซูลินมากกว่า", "it differs from human insulin at fewer positions, so it is less likely to trigger an immune reaction": "ต่างจากอินซูลินคนน้อยตำแหน่งกว่า จึงกระตุ้นภูมิคุ้มกันน้อยกว่า", "it has no B chain": "ไม่มีสาย B", "Put the events that switch on the casein gene in a cow's udder in order, then answer the questions.": "เรียงลำดับเหตุการณ์ที่เปิดการทำงานของยีนเคซีนในเต้านมโค แล้วตอบคำถาม", "Put the five events in order": "เรียงลำดับเหตุการณ์ทั้งห้า", "1. An enhancer is…": "1. เอนแฮนเซอร์ (enhancer) คือ…", "the start codon of a gene": "โคดอนเริ่มของยีน", "a DNA region that binds activator proteins and can lie far from the gene": "บริเวณดีเอ็นเอที่จับโปรตีนกระตุ้น และอาจอยู่ไกลจากยีน", "the protein that copies DNA": "โปรตีนที่คัดลอกดีเอ็นเอ", "2. A cow's liver cells carry the casein gene. Why don't they make casein?": "2. เซลล์ตับของโคมียีนเคซีน ทำไมจึงไม่สร้างเคซีน", "Liver cells lost the casein gene": "เซลล์ตับสูญเสียยีนเคซีน", "They lack the udder's prolactin signalling and transcription factors needed at the casein control regions": "ขาดการส่งสัญญาณโพรแลกทินและแฟกเตอร์ถอดรหัสของเต้านมที่ต้องใช้ที่บริเวณควบคุมของยีนเคซีน", "Casein mRNA cannot be translated in liver": "mRNA เคซีนแปลรหัสในตับไม่ได้", "3. Which of these is a transcription factor itself?": "3. ข้อใดเป็นแฟกเตอร์ถอดรหัสเอง", "The estrogen receptor": "ตัวรับเอสโตรเจน", "The prolactin receptor": "ตัวรับโพรแลกทิน", "Ovalbumin": "โอวัลบูมิน", "4. A mutation deletes an enhancer of the ovalbumin gene but leaves its coding sequence intact. What is most likely?": "4. การกลายพันธุ์ลบเอนแฮนเซอร์ของยีนโอวัลบูมิน แต่ลำดับรหัสยังครบ ผลที่น่าจะเกิดที่สุดคือ", "Ovalbumin's amino-acid sequence changes": "ลำดับกรดอะมิโนของโอวัลบูมินเปลี่ยน", "Less ovalbumin is made in response to estrogen, but the protein is normal": "สร้างโอวัลบูมินน้อยลงเมื่อมีเอสโตรเจน แต่โปรตีนปกติ", "The hen lays no eggs at all": "แม่ไก่ไม่ไข่เลย", "1. mRNAs X and Y in Part A differ at four bases yet make the same peptide. Explain why, and what this means when a single base in a gene changes.": "1. mRNA X และ Y ในส่วน A ต่างกันสี่เบสแต่ได้เพปไทด์เดียวกัน อธิบายเหตุผล และสิ่งนี้มีความหมายอย่างไรเมื่อเบสหนึ่งตัวในยีนเปลี่ยน", "2. A bull and a cow both carry casein genes, but only the lactating cow's udder makes casein. Explain using transcription factors, enhancers and hormones.": "2. โคตัวผู้และตัวเมียมียีนเคซีนทั้งคู่ แต่เฉพาะเต้านมของแม่โคที่ให้นมจึงสร้างเคซีน อธิบายด้วยแฟกเตอร์ถอดรหัส เอนแฮนเซอร์ และฮอร์โมน", "AUG UUU AAA GGC UGG, then UAG stops.": "AUG UUU AAA GGC UGG แล้ว UAG หยุด", "The third base of every codon after AUG differs, including the stop codon.": "เบสที่สามของทุกโคดอนหลัง AUG ต่างกัน รวมทั้งโคดอนหยุด", "Line them up and compare base by base.": "เรียงให้ตรงกันแล้วเทียบทีละเบส", "Most differences are in the third base, which often does not change the amino acid.": "ความต่างส่วนใหญ่อยู่ที่เบสที่สาม ซึ่งมักไม่เปลี่ยนกรดอะมิโน", "Change T to U, then translate: AUG GAA UCU CAU UGA.": "เปลี่ยน T เป็น U แล้วแปลรหัส: AUG GAA UCU CAU UGA", "First turn the coding strand into mRNA by changing T to U.": "เปลี่ยนสายรหัสเป็น mRNA ก่อน โดยเปลี่ยน T เป็น U", "Met + the 21 amino acids of the cattle insulin A chain.": "Met + กรดอะมิโน 21 ตัวของสาย A อินซูลินโค", "The AUG starts at base": "AUG เริ่มที่เบส", "This exercise mRNA codes only for the A chain; in the cow it is cut from a larger protein.": "mRNA ของแบบฝึกนี้เป็นรหัสเฉพาะสาย A ในโค สาย A ถูกตัดออกจากโปรตีนที่ใหญ่กว่า", "Met + the 30 amino acids of the cattle insulin B chain.": "Met + กรดอะมิโน 30 ตัวของสาย B อินซูลินโค", "A8, A10 and B30.": "A8, A10 และ B30", "Only B30.": "เฉพาะ B30", "Cattle: A8 Ala, A10 Val, B30 Ala; human: Thr, Ile, Thr.": "โค: A8 Ala, A10 Val, B30 Ala; คน: Thr, Ile, Thr", "GCC → ACC (Thr): one change in the first base.": "GCC → ACC (Thr): เปลี่ยนหนึ่งตำแหน่งที่เบสแรก", "Find the Thr codons (ACx) in the table.": "หาโคดอนของ Thr (ACx) ในตาราง", "Same genome, different set of active factors.": "จีโนมเดียวกัน แต่ชุดแฟกเตอร์ที่ทำงานต่างกัน", "Estrogen enters the cell; its receptor binds DNA directly.": "เอสโตรเจนเข้าเซลล์ และตัวรับของมันจับดีเอ็นเอโดยตรง", "Regulatory changes alter how much protein is made, not its sequence.": "การเปลี่ยนแปลงส่วนควบคุมเปลี่ยนปริมาณโปรตีนที่สร้าง ไม่ใช่ลำดับของโปรตีน", "Hormones change, prolactin binds, JAK2 activates STAT5, STAT5 switches on casein, casein is made.": "ฮอร์โมนเปลี่ยน โพรแลกทินจับตัวรับ JAK2 กระตุ้น STAT5 STAT5 เปิดยีนเคซีน แล้วสร้างเคซีน", "STAT5 binds the casein gene's control region and switches transcription on": "STAT5 จับบริเวณควบคุมของยีนเคซีนและเปิดการถอดรหัส", "JAK2 activates STAT5, which moves into the nucleus": "JAK2 กระตุ้น STAT5 ซึ่งเคลื่อนเข้าสู่นิวเคลียส", "Casein mRNA is translated on polysomes and casein is secreted into milk": "mRNA เคซีนถูกแปลรหัสบนพอลิโซม และเคซีนถูกหลั่งเข้าสู่น้ำนม", "Around calving, progesterone falls and prolactin rises": "ช่วงคลอด โพรเจสเตอโรนลดลงและโพรแลกทินเพิ่มขึ้น", "Prolactin binds its receptor on udder cells": "โพรแลกทินจับตัวรับบนเซลล์เต้านม"};</script><script>(function(){
+var TH = window.__TH || {};
+var RULES = [
+  [/^(\d+) min$/, "$1 นาที"], [/^Check Part ([A-F])$/, "ตรวจส่วน $1"], [/^Next: Part ([A-F])$/, "ถัดไป: ส่วน $1"], [/^Start Part ([A-F])$/, "เริ่มส่วน $1"],
+  [/^Score: (.+)$/, "คะแนน: $1"], [/^Breed generation (\d+)$/, "ผสมพันธุ์รุ่นที่ $1"], [/^Flagged: (\d+) of (\d+)$/, "ทำเครื่องหมายแล้ว: $1 จาก $2"],
+  [/^Load exactly (\d+) tubes\.$/, "ใส่ให้ครบ $1 หลอด"], [/^Mistakes found: (\d+) of (\d+)\..*$/, "พบที่ผิด $1 จาก $2 ตำแหน่ง เทียบแต่ละเบสกับเบสคู่บนแม่แบบ"],
+  [/^(\d+) of (\d+) boxes correct \((\d+) of (\d+) chromosomes placed\)\..*$/, "ถูก $1 จาก $2 ช่อง (วางแล้ว $3 จาก $4 แท่ง) นับโครโมโซมใหม่ก่อนบันทึก 2n และเลือกเพศของสัตว์"],
+  [/^(\d+) of (\d+) boxes correct\. Count the microchromosomes.*$/, "ถูก $1 จาก $2 ช่อง นับไมโครโครโมโซมใหม่ (ทำเครื่องหมายทีละจุด) 2n = โครโมโซมในคาริโอแกรมรวมไมโครโครโมโซม และเลือกเพศของนก"],
+  [/^Microchromosomes marked: (\d+)$/, "ทำเครื่องหมายไมโครโครโมโซมแล้ว: $1"], [/^Gel (\d+)$/, "เจล $1"], [/^Run (\d+)$/, "ครั้งที่ $1"], [/^Copied$/, "คัดลอกแล้ว"], [/^Tap again to (.+)$/, "แตะอีกครั้งเพื่อยืนยัน"],
+  [/^Part ([A-F]) · (.+)$/, function(m){ var r = look(m[2]); return "ส่วน " + m[1] + (r ? " · " + r : ""); }]
+];
+function norm(s){ return String(s).replace(/\s+/g, " ").trim(); }
+function look(s){ if (Object.prototype.hasOwnProperty.call(TH, s)) return TH[s]; return null; }
+function lookup(s){ var r = look(s); if (r) return r; for (var i = 0; i < RULES.length; i++){ var m = s.match(RULES[i][0]); if (m) return typeof RULES[i][1] === "function" ? RULES[i][1](m) : s.replace(RULES[i][0], RULES[i][1]); } return null; }
+function fbThai(s){
+  var m = s.match(/^(Correct\.|Correct:|Not yet\.|Not quite\.)\s*(.*)$/);
+  if (!m) return lookup(s);
+  var pre = /^Correct/.test(m[1]) ? "ถูกต้อง" : "ยังไม่ถูก";
+  var rest = m[2] ? lookup(norm(m[2].replace(/^Answer: .*?\.\s*/, ""))) : null;
+  return pre + (rest ? " " + rest : "");
+}
+function baseText(el){ var t = ""; el.childNodes.forEach(function(n){ if (n.nodeType === 1 && n.classList && (n.classList.contains("th2") || n.classList.contains("badge") || n.classList.contains("ddh") || n.classList.contains("ddb"))) return; t += n.textContent; }); return norm(t); }
+var SEL = "h1, h3, p, li, label.field, th, td, .opts label span, .chk span, button, option, .key span, .legend span, .tag, .fb, .ddt, .mtn, .mtf";
+var SKIP = "#steps, .no-th, .aln, .mrna, .seq, svg, .copybox";
+function apply(){
+  document.querySelectorAll(SEL).forEach(function(el){
+    if (el.closest(SKIP) || el.classList.contains("dditem")) return;
+    if (el.querySelector("p, li, div, table, h3, ul, ol, select, input, textarea")) return;
+    var key = baseText(el); if (!key) return;
+    if (el.getAttribute("data-thk") === key) return;
+    el.setAttribute("data-thk", key);
+    if (/[\u0E00-\u0E7F]/.test(key) && el.tagName !== "BUTTON") return;
+    var th = el.classList.contains("fb") ? fbThai(key) : lookup(key);
+    var old = el.querySelector(":scope > .th2"); if (old) old.remove();
+    if (!th) return;
+    if (el.tagName === "OPTION"){ el.textContent = key + " · " + th; el.setAttribute("data-thk", el.textContent); return; }
+    var sp = document.createElement("span"); sp.className = "th2" + (el.tagName === "BUTTON" || el.classList.contains("mtn") || el.classList.contains("mtf") ? " inl" : ""); sp.textContent = th; el.appendChild(sp);
+  });
+}
+var pend = false;
+function schedule(){ if (pend) return; pend = true; (window.requestAnimationFrame || setTimeout)(function(){ pend = false; apply(); }); }
+if (window.MutationObserver) new MutationObserver(function(muts){ for (var i = 0; i < muts.length; i++){ var t = muts[i].target; if (t && t.classList && t.classList.contains("th2")) continue; schedule(); return; } }).observe(document.body, {childList:true, subtree:true, characterData:true});
+apply();
+window.__thApply = apply;
+})();
+</script><!--/BIL-JS-->
 </body>
 </html>

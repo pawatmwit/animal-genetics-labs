@@ -100,10 +100,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .plotwrap{overflow-x:auto}
 circle.bird{cursor:pointer}
 </style>
-</head>
+<!--BIL-CSS--><style>.th2{display:block;font-size:.9em;font-weight:400;color:var(--muted,#5E6E68);margin-top:2px;line-height:1.45}
+.th2.inl{display:inline;margin:0 0 0 .4em;font-size:.85em}
+button .th2,.btn .th2{color:inherit;opacity:.85}
+.fb .th2{color:inherit;opacity:.9}
+.homebtn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--brand);text-decoration:none;font-weight:700;font-size:14px;white-space:nowrap}
+.homebtn:hover{border-color:var(--brand)}
+.sitefoot{margin:40px auto 24px;max-width:880px;padding:18px 20px;border-top:1px solid var(--line);text-align:center;font-size:13px;line-height:1.6;color:var(--muted,#5E6E68)}
+.sitefoot p{margin:2px 0}.sitefoot b{color:var(--brand)}
+</style><!--/BIL-CSS--></head>
 <body>
 <header>
-  <div class="bar">
+  <div class="bar"><!--BIL-HOME--><a class="homebtn" href="../index.html">← Home · หน้าหลัก</a><!--/BIL-HOME-->
     <h1>Lab Worksheet 14 · Be the breeder</h1>
     <span class="who" id="who">710 114 Animal Genetics</span>
   </div>
@@ -194,6 +202,14 @@ circle.bird{cursor:pointer}
 </section>
 
 </main>
+<!--BIL-FOOT--><footer class="sitefoot no-th">
+  <p><b>Asst. Prof. Pawat Seritrakul, PhD</b> · ผศ.ดร.ภวัต เสรีตระกูล</p>
+  <p>710 114 Animal Genetics · พันธุศาสตร์สัตว์</p>
+  <p>Animal Science Program · หลักสูตรสัตวศาสตร์</p>
+  <p>Faculty of Animal Sciences and Agricultural Technology, Silpakorn University · คณะสัตวศาสตร์และเทคโนโลยีการเกษตร มหาวิทยาลัยศิลปากร</p>
+</footer>
+<!--/BIL-FOOT-->
+
 <script>
 (function(){
 "use strict";
@@ -434,5 +450,52 @@ confirmTap($("R-reset"), "Tap again to erase everything", function(){ try{ local
 go(order.indexOf(state.step) >= 0 ? state.step : "start");
 })();
 </script>
+
+<!--BIL-JS--><script>window.__TH = {"Check": "ตรวจคำตอบ", "Choose": "เลือก", "Choose…": "เลือก…", "Copy summary as text": "คัดลอกสรุปเป็นข้อความ", "Count": "นับ", "Critical value at p = 0.05": "ค่าวิกฤตที่ p = 0.05", "Decision": "ผลการตัดสิน", "Degrees of freedom (df)": "องศาอิสระ (df)", "Expected (E)": "ค่าคาดหวัง (E)", "Full name": "ชื่อ-นามสกุล", "Lab group": "กลุ่มปฏิบัติการ", "Observed (O)": "ค่าที่สังเกตได้ (O)", "One": "หนึ่ง", "Part": "ส่วน", "Reset": "เริ่มใหม่", "Run": "รัน", "See my summary": "ดูสรุปของฉัน", "Start": "เริ่ม", "Start over on this device": "เริ่มใหม่ทั้งหมดบนเครื่องนี้", "Steps": "ขั้นตอน", "Student ID": "รหัสนักศึกษา", "Take a screenshot of this page, or copy the summary text, and submit it the way your instructor tells you.": "ถ่ายภาพหน้าจอหน้านี้ หรือคัดลอกข้อความสรุป แล้วส่งตามที่อาจารย์กำหนด", "Time": "เวลา", "Total": "รวม", "What you do": "สิ่งที่ทำ", "Write 2–4 sentences for each, in English or Thai, using your own results.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย โดยใช้ผลของตัวเอง", "Write 2–4 sentences for each, in English or Thai.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย", "χ² (total)": "χ² (รวม)", "Check my chi-square": "ตรวจค่าไคสแควร์ของฉัน", "Check my square": "ตรวจตารางของฉัน", "About 5": "ประมาณ 5", "Name": "ชื่อ", "Lab group number": "หมายเลขกลุ่ม", "Copy record as text": "คัดลอกบันทึกเป็นข้อความ", "Copy result as text": "คัดลอกผลเป็นข้อความ", "Before you begin": "ก่อนเริ่ม", "Yes": "ใช่", "No": "ไม่ใช่", "Clear": "ล้าง", "Back": "ย้อนกลับ", "Next": "ถัดไป", "New set": "ชุดใหม่", "See results": "ดูผล", "Full name(s) of your group": "ชื่อ-นามสกุลสมาชิกกลุ่ม", "Student ID(s)": "รหัสนักศึกษา", "Bench / group number": "โต๊ะ / หมายเลขกลุ่ม", "Round (time slot)": "รอบ (ช่วงเวลา)", "Name (optional)": "ชื่อ (ไม่บังคับ)", "Student ID (optional)": "รหัสนักศึกษา (ไม่บังคับ)", "Group (optional)": "กลุ่ม (ไม่บังคับ)", "Erase all on this device": "ลบทั้งหมดบนเครื่องนี้", "Drag the cards, or use ▲ ▼, so that step 1 is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้ขั้นที่ 1 อยู่บนสุด", "Drag the cards, or use ▲ ▼, so that the first event is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้เหตุการณ์แรกอยู่บนสุด", "Each parent's gametes carry one allele of each gene; list every kind once. Each box = the gamete on its row + the gamete above its column.": "เซลล์สืบพันธุ์ของพ่อแม่แต่ละตัวมีอัลลีลของแต่ละยีนหนึ่งตัว เขียนแต่ละแบบครั้งเดียว แต่ละช่อง = เซลล์สืบพันธุ์ของแถว + เซลล์สืบพันธุ์ของคอลัมน์", "Red boxes need another look. Tip: a cross with single-comb Hen D (rrpp) shows exactly which alleles the rooster carries.": "ช่องสีแดงต้องดูใหม่ เคล็ดลับ: ผสมกับไก่ตัวเมีย D หงอนจักร (rrpp) จะเห็นชัดว่าไก่ตัวผู้มีอัลลีลใด", "Your sequence should be 8–30 letters, using only A, C, G and T. Tick the box once your model is folded and shown.": "ลำดับควรยาว 8-30 ตัวอักษร ใช้เฉพาะ A, C, G และ T ทำเครื่องหมายในช่องเมื่อพับแบบจำลองและให้อาจารย์ดูแล้ว", "Finish Part A1 first.": "ทำส่วน A1 ให้เสร็จก่อน", "Lab Worksheet 14 · Be the breeder": "ใบงานปฏิบัติการที่ 14 · เป็นผู้คัดเลือกพันธุ์", "You run a small chicken breeding flock. Each generation you choose 4 cockerels and 10 hens as parents from 40 birds; the simulator breeds them and shows the next generation. Then you check the breeder's equation, R = h² × S, against what happened.": "นักศึกษาดูแลฝูงไก่พ่อแม่พันธุ์ขนาดเล็ก แต่ละรุ่นเลือกไก่ตัวผู้ 4 ตัวและตัวเมีย 10 ตัวจาก 40 ตัวเป็นพ่อแม่ เครื่องจำลองผสมพันธุ์และแสดงรุ่นถัดไป แล้วตรวจสมการของนักปรับปรุงพันธุ์ R = h² × S กับผลที่เกิดขึ้น", "How the simulator works": "เครื่องจำลองทำงานอย่างไร", "Each bird has genes (a breeding value) and an environment effect; you see only the total, its record (P = G + E). Offspring get half of each parent's breeding value plus a random share, as in real meiosis. Every run is different, just like a real flock. Your flocks are saved in this browser.": "ไก่แต่ละตัวมียีน (ค่าการผสมพันธุ์) และผลของสิ่งแวดล้อม เห็นได้เพียงผลรวมคือค่าที่บันทึก (P = G + E) ลูกได้ค่าการผสมพันธุ์ครึ่งหนึ่งจากพ่อและแม่บวกส่วนสุ่ม เหมือนไมโอซิสจริง ผลแต่ละครั้งต่างกันเหมือนฝูงจริง ฝูงของนักศึกษาบันทึกในเบราว์เซอร์นี้", "Generation 0 of the broiler flock from Part B: body weight at 6 weeks (kg). Each dot is a bird; cockerels on top, hens below. Hover or tap a dot for its weight.": "รุ่นที่ 0 ของฝูงไก่เนื้อจากส่วน B: น้ำหนักตัวอายุ 6 สัปดาห์ (กก.) แต่ละจุดคือไก่หนึ่งตัว ตัวผู้อยู่บน ตัวเมียอยู่ล่าง ชี้หรือแตะจุดเพื่อดูน้ำหนัก", "Position = record in kg. Gold = chosen as a parent.": "ตำแหน่ง = ค่าที่บันทึกเป็นกก. สีทอง = เลือกเป็นพ่อแม่", "1. What is the flock's mean body weight (kg, 2 decimals)?": "1. น้ำหนักตัวเฉลี่ยของฝูงเท่าใด (กก. ทศนิยม 2 ตำแหน่ง)", "2. What shape does the spread of weights have?": "2. การกระจายของน้ำหนักมีรูปร่างแบบใด", "Two separate groups": "สองกลุ่มแยกกัน", "Most birds near the middle, fewer at the extremes": "ส่วนใหญ่อยู่ตรงกลาง ส่วนปลายมีน้อย", "All birds the same": "ทุกตัวเท่ากัน", "3. The SD of body weight is about 0.25 kg. About 95% of birds should weigh between…": "3. SD ของน้ำหนักตัวประมาณ 0.25 กก. ไก่ประมาณ 95% ควรหนักอยู่ในช่วง…", "mean ± 0.25 kg": "ค่าเฉลี่ย ± 0.25 กก.", "mean ± 0.5 kg": "ค่าเฉลี่ย ± 0.5 กก.", "mean ± 1 kg": "ค่าเฉลี่ย ± 1 กก.", "4. A heavy bird might be heavy because of good genes or a good environment. Which part will its chicks inherit?": "4. ไก่ตัวหนักอาจหนักเพราะยีนดีหรือสิ่งแวดล้อมดี ลูกจะได้รับส่วนใด", "Both": "ทั้งสองส่วน", "Only the genetic part": "เฉพาะส่วนพันธุกรรม", "Only the environment part": "เฉพาะส่วนสิ่งแวดล้อม", "Choose the heaviest birds as parents for 3 generations. After each choice, work out S and predicted R; after breeding, work out the observed R.": "เลือกไก่ที่หนักที่สุดเป็นพ่อแม่ 3 รุ่น หลังเลือกแต่ละครั้งคำนวณ S และ R ที่ทำนาย หลังผสมพันธุ์คำนวณ R ที่เกิดจริง", "Body weight at 6 weeks · h² = 0.4 · choose on records": "น้ำหนักตัวอายุ 6 สัปดาห์ · h² = 0.4 · เลือกจากค่าที่บันทึก", "Pick top 4 + top 10": "เลือก 4 ตัวผู้ + 10 ตัวเมียที่ดีที่สุด", "Breed generation 1": "ผสมพันธุ์รุ่นที่ 1", "Gen": "รุ่น", "Observed R": "R ที่เกิดจริง", "S = parents' mean − flock mean. Observed R = next flock mean − this flock mean. Use the numbers shown when you chose.": "S = ค่าเฉลี่ยพ่อแม่ − ค่าเฉลี่ยฝูง R ที่เกิดจริง = ค่าเฉลี่ยฝูงรุ่นถัดไป − ค่าเฉลี่ยฝูงรุ่นนี้ ใช้ตัวเลขที่แสดงตอนเลือก", "1. Total gain over 3 generations (final flock mean − generation 0 mean, kg)": "1. ความก้าวหน้ารวมใน 3 รุ่น (ค่าเฉลี่ยฝูงสุดท้าย − ค่าเฉลี่ยรุ่นที่ 0, กก.)", "2. Across the 3 generations, how did observed R compare with h² × S?": "2. ตลอด 3 รุ่น R ที่เกิดจริงเทียบกับ h² × S เป็นอย่างไร", "Exactly equal every time": "เท่ากันพอดีทุกครั้ง", "Close on average, but above or below in single generations": "ใกล้เคียงโดยเฉลี่ย แต่สูงหรือต่ำกว่าในแต่ละรุ่น", "Always much larger": "มากกว่ามากเสมอ", "Hatchability (% of a hen's eggs that hatch; for cockerels, the % from their test matings). Choose the best birds on their records for 3 generations.": "อัตราการฟักออก (% ของไข่ที่ฟักออกของแม่ไก่ สำหรับตัวผู้คือ % จากการผสมทดสอบ) เลือกไก่ที่ดีที่สุดจากค่าที่บันทึก 3 รุ่น", "Hatchability · h² = 0.05 · choose on records": "อัตราการฟักออก · h² = 0.05 · เลือกจากค่าที่บันทึก", "Position = record in %. Gold = chosen as a parent.": "ตำแหน่ง = ค่าที่บันทึกเป็น % สีทอง = เลือกเป็นพ่อแม่", "1. Total gain over 3 generations (percentage points)": "1. ความก้าวหน้ารวมใน 3 รุ่น (จุดเปอร์เซ็นต์)", "2. Compared with Part B, why was the response so small relative to S?": "2. เทียบกับส่วน B ทำไมการตอบสนองจึงน้อยมากเมื่อเทียบกับ S", "Hatchability cannot be selected at all": "คัดเลือกอัตราการฟักออกไม่ได้เลย", "h² is only 0.05: most differences between birds' records come from the environment": "h² เพียง 0.05 ความแตกต่างของค่าที่บันทึกส่วนใหญ่มาจากสิ่งแวดล้อม", "You chose the wrong birds": "เลือกไก่ผิดตัว", "A new flock with the same trait. Each bird now also has a genomic breeding value (GEBV) from a SNP chip. Dots are placed by GEBV; choose the birds with the best GEBV.": "ฝูงใหม่ ลักษณะเดิม ไก่แต่ละตัวมีค่าการผสมพันธุ์จีโนม (GEBV) จากชิป SNP ด้วย จุดวางตาม GEBV ให้เลือกไก่ที่มี GEBV ดีที่สุด", "Hatchability · h² = 0.05 · choose on GEBV": "อัตราการฟักออก · h² = 0.05 · เลือกจาก GEBV", "Position = genomic breeding value (GEBV) in %. Gold = chosen as a parent.": "ตำแหน่ง = ค่าการผสมพันธุ์จีโนม (GEBV) เป็น % สีทอง = เลือกเป็นพ่อแม่", "Pick top 4 + top 10 by GEBV": "เลือก 4 + 10 ตัวที่ GEBV ดีที่สุด", "1. Total gain over 3 generations with genomic values (percentage points)": "1. ความก้าวหน้ารวมใน 3 รุ่นเมื่อใช้ค่าจีโนม (จุดเปอร์เซ็นต์)", "2. In your own runs, which gave the larger total gain in hatchability?": "2. ในผลของตัวเอง แบบใดให้ความก้าวหน้ารวมของอัตราการฟักออกมากกว่า", "Part C (records)": "ส่วน C (ค่าที่บันทึก)", "Part D (genomic values)": "ส่วน D (ค่าจีโนม)", "3. Why should selecting on GEBV usually beat selecting on records for a low-h² trait?": "3. ทำไมการเลือกจาก GEBV มักดีกว่าการเลือกจากค่าที่บันทึกสำหรับลักษณะที่ h² ต่ำ", "GEBVs change the birds' genes": "GEBV เปลี่ยนยีนของไก่", "DNA is not affected by the environment, so GEBVs track breeding value more closely than records do": "ดีเอ็นเอไม่ได้รับผลจากสิ่งแวดล้อม GEBV จึงสะท้อนค่าการผสมพันธุ์ได้ใกล้กว่าค่าที่บันทึก", "GEBVs make hens lay more eggs": "GEBV ทำให้แม่ไก่ไข่มากขึ้น", "4. In Part D, was observed R often larger than h² × S (where S is measured on records)?": "4. ในส่วน D R ที่เกิดจริงมักมากกว่า h² × S (S วัดจากค่าที่บันทึก) หรือไม่", "Yes: S on records understates how good the GEBV-chosen parents' genes are": "ใช่: S จากค่าที่บันทึกประเมินยีนของพ่อแม่ที่เลือกจาก GEBV ต่ำกว่าความจริง", "No: h²S always matches": "ไม่: h²S ตรงเสมอ", "A new broiler flock. This time pick parents at random (use the button) for 2 generations.": "ฝูงไก่เนื้อใหม่ ครั้งนี้เลือกพ่อแม่แบบสุ่ม (ใช้ปุ่ม) 2 รุ่น", "Body weight at 6 weeks · h² = 0.4 · random parents": "น้ำหนักตัวอายุ 6 สัปดาห์ · h² = 0.4 · พ่อแม่สุ่ม", "Pick at random": "เลือกแบบสุ่ม", "1. With random parents, what were S and R close to?": "1. เมื่อเลือกพ่อแม่แบบสุ่ม S และ R ใกล้กับค่าใด", "Large and positive": "มากและเป็นบวก", "Close to zero, wandering up or down by chance": "ใกล้ศูนย์ ขึ้นลงโดยบังเอิญ", "Always negative": "ติดลบเสมอ", "2. Why run a random-selection control?": "2. ทำไมต้องมีกลุ่มควบคุมที่เลือกแบบสุ่ม", "To separate the effect of selection from chance and environment changes": "เพื่อแยกผลของการคัดเลือกออกจากผลของโอกาสและการเปลี่ยนแปลงของสิ่งแวดล้อม", "Because random selection is better": "เพราะการเลือกแบบสุ่มดีกว่า", "To save feed": "เพื่อประหยัดอาหาร", "1. Using Parts B and C, explain why the same selection effort gave very different gains for body weight and hatchability.": "1. ใช้ส่วน B และ C อธิบายว่าทำไมการคัดเลือกเข้มข้นเท่ากันให้ความก้าวหน้าต่างกันมากระหว่างน้ำหนักตัวกับอัตราการฟักออก", "2. A Thai native-chicken farm wants better disease survival (h² about 0.05). Using Part D, explain why genomic selection could help, and what it would need first.": "2. ฟาร์มไก่พื้นเมืองไทยต้องการเพิ่มการรอดชีวิตจากโรค (h² ประมาณ 0.05) ใช้ส่วน D อธิบายว่าการคัดเลือกจีโนมช่วยได้อย่างไร และต้องมีอะไรก่อน", "Many genes plus environment give a bell curve.": "ยีนหลายคู่รวมกับสิ่งแวดล้อมให้กราฟรูประฆังคว่ำ", "95% lie within 2 SD.": "95% อยู่ในช่วง ±2 SD", "R = h²S predicts the average; chance (Mendelian sampling, environment) moves each generation.": "R = h²S ทำนายค่าเฉลี่ย โอกาส (การสุ่มของเมนเดลและสิ่งแวดล้อม) ทำให้แต่ละรุ่นแกว่ง", "Checked against your own data.": "ตรวจกับข้อมูลของตัวเอง", "Compare your answers to C1 and D1.": "เทียบคำตอบข้อ C1 และ D1"};</script><script>(function(){
+var TH = window.__TH || {};
+var RULES = [
+  [/^(\d+) min$/, "$1 นาที"], [/^Check Part ([A-F])$/, "ตรวจส่วน $1"], [/^Next: Part ([A-F])$/, "ถัดไป: ส่วน $1"], [/^Start Part ([A-F])$/, "เริ่มส่วน $1"],
+  [/^Score: (.+)$/, "คะแนน: $1"], [/^Breed generation (\d+)$/, "ผสมพันธุ์รุ่นที่ $1"], [/^Flagged: (\d+) of (\d+)$/, "ทำเครื่องหมายแล้ว: $1 จาก $2"],
+  [/^Load exactly (\d+) tubes\.$/, "ใส่ให้ครบ $1 หลอด"], [/^Mistakes found: (\d+) of (\d+)\..*$/, "พบที่ผิด $1 จาก $2 ตำแหน่ง เทียบแต่ละเบสกับเบสคู่บนแม่แบบ"],
+  [/^(\d+) of (\d+) boxes correct \((\d+) of (\d+) chromosomes placed\)\..*$/, "ถูก $1 จาก $2 ช่อง (วางแล้ว $3 จาก $4 แท่ง) นับโครโมโซมใหม่ก่อนบันทึก 2n และเลือกเพศของสัตว์"],
+  [/^(\d+) of (\d+) boxes correct\. Count the microchromosomes.*$/, "ถูก $1 จาก $2 ช่อง นับไมโครโครโมโซมใหม่ (ทำเครื่องหมายทีละจุด) 2n = โครโมโซมในคาริโอแกรมรวมไมโครโครโมโซม และเลือกเพศของนก"],
+  [/^Microchromosomes marked: (\d+)$/, "ทำเครื่องหมายไมโครโครโมโซมแล้ว: $1"], [/^Gel (\d+)$/, "เจล $1"], [/^Run (\d+)$/, "ครั้งที่ $1"], [/^Copied$/, "คัดลอกแล้ว"], [/^Tap again to (.+)$/, "แตะอีกครั้งเพื่อยืนยัน"],
+  [/^Part ([A-F]) · (.+)$/, function(m){ var r = look(m[2]); return "ส่วน " + m[1] + (r ? " · " + r : ""); }]
+];
+function norm(s){ return String(s).replace(/\s+/g, " ").trim(); }
+function look(s){ if (Object.prototype.hasOwnProperty.call(TH, s)) return TH[s]; return null; }
+function lookup(s){ var r = look(s); if (r) return r; for (var i = 0; i < RULES.length; i++){ var m = s.match(RULES[i][0]); if (m) return typeof RULES[i][1] === "function" ? RULES[i][1](m) : s.replace(RULES[i][0], RULES[i][1]); } return null; }
+function fbThai(s){
+  var m = s.match(/^(Correct\.|Correct:|Not yet\.|Not quite\.)\s*(.*)$/);
+  if (!m) return lookup(s);
+  var pre = /^Correct/.test(m[1]) ? "ถูกต้อง" : "ยังไม่ถูก";
+  var rest = m[2] ? lookup(norm(m[2].replace(/^Answer: .*?\.\s*/, ""))) : null;
+  return pre + (rest ? " " + rest : "");
+}
+function baseText(el){ var t = ""; el.childNodes.forEach(function(n){ if (n.nodeType === 1 && n.classList && (n.classList.contains("th2") || n.classList.contains("badge") || n.classList.contains("ddh") || n.classList.contains("ddb"))) return; t += n.textContent; }); return norm(t); }
+var SEL = "h1, h3, p, li, label.field, th, td, .opts label span, .chk span, button, option, .key span, .legend span, .tag, .fb, .ddt, .mtn, .mtf";
+var SKIP = "#steps, .no-th, .aln, .mrna, .seq, svg, .copybox";
+function apply(){
+  document.querySelectorAll(SEL).forEach(function(el){
+    if (el.closest(SKIP) || el.classList.contains("dditem")) return;
+    if (el.querySelector("p, li, div, table, h3, ul, ol, select, input, textarea")) return;
+    var key = baseText(el); if (!key) return;
+    if (el.getAttribute("data-thk") === key) return;
+    el.setAttribute("data-thk", key);
+    if (/[\u0E00-\u0E7F]/.test(key) && el.tagName !== "BUTTON") return;
+    var th = el.classList.contains("fb") ? fbThai(key) : lookup(key);
+    var old = el.querySelector(":scope > .th2"); if (old) old.remove();
+    if (!th) return;
+    if (el.tagName === "OPTION"){ el.textContent = key + " · " + th; el.setAttribute("data-thk", el.textContent); return; }
+    var sp = document.createElement("span"); sp.className = "th2" + (el.tagName === "BUTTON" || el.classList.contains("mtn") || el.classList.contains("mtf") ? " inl" : ""); sp.textContent = th; el.appendChild(sp);
+  });
+}
+var pend = false;
+function schedule(){ if (pend) return; pend = true; (window.requestAnimationFrame || setTimeout)(function(){ pend = false; apply(); }); }
+if (window.MutationObserver) new MutationObserver(function(muts){ for (var i = 0; i < muts.length; i++){ var t = muts[i].target; if (t && t.classList && t.classList.contains("th2")) continue; schedule(); return; } }).observe(document.body, {childList:true, subtree:true, characterData:true});
+apply();
+window.__thApply = apply;
+})();
+</script><!--/BIL-JS-->
 </body>
 </html>

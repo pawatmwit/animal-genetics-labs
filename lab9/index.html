@@ -110,10 +110,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .kp .ch.f{background:var(--gold)}
 .kp span{font-size:12px;color:var(--muted)}
 </style>
-</head>
+<!--BIL-CSS--><style>.th2{display:block;font-size:.9em;font-weight:400;color:var(--muted,#5E6E68);margin-top:2px;line-height:1.45}
+.th2.inl{display:inline;margin:0 0 0 .4em;font-size:.85em}
+button .th2,.btn .th2{color:inherit;opacity:.85}
+.fb .th2{color:inherit;opacity:.9}
+.homebtn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--brand);text-decoration:none;font-weight:700;font-size:14px;white-space:nowrap}
+.homebtn:hover{border-color:var(--brand)}
+.sitefoot{margin:40px auto 24px;max-width:880px;padding:18px 20px;border-top:1px solid var(--line);text-align:center;font-size:13px;line-height:1.6;color:var(--muted,#5E6E68)}
+.sitefoot p{margin:2px 0}.sitefoot b{color:var(--brand)}
+</style><!--/BIL-CSS--></head>
 <body>
 <header>
-  <div class="bar">
+  <div class="bar"><!--BIL-HOME--><a class="homebtn" href="../index.html">← Home · หน้าหลัก</a><!--/BIL-HOME-->
     <h1>Lab Worksheet 9 · Predicting mutations</h1>
     <span class="who" id="who">710 114 Animal Genetics</span>
   </div>
@@ -134,9 +142,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <tr><td>A</td><td>Mutation simulator · ทำนายและทดสอบ</td><td>50 min</td></tr>
     <tr><td>B</td><td>Real livestock mutations in OMIA · ฐานข้อมูล OMIA</td><td>40 min</td></tr>
     <tr><td>C</td><td>Chromosome mutations · การกลายพันธุ์ระดับโครโมโซม</td><td>35 min</td></tr>
-    <tr><td>D</td><td>Causes and repair · สาเหตุและการซ่อมแซม</td><td>20 min</td></tr>
-    <tr><td>E</td><td>How many new mutations? · คำนวณ</td><td>10 min</td></tr>
-    <tr><td>F</td><td>Explain · อธิบาย</td><td>15 min</td></tr>
+    <tr><td>D</td><td>Causes, repair and new mutations · สาเหตุ การซ่อมแซม และจำนวนการกลายพันธุ์</td><td>30 min</td></tr>
+    <tr><td>E</td><td>Explain · อธิบาย</td><td>15 min</td></tr>
   </table>
   <div class="row"><button class="btn" data-go="A">Start Part A</button></div>
 </section>
@@ -186,23 +193,19 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   <div class="row"><button class="btn ghost" data-go="C">Next: Part D</button></div>
 </section>
 
-<section class="step" id="s-C" data-title="D · Causes">
-  <h2>Part D · Causes and repair <span class="th">· สาเหตุและการซ่อมแซม</span></h2>
+<section class="step" id="s-C" data-title="D · Causes and numbers">
+  <h2>Part D · Causes, repair and new mutations <span class="th">· สาเหตุ การซ่อมแซม และจำนวนการกลายพันธุ์ใหม่</span></h2>
+  <h3>Causes and repair</h3>
   <div id="C-qs"></div>
-  <div class="row"><button class="btn" id="C-check">Check Part D</button><span class="score" id="C-score"></span></div>
-  <div class="row"><button class="btn ghost" data-go="D">Next: Part E</button></div>
-</section>
-
-<section class="step" id="s-D" data-title="E · Numbers">
-  <h2>Part E · How many new mutations? <span class="th">· คำนวณจำนวนการกลายพันธุ์ใหม่</span></h2>
+  <h3>How many new mutations?</h3>
   <p class="lead">Use a mutation rate of 1 × 10⁻⁸ per bp per generation. A calf receives 2 × 2.7 × 10⁹ bp; a chick 2 × 1.1 × 10⁹ bp. About 1.5% of each genome codes for protein.</p>
   <div id="D-qs"></div>
-  <div class="row"><button class="btn" id="D-check">Check Part E</button><span class="score" id="D-score"></span></div>
-  <div class="row"><button class="btn ghost" data-go="E">Next: Part F</button></div>
+  <div class="row"><button class="btn" id="C-check">Check Part D</button><span class="score" id="C-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="E">Next: Part E</button></div>
 </section>
 
-<section class="step" id="s-E" data-title="F · Explain">
-  <h2>Part F · Explain <span class="th">· อธิบาย</span></h2>
+<section class="step" id="s-E" data-title="E · Explain">
+  <h2>Part E · Explain <span class="th">· อธิบาย</span></h2>
   <p class="lead">Write 2–4 sentences for each, in English or Thai.</p>
   <div id="E-qs"></div>
   <div class="row"><button class="btn" data-go="R">See my summary</button></div>
@@ -217,6 +220,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 </section>
 
 </main>
+<!--BIL-FOOT--><footer class="sitefoot no-th">
+  <p><b>Asst. Prof. Pawat Seritrakul, PhD</b> · ผศ.ดร.ภวัต เสรีตระกูล</p>
+  <p>710 114 Animal Genetics · พันธุศาสตร์สัตว์</p>
+  <p>Animal Science Program · หลักสูตรสัตวศาสตร์</p>
+  <p>Faculty of Animal Sciences and Agricultural Technology, Silpakorn University · คณะสัตวศาสตร์และเทคโนโลยีการเกษตร มหาวิทยาลัยศิลปากร</p>
+</footer>
+<!--/BIL-FOOT-->
+
 <script>
 (function(){
 "use strict";
@@ -244,7 +255,7 @@ function mutate(type, pos, what){
 var P0 = protein(CDS);
 
 /* ---------- navigation ---------- */
-var order = ["start","A","B","X","C","D","E","R"], stepsNav = $("steps");
+var order = ["start","A","B","X","C","E","R"], stepsNav = $("steps");
 order.forEach(function(s){ var b = document.createElement("button"); b.type = "button"; b.dataset.step = s; b.textContent = $("s-"+s).dataset.title; b.addEventListener("click", function(){ go(s); }); stepsNav.appendChild(b); });
 function refreshNav(){ stepsNav.querySelectorAll("button").forEach(function(b){ if (b.dataset.step === state.step) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current"); b.classList.toggle("done", !!state.checked[b.dataset.step]); }); }
 function go(s){ state.step = s; save(); order.forEach(function(x){ $("s-"+x).classList.toggle("on", x === s); }); refreshNav(); if (s === "R") renderSummary(); try{ window.scrollTo(0,0); }catch(e){} }
@@ -424,7 +435,7 @@ var CQ = [
 ];
 buildQs("C", "C-qs", CQ);
 function checkC(show){ return checkList("C", CQ, show); }
-$("C-check").addEventListener("click", function(){ var n = checkC(true); $("C-score").textContent = "Score: " + n + " / " + CQ.length; state.checked.C = true; save(); refreshNav(); });
+$("C-check").addEventListener("click", function(){ var n = checkC(true) + checkD(true); $("C-score").textContent = "Score: " + n + " / " + (CQ.length + DQ.length); state.checked.C = true; save(); refreshNav(); });
 
 /* ---------- PART D ---------- */
 var DQ = [
@@ -435,7 +446,7 @@ var DQ = [
 ];
 buildQs("D", "D-qs", DQ);
 function checkD(show){ return checkList("D", DQ, show); }
-$("D-check").addEventListener("click", function(){ var n = checkD(true); $("D-score").textContent = "Score: " + n + " / " + DQ.length; state.checked.D = true; save(); refreshNav(); });
+
 
 /* ---------- PART E ---------- */
 var EQ = [
@@ -456,14 +467,13 @@ function renderSummary(){
     ["Part A · simulator", checkA(false) + " / " + AQ.length],
     ["Part B · livestock and OMIA", checkB(false) + " / " + BQ.length + (state.B.note ? "; note: " + esc(state.B.note) : "")],
     ["Part C · chromosome mutations", checkX(false) + " / " + (SQ.length + XQ.length)],
-    ["Part D · causes and repair", checkC(false) + " / " + CQ.length],
-    ["Part E · calculations", checkD(false) + " / " + DQ.length]];
-  var h = "<table class='tbl'>" + rows.map(function(r){ return "<tr><th style='width:34%'>" + r[0] + "</th><td>" + r[1] + "</td></tr>"; }).join("") + "</table><h3>Part F · written answers</h3>";
+    ["Part D · causes, repair and numbers", (checkC(false) + checkD(false)) + " / " + (CQ.length + DQ.length)]];
+  var h = "<table class='tbl'>" + rows.map(function(r){ return "<tr><th style='width:34%'>" + r[0] + "</th><td>" + r[1] + "</td></tr>"; }).join("") + "</table><h3>Part E · written answers</h3>";
   EQ.forEach(function(q, n){ h += "<p><b>" + (n+1) + ".</b> " + esc(q.q) + "<br>" + esc(state.E[q.k] || "(no answer)").replace(/\n/g, "<br>") + "</p>"; });
   h += "<p class='note'>Created " + new Date().toLocaleString() + "</p>";
   $("R-body").innerHTML = h;
   var txt = rows.map(function(r){ return r[0] + ": " + r[1].replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,"\""); }).join("\n");
-  EQ.forEach(function(q, n){ txt += "\n\nF" + (n+1) + ". " + q.q + "\n" + (state.E[q.k] || "(no answer)"); });
+  EQ.forEach(function(q, n){ txt += "\n\nE" + (n+1) + ". " + q.q + "\n" + (state.E[q.k] || "(no answer)"); });
   $("R-text").value = txt;
 }
 $("R-copy").addEventListener("click", function(){ var t = $("R-text"), done = function(){ $("R-copy").textContent = "Copied"; setTimeout(function(){ $("R-copy").textContent = "Copy summary as text"; }, 1800); };
@@ -473,5 +483,52 @@ confirmTap($("R-reset"), "Tap again to erase everything", function(){ try{ local
 go(order.indexOf(state.step) >= 0 ? state.step : "start");
 })();
 </script>
+
+<!--BIL-JS--><script>window.__TH = {"Check": "ตรวจคำตอบ", "Choose": "เลือก", "Choose…": "เลือก…", "Copy summary as text": "คัดลอกสรุปเป็นข้อความ", "Count": "นับ", "Critical value at p = 0.05": "ค่าวิกฤตที่ p = 0.05", "Decision": "ผลการตัดสิน", "Degrees of freedom (df)": "องศาอิสระ (df)", "Expected (E)": "ค่าคาดหวัง (E)", "Full name": "ชื่อ-นามสกุล", "Lab group": "กลุ่มปฏิบัติการ", "Observed (O)": "ค่าที่สังเกตได้ (O)", "One": "หนึ่ง", "Part": "ส่วน", "Reset": "เริ่มใหม่", "Run": "รัน", "See my summary": "ดูสรุปของฉัน", "Start": "เริ่ม", "Start over on this device": "เริ่มใหม่ทั้งหมดบนเครื่องนี้", "Steps": "ขั้นตอน", "Student ID": "รหัสนักศึกษา", "Take a screenshot of this page, or copy the summary text, and submit it the way your instructor tells you.": "ถ่ายภาพหน้าจอหน้านี้ หรือคัดลอกข้อความสรุป แล้วส่งตามที่อาจารย์กำหนด", "Time": "เวลา", "Total": "รวม", "What you do": "สิ่งที่ทำ", "Write 2–4 sentences for each, in English or Thai, using your own results.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย โดยใช้ผลของตัวเอง", "Write 2–4 sentences for each, in English or Thai.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย", "χ² (total)": "χ² (รวม)", "Check my chi-square": "ตรวจค่าไคสแควร์ของฉัน", "Check my square": "ตรวจตารางของฉัน", "About 5": "ประมาณ 5", "Name": "ชื่อ", "Lab group number": "หมายเลขกลุ่ม", "Copy record as text": "คัดลอกบันทึกเป็นข้อความ", "Copy result as text": "คัดลอกผลเป็นข้อความ", "Before you begin": "ก่อนเริ่ม", "Yes": "ใช่", "No": "ไม่ใช่", "Clear": "ล้าง", "Back": "ย้อนกลับ", "Next": "ถัดไป", "New set": "ชุดใหม่", "See results": "ดูผล", "Full name(s) of your group": "ชื่อ-นามสกุลสมาชิกกลุ่ม", "Student ID(s)": "รหัสนักศึกษา", "Bench / group number": "โต๊ะ / หมายเลขกลุ่ม", "Round (time slot)": "รอบ (ช่วงเวลา)", "Name (optional)": "ชื่อ (ไม่บังคับ)", "Student ID (optional)": "รหัสนักศึกษา (ไม่บังคับ)", "Group (optional)": "กลุ่ม (ไม่บังคับ)", "Erase all on this device": "ลบทั้งหมดบนเครื่องนี้", "Drag the cards, or use ▲ ▼, so that step 1 is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้ขั้นที่ 1 อยู่บนสุด", "Drag the cards, or use ▲ ▼, so that the first event is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้เหตุการณ์แรกอยู่บนสุด", "Each parent's gametes carry one allele of each gene; list every kind once. Each box = the gamete on its row + the gamete above its column.": "เซลล์สืบพันธุ์ของพ่อแม่แต่ละตัวมีอัลลีลของแต่ละยีนหนึ่งตัว เขียนแต่ละแบบครั้งเดียว แต่ละช่อง = เซลล์สืบพันธุ์ของแถว + เซลล์สืบพันธุ์ของคอลัมน์", "Red boxes need another look. Tip: a cross with single-comb Hen D (rrpp) shows exactly which alleles the rooster carries.": "ช่องสีแดงต้องดูใหม่ เคล็ดลับ: ผสมกับไก่ตัวเมีย D หงอนจักร (rrpp) จะเห็นชัดว่าไก่ตัวผู้มีอัลลีลใด", "Your sequence should be 8–30 letters, using only A, C, G and T. Tick the box once your model is folded and shown.": "ลำดับควรยาว 8-30 ตัวอักษร ใช้เฉพาะ A, C, G และ T ทำเครื่องหมายในช่องเมื่อพับแบบจำลองและให้อาจารย์ดูแล้ว", "Finish Part A1 first.": "ทำส่วน A1 ให้เสร็จก่อน", "Lab Worksheet 9 · Predicting mutations": "ใบงานปฏิบัติการที่ 9 · การทำนายการกลายพันธุ์", "Predict what mutations do to a protein, test your predictions in a simulator, classify real livestock mutations and look them up in OMIA, then read chromosome-level changes in karyotypes. Answers save in this browser, so use the same device for the whole session.": "ทำนายว่าการกลายพันธุ์มีผลต่อโปรตีนอย่างไร ทดสอบในเครื่องจำลอง จำแนกการกลายพันธุ์จริงในปศุสัตว์และค้นใน OMIA แล้วอ่านการเปลี่ยนแปลงระดับโครโมโซมในแคริโอไทป์ คำตอบบันทึกในเบราว์เซอร์นี้ จึงควรใช้อุปกรณ์เดิมตลอดคาบ", "The gene below codes for the cattle insulin B chain (the coding sequence from Lab 8, written as DNA). Position 1 is the A of ATG.": "ยีนด้านล่างเป็นรหัสของสาย B อินซูลินโค (ลำดับรหัสจากปฏิบัติการที่ 8 เขียนเป็นดีเอ็นเอ) ตำแหน่ง 1 คือ A ของ ATG", "Try a mutation": "ลองทำให้กลายพันธุ์", "Type": "ชนิด", "Substitution": "การแทนที่เบส", "Insertion (after the position)": "การแทรก (หลังตำแหน่ง)", "Deletion (starting at the position)": "การขาดหาย (เริ่มที่ตำแหน่ง)", "Position": "ตำแหน่ง", "New base(s), or number of bases to delete": "เบสใหม่ หรือจำนวนเบสที่ลบ", "For each mutation, predict first, then test it in the simulator if you want to check.": "แต่ละการกลายพันธุ์ ให้ทำนายก่อน แล้วทดสอบในเครื่องจำลองถ้าต้องการตรวจ", "Mutation 1: substitution C → T at position 6": "การกลายพันธุ์ 1: แทนที่ C → T ที่ตำแหน่ง 6", "Kind of mutation": "ชนิดของการกลายพันธุ์", "Silent": "แบบเงียบ (silent)", "Missense": "มิสเซนส์ (missense)", "Nonsense": "นอนเซนส์ (nonsense)", "In-frame (whole codons added or lost)": "คงกรอบ (เพิ่มหรือลดเป็นโคดอนเต็ม)", "Frameshift": "เลื่อนกรอบ (frameshift)", "Mutation 2: substitution G → A at position 91": "การกลายพันธุ์ 2: แทนที่ G → A ที่ตำแหน่ง 91", "New amino acid (one letter)": "กรดอะมิโนใหม่ (ตัวอักษรเดียว)", "Mutation 3: substitution C → T at position 13": "การกลายพันธุ์ 3: แทนที่ C → T ที่ตำแหน่ง 13", "How many amino acids long is the mutant protein (counting Met)?": "โปรตีนกลายพันธุ์ยาวกี่กรดอะมิโน (นับ Met)", "Mutation 4: deletion of 1 base at position 20": "การกลายพันธุ์ 4: ขาดหาย 1 เบสที่ตำแหน่ง 20", "Mutation 5: deletion of 3 bases starting at position 22": "การกลายพันธุ์ 5: ขาดหาย 3 เบสเริ่มที่ตำแหน่ง 22", "Which amino acid is lost? (one letter)": "กรดอะมิโนใดหายไป (ตัวอักษรเดียว)", "Mutation 6: insertion of one A after position 45": "การกลายพันธุ์ 6: แทรก A หนึ่งตัวหลังตำแหน่ง 45", "Mutation 7: substitution G → A at position 59": "การกลายพันธุ์ 7: แทนที่ G → A ที่ตำแหน่ง 59", "Open OMIA (Online Mendelian Inheritance in Animals). Search by trait or disorder name, then open the entry for the right species. Read the gene and the \"Mode of inheritance\" lines.": "เปิด OMIA (Online Mendelian Inheritance in Animals) ค้นด้วยชื่อลักษณะหรือโรค แล้วเปิดรายการของสปีชีส์ที่ถูกต้อง อ่านบรรทัดยีนและ \"Mode of inheritance\"", "If OMIA shows something different from what the checker expects, note it in the box below and tell the instructor.": "ถ้า OMIA แสดงต่างจากที่ระบบตรวจคาดไว้ ให้บันทึกในช่องด้านล่างและแจ้งอาจารย์", "Case 1 · Belgian Blue cattle: 11-bp deletion in exon 3 of the double-muscling gene": "กรณี 1 · โคเบลเจียนบลู: ขาดหาย 11 bp ในเอ็กซอน 3 ของยีนกล้ามเนื้อสองชั้น", "Regulatory (outside the coding sequence)": "ส่วนควบคุม (อยู่นอกลำดับรหัส)", "Search OMIA for double muscling in cattle. Gene symbol?": "ค้น OMIA เรื่องกล้ามเนื้อสองชั้นในโค สัญลักษณ์ยีนคืออะไร", "Case 2 · Piedmontese cattle: G → A changing Cys313 to Tyr in the same gene": "กรณี 2 · โคพีดมอนต์: G → A เปลี่ยน Cys313 เป็น Tyr ในยีนเดียวกัน", "Case 3 · Charolais cattle: C → T turning Gln204 into a stop codon in the same gene": "กรณี 3 · โคชาโรเลส์: C → T เปลี่ยน Gln204 เป็นโคดอนหยุดในยีนเดียวกัน", "Case 4 · Pigs: C → T changing Arg615 to Cys, causing malignant hyperthermia (porcine stress syndrome)": "กรณี 4 · สุกร: C → T เปลี่ยน Arg615 เป็น Cys ทำให้เกิดภาวะไข้สูงร้ายแรง (porcine stress syndrome)", "Search OMIA for malignant hyperthermia in pigs. Gene symbol?": "ค้น OMIA เรื่อง malignant hyperthermia ในสุกร สัญลักษณ์ยีนคืออะไร", "Case 5 · Holstein cattle: A → G changing Asp128 to Gly, causing BLAD": "กรณี 5 · โคโฮลสไตน์: A → G เปลี่ยน Asp128 เป็น Gly ทำให้เกิด BLAD", "Search OMIA for leukocyte adhesion deficiency (BLAD) in cattle. Gene symbol?": "ค้น OMIA เรื่อง leukocyte adhesion deficiency (BLAD) ในโค สัญลักษณ์ยีนคืออะไร", "Case 6 · Angus and Hereford cattle: a ~200-bp duplication in non-coding DNA, causing polled": "กรณี 6 · โคแองกัสและเฮียร์ฟอร์ด: การซ้ำประมาณ 200 bp ในดีเอ็นเอที่ไม่เป็นรหัส ทำให้ไม่มีเขา", "On which cattle chromosome is the polled locus?": "ตำแหน่งยีนไม่มีเขาอยู่บนโครโมโซมใดของโค", "According to OMIA, which pair are both autosomal recessive disorders?": "ตาม OMIA คู่ใดเป็นโรคออโตโซมแบบด้อยทั้งคู่", "BLAD and malignant hyperthermia in pigs": "BLAD และ malignant hyperthermia ในสุกร", "Polled and BLAD": "ไม่มีเขาและ BLAD", "Polled and double muscling": "ไม่มีเขาและกล้ามเนื้อสองชั้น", "Note for the instructor (optional)": "บันทึกถึงอาจารย์ (ไม่บังคับ)", "Letters stand for segments of a chromosome. Name each change, then read karyotypes and count chromosomes.": "ตัวอักษรแทนช่วงของโครโมโซม บอกชื่อการเปลี่ยนแปลงแต่ละแบบ แล้วอ่านแคริโอไทป์และนับโครโมโซม", "C1 · Name the structural change": "C1 · บอกชื่อการเปลี่ยนแปลงโครงสร้าง", "Deletion": "การขาดหาย", "Duplication": "การเพิ่มซ้ำ", "Inversion": "การกลับทิศ", "Translocation": "การย้ายที่", "C2 · Read the karyotypes": "C2 · อ่านแคริโอไทป์", "Simplified karyotypes of three animals: only six chromosome pairs are drawn, numbered by size.": "แคริโอไทป์อย่างง่ายของสัตว์สามตัว วาดเพียงหกคู่ เรียงตามขนาด", "Animal 1": "สัตว์ตัวที่ 1", "Animal 2": "สัตว์ตัวที่ 2", "Animal 3": "สัตว์ตัวที่ 3", "Diagnosis for Animal 1": "ผลการวินิจฉัยสัตว์ตัวที่ 1", "Normal": "ปกติ", "Trisomy": "ไตรโซมี", "Robertsonian fusion (gold = chromosomes 1 and 6 joined)": "การเชื่อมแบบโรเบิร์ตโซเนียน (สีทอง = โครโมโซม 1 และ 6 เชื่อมกัน)", "Monosomy": "โมโนโซมี", "Diagnosis for Animal 2": "ผลการวินิจฉัยสัตว์ตัวที่ 2", "Diagnosis for Animal 3": "ผลการวินิจฉัยสัตว์ตัวที่ 3", "Cattle have 2n = 60. How many chromosomes are in the body cells of a bull carrying one 1/29 fusion?": "โคมี 2n = 60 เซลล์ร่างกายของโคพ่อพันธุ์ที่มีการเชื่อม 1/29 หนึ่งแท่งมีโครโมโซมกี่แท่ง", "Which gametes from a 1/29 carrier bull can give a normal-looking, healthy calf?": "เซลล์สืบพันธุ์แบบใดจากพ่อพันธุ์พาหะ 1/29 ให้ลูกโคที่ดูปกติและแข็งแรงได้", "Only gametes with the fused chromosome": "เฉพาะเซลล์สืบพันธุ์ที่มีโครโมโซมที่เชื่อมกัน", "Balanced gametes: either the fused 1/29 alone, or a normal 1 and a normal 29": "เซลล์สืบพันธุ์ที่สมดุล: มีแท่ง 1/29 ที่เชื่อมกันอย่างเดียว หรือมีแท่ง 1 และ 29 ปกติ", "Any gamete, because no genes are lost": "ทุกเซลล์สืบพันธุ์ เพราะไม่มียีนหายไป", "Nondisjunction in a cow's meiosis I gives an egg with both copies of chromosome 12. A normal sperm fertilizes it. How many copies of chromosome 12 does the embryo have?": "การไม่แยกตัวในไมโอซิส I ของแม่โคได้ไข่ที่มีโครโมโซม 12 ทั้งสองแท่ง เมื่อปฏิสนธิกับอสุจิปกติ ตัวอ่อนมีโครโมโซม 12 กี่แท่ง", "How many chromosomes in total does that embryo have?": "ตัวอ่อนนั้นมีโครโมโซมทั้งหมดกี่แท่ง", "Horses have 2n = 64. An infertile mare is 63,X. What is she missing?": "ม้ามี 2n = 64 แม่ม้าที่เป็นหมันเป็น 63,X ขาดอะไรไป", "One copy of chromosome 1": "โครโมโซม 1 หนึ่งแท่ง", "One X chromosome": "โครโมโซม X หนึ่งแท่ง", "A whole set": "หนึ่งชุดทั้งชุด", "Cats have 2n = 38. How many chromosomes does an XXY male tortoiseshell cat have?": "แมวมี 2n = 38 แมวกระดองเต่าเพศผู้ที่เป็น XXY มีโครโมโซมกี่แท่ง", "A herd's average litter is 12 piglets. Litters sired by a translocation-carrier boar are 40% smaller. Piglets per litter from the carrier?": "ครอกเฉลี่ยของฝูงคือลูกสุกร 12 ตัว ครอกจากพ่อสุกรที่เป็นพาหะการย้ายที่เล็กลง 40% ได้ลูกกี่ตัวต่อครอก", "How many piglets are lost over 100 litters sired by that boar?": "ใน 100 ครอกจากพ่อสุกรตัวนั้น สูญเสียลูกสุกรกี่ตัว", "Causes and repair": "สาเหตุและการซ่อมแซม", "UV light joins two neighbouring thymines. Repair system?": "แสง UV เชื่อมไทมีนสองตัวที่อยู่ติดกัน ใช้ระบบซ่อมแซมใด", "Mismatch repair": "การซ่อมแซมเบสผิดคู่", "Base excision repair": "การซ่อมแซมโดยตัดเบส", "Nucleotide excision repair": "การซ่อมแซมโดยตัดนิวคลีโอไทด์", "Double-strand break repair": "การซ่อมแซมดีเอ็นเอขาดสองสาย", "A cytosine loses an amino group and becomes uracil. Repair system?": "ไซโทซีนเสียหมู่อะมิโนกลายเป็นยูราซิล ใช้ระบบซ่อมแซมใด", "DNA polymerase puts G opposite T and proofreading misses it. Repair system?": "ดีเอ็นเอพอลิเมอเรสใส่ G ตรงข้าม T และการตรวจทานพลาดไป ใช้ระบบซ่อมแซมใด", "X-rays break both strands. Repair system?": "รังสีเอกซ์ทำให้ดีเอ็นเอขาดทั้งสองสาย ใช้ระบบซ่อมแซมใด", "Cows eat mouldy, aflatoxin-contaminated feed. Which risk applies to their liver cells?": "แม่โคกินอาหารขึ้นราที่มีอะฟลาท็อกซิน ความเสี่ยงใดเกิดกับเซลล์ตับ", "Inherited mutations in their calves": "การกลายพันธุ์ที่ถ่ายทอดไปยังลูกโค", "Somatic mutations, mostly G → T": "การกลายพันธุ์ในเซลล์ร่างกาย ส่วนใหญ่เป็น G → T", "No risk: aflatoxin only affects taste": "ไม่มีความเสี่ยง อะฟลาท็อกซินมีผลแค่รสชาติ", "A bull's skin cell gains a mutation from sunlight. Can his calves inherit it?": "เซลล์ผิวหนังของโคพ่อพันธุ์เกิดการกลายพันธุ์จากแสงแดด ลูกโคถ่ายทอดได้หรือไม่", "Yes, all of them": "ได้ ทุกตัว", "Yes, half of them": "ได้ ครึ่งหนึ่ง", "No: it is somatic": "ไม่ได้ เพราะเกิดในเซลล์ร่างกาย", "How many new mutations?": "การกลายพันธุ์ใหม่มีกี่ตำแหน่ง", "Use a mutation rate of 1 × 10⁻⁸ per bp per generation. A calf receives 2 × 2.7 × 10⁹ bp; a chick 2 × 1.1 × 10⁹ bp. About 1.5% of each genome codes for protein.": "ใช้อัตราการกลายพันธุ์ 1 × 10⁻⁸ ต่อ bp ต่อรุ่น ลูกโคได้รับ 2 × 2.7 × 10⁹ bp ลูกไก่ 2 × 1.1 × 10⁹ bp ประมาณ 1.5% ของแต่ละจีโนมเป็นส่วนสร้างโปรตีน", "About how many new mutations does one calf carry?": "ลูกโคหนึ่งตัวมีการกลายพันธุ์ใหม่ประมาณกี่ตำแหน่ง", "About how many new mutations does one chick carry?": "ลูกไก่หนึ่งตัวมีการกลายพันธุ์ใหม่ประมาณกี่ตำแหน่ง", "How many of a calf's new mutations fall in protein-coding DNA, on average? (2 decimal places)": "โดยเฉลี่ย การกลายพันธุ์ใหม่ของลูกโคตกในดีเอ็นเอส่วนสร้างโปรตีนกี่ตำแหน่ง (ทศนิยม 2 ตำแหน่ง)", "A herd produces 1,000 calves. About how many new coding-region mutations do they carry in total?": "ฝูงให้ลูกโค 1,000 ตัว มีการกลายพันธุ์ใหม่ในส่วนรหัสรวมประมาณกี่ตำแหน่ง", "1. Using Mutations 4 and 5 from Part A, explain why deleting 1 base usually harms a protein more than deleting 3 bases.": "1. ใช้การกลายพันธุ์ 4 และ 5 จากส่วน A อธิบายว่าทำไมการลบ 1 เบสมักทำลายโปรตีนมากกว่าการลบ 3 เบส", "2. Is the Belgian Blue double-muscling allele good or bad for farmers? Give one benefit and one cost, and suggest how a breeder could use it.": "2. อัลลีลกล้ามเนื้อสองชั้นของโคเบลเจียนบลูดีหรือไม่ดีต่อเกษตรกร บอกข้อดีหนึ่งข้อและข้อเสียหนึ่งข้อ และเสนอวิธีที่ผู้ปรับปรุงพันธุ์จะใช้อัลลีลนี้", "Look at the codon (or count the bases) before deciding.": "ดูโคดอน (หรือนับเบส) ก่อนตัดสิน", "Run it in the simulator and read the mutant length.": "ลองในเครื่องจำลองแล้วอ่านความยาวของโปรตีนกลายพันธุ์", "Find the codon that contains this position in the codon table.": "หาโคดอนที่มีตำแหน่งนี้ในตารางโคดอน", "11 is not a multiple of 3.": "11 ไม่ใช่พหุคูณของ 3", "Myostatin.": "ไมโอสแตติน", "The ryanodine receptor, a calcium channel in muscle.": "ตัวรับไรยาโนดีน ช่องแคลเซียมในกล้ามเนื้อ", "An integrin white blood cells need to leave the bloodstream.": "อินทิกรินที่เม็ดเลือดขาวต้องใช้ในการออกจากกระแสเลือด", "No codon changes; gene switching changes.": "ไม่มีโคดอนเปลี่ยน แต่การเปิดปิดยีนเปลี่ยน", "BTA1.": "BTA1", "Polled is dominant (Class 2).": "ลักษณะไม่มีเขาเป็นลักษณะเด่น (ครั้งที่ 2)", "Count the chromosomes in each pair and compare their sizes.": "นับโครโมโซมในแต่ละคู่และเทียบขนาด", "Two chromosomes became one.": "โครโมโซมสองแท่งรวมเป็นแท่งเดียว", "Unbalanced gametes carry an extra or missing copy of chromosome 1 or 29 material, and those embryos die early.": "เซลล์สืบพันธุ์ที่ไม่สมดุลมีส่วนของโครโมโซม 1 หรือ 29 เกินหรือขาด ตัวอ่อนเหล่านั้นตายเร็ว", "Aflatoxin damages DNA in body cells; it is a mutagen and carcinogen.": "อะฟลาท็อกซินทำลายดีเอ็นเอในเซลล์ร่างกาย เป็นสารก่อกลายพันธุ์และสารก่อมะเร็ง", "Compare the order and number of letters before and after.": "เทียบลำดับและจำนวนตัวอักษรก่อนและหลัง"};</script><script>(function(){
+var TH = window.__TH || {};
+var RULES = [
+  [/^(\d+) min$/, "$1 นาที"], [/^Check Part ([A-F])$/, "ตรวจส่วน $1"], [/^Next: Part ([A-F])$/, "ถัดไป: ส่วน $1"], [/^Start Part ([A-F])$/, "เริ่มส่วน $1"],
+  [/^Score: (.+)$/, "คะแนน: $1"], [/^Breed generation (\d+)$/, "ผสมพันธุ์รุ่นที่ $1"], [/^Flagged: (\d+) of (\d+)$/, "ทำเครื่องหมายแล้ว: $1 จาก $2"],
+  [/^Load exactly (\d+) tubes\.$/, "ใส่ให้ครบ $1 หลอด"], [/^Mistakes found: (\d+) of (\d+)\..*$/, "พบที่ผิด $1 จาก $2 ตำแหน่ง เทียบแต่ละเบสกับเบสคู่บนแม่แบบ"],
+  [/^(\d+) of (\d+) boxes correct \((\d+) of (\d+) chromosomes placed\)\..*$/, "ถูก $1 จาก $2 ช่อง (วางแล้ว $3 จาก $4 แท่ง) นับโครโมโซมใหม่ก่อนบันทึก 2n และเลือกเพศของสัตว์"],
+  [/^(\d+) of (\d+) boxes correct\. Count the microchromosomes.*$/, "ถูก $1 จาก $2 ช่อง นับไมโครโครโมโซมใหม่ (ทำเครื่องหมายทีละจุด) 2n = โครโมโซมในคาริโอแกรมรวมไมโครโครโมโซม และเลือกเพศของนก"],
+  [/^Microchromosomes marked: (\d+)$/, "ทำเครื่องหมายไมโครโครโมโซมแล้ว: $1"], [/^Gel (\d+)$/, "เจล $1"], [/^Run (\d+)$/, "ครั้งที่ $1"], [/^Copied$/, "คัดลอกแล้ว"], [/^Tap again to (.+)$/, "แตะอีกครั้งเพื่อยืนยัน"],
+  [/^Part ([A-F]) · (.+)$/, function(m){ var r = look(m[2]); return "ส่วน " + m[1] + (r ? " · " + r : ""); }]
+];
+function norm(s){ return String(s).replace(/\s+/g, " ").trim(); }
+function look(s){ if (Object.prototype.hasOwnProperty.call(TH, s)) return TH[s]; return null; }
+function lookup(s){ var r = look(s); if (r) return r; for (var i = 0; i < RULES.length; i++){ var m = s.match(RULES[i][0]); if (m) return typeof RULES[i][1] === "function" ? RULES[i][1](m) : s.replace(RULES[i][0], RULES[i][1]); } return null; }
+function fbThai(s){
+  var m = s.match(/^(Correct\.|Correct:|Not yet\.|Not quite\.)\s*(.*)$/);
+  if (!m) return lookup(s);
+  var pre = /^Correct/.test(m[1]) ? "ถูกต้อง" : "ยังไม่ถูก";
+  var rest = m[2] ? lookup(norm(m[2].replace(/^Answer: .*?\.\s*/, ""))) : null;
+  return pre + (rest ? " " + rest : "");
+}
+function baseText(el){ var t = ""; el.childNodes.forEach(function(n){ if (n.nodeType === 1 && n.classList && (n.classList.contains("th2") || n.classList.contains("badge") || n.classList.contains("ddh") || n.classList.contains("ddb"))) return; t += n.textContent; }); return norm(t); }
+var SEL = "h1, h3, p, li, label.field, th, td, .opts label span, .chk span, button, option, .key span, .legend span, .tag, .fb, .ddt, .mtn, .mtf";
+var SKIP = "#steps, .no-th, .aln, .mrna, .seq, svg, .copybox";
+function apply(){
+  document.querySelectorAll(SEL).forEach(function(el){
+    if (el.closest(SKIP) || el.classList.contains("dditem")) return;
+    if (el.querySelector("p, li, div, table, h3, ul, ol, select, input, textarea")) return;
+    var key = baseText(el); if (!key) return;
+    if (el.getAttribute("data-thk") === key) return;
+    el.setAttribute("data-thk", key);
+    if (/[\u0E00-\u0E7F]/.test(key) && el.tagName !== "BUTTON") return;
+    var th = el.classList.contains("fb") ? fbThai(key) : lookup(key);
+    var old = el.querySelector(":scope > .th2"); if (old) old.remove();
+    if (!th) return;
+    if (el.tagName === "OPTION"){ el.textContent = key + " · " + th; el.setAttribute("data-thk", el.textContent); return; }
+    var sp = document.createElement("span"); sp.className = "th2" + (el.tagName === "BUTTON" || el.classList.contains("mtn") || el.classList.contains("mtf") ? " inl" : ""); sp.textContent = th; el.appendChild(sp);
+  });
+}
+var pend = false;
+function schedule(){ if (pend) return; pend = true; (window.requestAnimationFrame || setTimeout)(function(){ pend = false; apply(); }); }
+if (window.MutationObserver) new MutationObserver(function(muts){ for (var i = 0; i < muts.length; i++){ var t = muts[i].target; if (t && t.classList && t.classList.contains("th2")) continue; schedule(); return; } }).observe(document.body, {childList:true, subtree:true, characterData:true});
+apply();
+window.__thApply = apply;
+})();
+</script><!--/BIL-JS-->
 </body>
 </html>

@@ -85,6 +85,21 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .copybox{width:100%;max-width:100%;min-height:160px;font-size:14px}
 @media (max-width:600px){body{font-size:16px} h2{font-size:24px}}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
+.dd{list-style:none;padding:0;margin:8px 0;display:flex;flex-direction:column;gap:8px;counter-reset:dd}
+.dditem{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);touch-action:none;cursor:grab;user-select:none;counter-increment:dd}
+.dditem::before{content:counter(dd);font-weight:700;color:var(--brand);min-width:1.4em}
+.dditem.drag{outline:3px solid var(--gold);cursor:grabbing}
+.dditem.ok{border-color:#1E6B4A;background:#DDEFE6}.dditem.bad{border-color:#9E3F2B;background:#F6DDD9}
+.ddh{color:var(--muted,#5E6E68);font-size:20px}.ddt{flex:1}
+.ddb{display:flex;gap:4px}.ddb button{border:1px solid var(--line);background:transparent;border-radius:6px;padding:4px 8px;cursor:pointer;color:inherit}
+.ddb button:disabled{opacity:.3;cursor:default}
+.mt{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:640px){.mt{grid-template-columns:1fr}}
+.mtcol{display:flex;flex-direction:column;gap:8px}
+.mtn,.mtf{display:flex;gap:10px;align-items:center;text-align:left;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:inherit;cursor:pointer;font:inherit}
+.mtn.on{outline:3px solid var(--gold)}.mtn.paired,.mtf.paired{border-color:var(--brand)}
+.mtn.ok{background:#DDEFE6;border-color:#1E6B4A}.mtn.bad{background:#F6DDD9;border-color:#9E3F2B}
+.badge{display:inline-flex;min-width:26px;height:26px;border-radius:13px;align-items:center;justify-content:center;background:var(--brand);color:#fff;font-weight:700;font-size:14px;flex:none}
 </style>
 <style>
 .seqrow{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:6px 0}
@@ -105,10 +120,18 @@ button.bt{cursor:pointer}
 .meter > div{height:100%;background:var(--gold);width:0;transition:width .3s}
 .big{font-size:26px;font-weight:700;color:var(--brand)}
 </style>
-</head>
+<!--BIL-CSS--><style>.th2{display:block;font-size:.9em;font-weight:400;color:var(--muted,#5E6E68);margin-top:2px;line-height:1.45}
+.th2.inl{display:inline;margin:0 0 0 .4em;font-size:.85em}
+button .th2,.btn .th2{color:inherit;opacity:.85}
+.fb .th2{color:inherit;opacity:.9}
+.homebtn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--brand);text-decoration:none;font-weight:700;font-size:14px;white-space:nowrap}
+.homebtn:hover{border-color:var(--brand)}
+.sitefoot{margin:40px auto 24px;max-width:880px;padding:18px 20px;border-top:1px solid var(--line);text-align:center;font-size:13px;line-height:1.6;color:var(--muted,#5E6E68)}
+.sitefoot p{margin:2px 0}.sitefoot b{color:var(--brand)}
+</style><!--/BIL-CSS--></head>
 <body>
 <header>
-  <div class="bar">
+  <div class="bar"><!--BIL-HOME--><a class="homebtn" href="../index.html">← Home · หน้าหลัก</a><!--/BIL-HOME-->
     <h1>Lab Worksheet 6 · Copying DNA</h1>
     <span class="who" id="who">710 114 Animal Genetics</span>
   </div>
@@ -159,6 +182,8 @@ button.bt{cursor:pointer}
     <p class="note" style="margin:6px 0 0">Fork moves →</p>
   </div>
   <div id="B-qs"></div>
+  <div class="card"><h3 style="margin-top:0">Put the events at the fork in order</h3><p class="note" style="margin:0 0 4px">Drag the cards, or use ▲ ▼, so that step 1 is at the top.</p><div id="B-order"></div><div class="fb" id="fb-B-order"></div></div>
+  <div class="card"><h3 style="margin-top:0">Match each enzyme to its job</h3><div id="B-match"></div><div class="fb" id="fb-B-match"></div></div>
   <div class="row"><button class="btn" id="B-check">Check Part B</button><span class="score" id="B-score"></span></div>
   <div class="row"><button class="btn ghost" data-go="C">Next: Part C</button></div>
 </section>
@@ -211,6 +236,14 @@ button.bt{cursor:pointer}
 </section>
 
 </main>
+<!--BIL-FOOT--><footer class="sitefoot no-th">
+  <p><b>Asst. Prof. Pawat Seritrakul, PhD</b> · ผศ.ดร.ภวัต เสรีตระกูล</p>
+  <p>710 114 Animal Genetics · พันธุศาสตร์สัตว์</p>
+  <p>Animal Science Program · หลักสูตรสัตวศาสตร์</p>
+  <p>Faculty of Animal Sciences and Agricultural Technology, Silpakorn University · คณะสัตวศาสตร์และเทคโนโลยีการเกษตร มหาวิทยาลัยศิลปากร</p>
+</footer>
+<!--/BIL-FOOT-->
+
 <script>
 (function(){
 "use strict";
@@ -326,6 +359,59 @@ buildQs("A", "A-qs", AQ);
 function checkA(show){ return checkList("A", AQ, show) + (state.A.spun ? predScore(false) : 0); }
 $("A-check").addEventListener("click", function(){ var n = checkA(true); showPred(); $("A-score").textContent = "Score: " + n + " / " + (AQ.length + 6) + (state.A.spun ? "" : " (spin the tubes to score your predictions)"); state.checked.A = true; save(); refreshNav(); });
 
+/* ---------- drag-and-drop ordering and tap-to-pair matching ---------- */
+function ddOrder(host, items, store, key, onChange){
+  if (!store[key] || store[key].length !== items.length){
+    var o = items.map(function(_, i){ return i; }), seed = items.length * 7 + 3;
+    for (var i = o.length - 1; i > 0; i--){ seed = (seed * 9301 + 49297) % 233280; var j = Math.floor(seed / 233280 * (i + 1)); var t = o[i]; o[i] = o[j]; o[j] = t; }
+    if (o.every(function(v, i){ return v === i; })) o.reverse();
+    store[key] = o;
+  }
+  var dragging = null;
+  function draw(marks){
+    var h = "<ol class='dd'>" + store[key].map(function(it, pos){
+      var m = marks ? (marks[pos] ? " ok" : " bad") : "";
+      return "<li class='dditem" + m + "' data-it='" + it + "'><span class='ddh' aria-hidden='true'>⠿</span><span class='ddt'>" + items[it] + "</span>"
+        + "<span class='ddb'><button type='button' class='ddup' aria-label='Move up'" + (pos === 0 ? " disabled" : "") + ">▲</button><button type='button' class='dddn' aria-label='Move down'" + (pos === items.length - 1 ? " disabled" : "") + ">▼</button></span></li>"; }).join("") + "</ol>";
+    host.innerHTML = h;
+    host.querySelectorAll(".dditem").forEach(function(li, pos){
+      li.querySelector(".ddup").addEventListener("click", function(){ move(pos, pos - 1); });
+      li.querySelector(".dddn").addEventListener("click", function(){ move(pos, pos + 1); });
+      li.addEventListener("pointerdown", function(e){ if (e.target.closest("button")) return; dragging = Number(li.dataset.it); li.classList.add("drag"); try{ li.setPointerCapture(e.pointerId); }catch(_){} e.preventDefault(); });
+      li.addEventListener("pointermove", function(e){ if (dragging === null) return; var el = document.elementFromPoint(e.clientX, e.clientY); var tgt = el && el.closest ? el.closest(".dditem") : null;
+        if (tgt && tgt.parentNode === li.parentNode){ var from = store[key].indexOf(dragging), to = store[key].indexOf(Number(tgt.dataset.it)); if (from !== to){ move(from, to, true); } } });
+      li.addEventListener("pointerup", function(){ if (dragging !== null){ dragging = null; draw(); onChange && onChange(); } });
+    });
+    if (dragging !== null){ var cur = host.querySelector(".dditem[data-it='" + dragging + "']"); if (cur) cur.classList.add("drag"); }
+  }
+  function move(from, to, keepDrag){ if (to < 0 || to >= items.length) return; var a = store[key]; var v = a.splice(from, 1)[0]; a.splice(to, 0, v); draw(); if (!keepDrag) onChange && onChange(); }
+  draw();
+  return {score:function(correct){ return store[key].filter(function(it, pos){ return it === correct[pos]; }).length; },
+          show:function(correct){ draw(store[key].map(function(it, pos){ return it === correct[pos]; })); }};
+}
+function tapMatch(host, names, funcs, store, key, onChange){
+  store[key] = store[key] || {};
+  var sel = null, order = funcs.map(function(_, i){ return i; }).sort(function(a, b){ return ((a * 5 + 3) % funcs.length) - ((b * 5 + 3) % funcs.length); });
+  function draw(marks){
+    var used = {}; Object.keys(store[key]).forEach(function(n){ used[store[key][n]] = Number(n); });
+    var h = "<div class='mt'><div class='mtcol'><p class='note'>Names · ชื่อ</p>" + names.map(function(nm, i){ var paired = store[key][i] != null, m = marks ? (marks[i] ? " ok" : " bad") : "";
+      return "<button type='button' class='mtn" + (sel === i ? " on" : "") + (paired ? " paired" : "") + m + "' data-n='" + i + "'><span class='badge'>" + (i + 1) + "</span>" + nm + "</button>"; }).join("")
+      + "</div><div class='mtcol'><p class='note'>Jobs · หน้าที่</p>" + order.map(function(f){ var who = used[f];
+      return "<button type='button' class='mtf" + (who != null ? " paired" : "") + "' data-f='" + f + "'><span class='badge'>" + (who != null ? who + 1 : "·") + "</span>" + funcs[f] + "</button>"; }).join("") + "</div></div>"
+      + "<p class='note'>Tap a name, then tap its job. Tap a matched job again to undo. · แตะชื่อ แล้วแตะหน้าที่ที่คู่กัน แตะหน้าที่ที่จับคู่แล้วซ้ำเพื่อยกเลิก</p>";
+    host.innerHTML = h;
+    host.querySelectorAll(".mtn").forEach(function(b){ b.addEventListener("click", function(){ var i = Number(b.dataset.n); sel = sel === i ? null : i; draw(); }); });
+    host.querySelectorAll(".mtf").forEach(function(b){ b.addEventListener("click", function(){ var f = Number(b.dataset.f);
+      var who = null; Object.keys(store[key]).forEach(function(n){ if (store[key][n] === f) who = Number(n); });
+      if (sel === null){ if (who != null){ delete store[key][who]; draw(); onChange && onChange(); } return; }
+      if (who != null) delete store[key][who];
+      store[key][sel] = f; sel = null; draw(); onChange && onChange(); }); });
+  }
+  draw();
+  return {score:function(correct){ return names.filter(function(_, i){ return store[key][i] === correct[i]; }).length; },
+          show:function(correct){ draw(names.map(function(_, i){ return store[key][i] === correct[i]; })); }};
+}
+
 /* ---------- PART B ---------- */
 var TOP = "TACCGGATAGCA";            // written 3' -> 5', left to right
 var BOT = comp(TOP);                  // 5' -> 3', left to right
@@ -341,11 +427,20 @@ var BQ = [
  {k:"b3", t:"txt", q:"Type the new strand made on the <b>bottom</b> template, written 5′ → 3′.", a:comp(BOT).split("").reverse().join(""), why:"Pair each base, then write it from its 5′ end (right) to its 3′ end (left).", hint:"Pair the bases first, then reverse the order so it reads 5′ → 3′."},
  {k:"b4", t:"num", q:"A 1,800-nt stretch of lagging strand is made in fragments of 150 nt. How many RNA primers does it need?", a:12, tol:0, why:"1,800 ÷ 150 = 12 fragments, one primer each.", hint:"One primer per Okazaki fragment."}
 ];
-STEPS.forEach(function(s, i){ BQ.push({k:"s" + i, t:"sel", q:"Order of events: <b>" + s + "</b> happens at step…", o:["1","2","3","4","5","6"], a:STEPKEY[i] - 1, why:"", hint:"Open, prime, extend, finish."}); });
-JOBS.forEach(function(j, i){ BQ.push({k:"e" + i, t:"sel", q:"Which enzyme: <b>" + j[0] + "</b>?", o:ENZ, a:j[1], why:"", hint:"Check the enzyme table on the Class 6 slides."}); });
 buildQs("B", "B-qs", BQ);
-function checkB(show){ return checkList("B", BQ, show); }
-$("B-check").addEventListener("click", function(){ var n = checkB(true); $("B-score").textContent = "Score: " + n + " / " + BQ.length; state.checked.B = true; save(); refreshNav(); });
+var ORDKEY = STEPKEY.map(function(_, i){ return i; }).sort(function(a, b){ return STEPKEY[a] - STEPKEY[b]; });
+var bOrder = ddOrder($("B-order"), STEPS, state.B, "ord", save);
+var FUNCS = JOBS.map(function(j){ return j[0]; }), MATCHKEY = ENZ.map(function(_, e){ var f = -1; JOBS.forEach(function(j, i){ if (j[1] === e) f = i; }); return f; });
+var bMatch = tapMatch($("B-match"), ENZ, FUNCS, state.B, "pairs", save);
+function checkB(show){
+  var o = bOrder.score(ORDKEY), m = bMatch.score(MATCHKEY);
+  if (show){ bOrder.show(ORDKEY); bMatch.show(MATCHKEY);
+    var f1 = $("fb-B-order"), f2 = $("fb-B-match");
+    f1.className = "fb show " + (o === 6 ? "ok" : "bad"); f1.textContent = o === 6 ? "Correct. Helicase opens, SSB holds, primase primes, polymerase extends, primers are replaced, ligase seals." : "Not yet. " + o + " of 6 in the right place. Open, hold apart, prime, extend, replace primers, seal.";
+    f2.className = "fb show " + (m === 6 ? "ok" : "bad"); f2.textContent = m === 6 ? "Correct. All six enzymes matched." : "Not yet. " + m + " of 6 pairs are right. Check the enzyme table on the Class 6 slides."; }
+  return checkList("B", BQ, show) + o + m;
+}
+$("B-check").addEventListener("click", function(){ var n = checkB(true); $("B-score").textContent = "Score: " + n + " / 16"; state.checked.B = true; save(); refreshNav(); });
 
 /* ---------- PART C ---------- */
 function rnd(){ return Math.random(); }
@@ -444,7 +539,7 @@ function renderSummary(){
   var i = state.info;
   var rows = [["Name", esc(i.name || "(not entered)")], ["Student ID", esc(i.id || "(not entered)")], ["Lab group", esc(i.group || "(not entered)")],
     ["Part A · Meselson–Stahl", checkA(false) + " / " + (AQ.length + 6) + (state.A.spun ? "" : " (tubes not spun)")],
-    ["Part B · replication fork", checkB(false) + " / " + BQ.length],
+    ["Part B · replication fork", checkB(false) + " / 16"],
     ["Part C · proofreading", checkC(false) + " / " + (3 + CQ.length)],
     ["Part D · PCR", checkD(false) + " / " + DQ.length]];
   var h = "<table class='tbl'>" + rows.map(function(r){ return "<tr><th style='width:34%'>" + r[0] + "</th><td>" + r[1] + "</td></tr>"; }).join("") + "</table><h3>Part E · written answers</h3>";
@@ -462,5 +557,52 @@ confirmTap($("R-reset"), "Tap again to erase everything", function(){ try{ local
 go(order.indexOf(state.step) >= 0 ? state.step : "start");
 })();
 </script>
+
+<!--BIL-JS--><script>window.__TH = {"Check": "ตรวจคำตอบ", "Choose": "เลือก", "Choose…": "เลือก…", "Copy summary as text": "คัดลอกสรุปเป็นข้อความ", "Count": "นับ", "Critical value at p = 0.05": "ค่าวิกฤตที่ p = 0.05", "Decision": "ผลการตัดสิน", "Degrees of freedom (df)": "องศาอิสระ (df)", "Expected (E)": "ค่าคาดหวัง (E)", "Full name": "ชื่อ-นามสกุล", "Lab group": "กลุ่มปฏิบัติการ", "Observed (O)": "ค่าที่สังเกตได้ (O)", "One": "หนึ่ง", "Part": "ส่วน", "Reset": "เริ่มใหม่", "Run": "รัน", "See my summary": "ดูสรุปของฉัน", "Start": "เริ่ม", "Start over on this device": "เริ่มใหม่ทั้งหมดบนเครื่องนี้", "Steps": "ขั้นตอน", "Student ID": "รหัสนักศึกษา", "Take a screenshot of this page, or copy the summary text, and submit it the way your instructor tells you.": "ถ่ายภาพหน้าจอหน้านี้ หรือคัดลอกข้อความสรุป แล้วส่งตามที่อาจารย์กำหนด", "Time": "เวลา", "Total": "รวม", "What you do": "สิ่งที่ทำ", "Write 2–4 sentences for each, in English or Thai, using your own results.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย โดยใช้ผลของตัวเอง", "Write 2–4 sentences for each, in English or Thai.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย", "χ² (total)": "χ² (รวม)", "Check my chi-square": "ตรวจค่าไคสแควร์ของฉัน", "Check my square": "ตรวจตารางของฉัน", "About 5": "ประมาณ 5", "Name": "ชื่อ", "Lab group number": "หมายเลขกลุ่ม", "Copy record as text": "คัดลอกบันทึกเป็นข้อความ", "Copy result as text": "คัดลอกผลเป็นข้อความ", "Before you begin": "ก่อนเริ่ม", "Yes": "ใช่", "No": "ไม่ใช่", "Clear": "ล้าง", "Back": "ย้อนกลับ", "Next": "ถัดไป", "New set": "ชุดใหม่", "See results": "ดูผล", "Full name(s) of your group": "ชื่อ-นามสกุลสมาชิกกลุ่ม", "Student ID(s)": "รหัสนักศึกษา", "Bench / group number": "โต๊ะ / หมายเลขกลุ่ม", "Round (time slot)": "รอบ (ช่วงเวลา)", "Name (optional)": "ชื่อ (ไม่บังคับ)", "Student ID (optional)": "รหัสนักศึกษา (ไม่บังคับ)", "Group (optional)": "กลุ่ม (ไม่บังคับ)", "Erase all on this device": "ลบทั้งหมดบนเครื่องนี้", "Drag the cards, or use ▲ ▼, so that step 1 is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้ขั้นที่ 1 อยู่บนสุด", "Drag the cards, or use ▲ ▼, so that the first event is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้เหตุการณ์แรกอยู่บนสุด", "Each parent's gametes carry one allele of each gene; list every kind once. Each box = the gamete on its row + the gamete above its column.": "เซลล์สืบพันธุ์ของพ่อแม่แต่ละตัวมีอัลลีลของแต่ละยีนหนึ่งตัว เขียนแต่ละแบบครั้งเดียว แต่ละช่อง = เซลล์สืบพันธุ์ของแถว + เซลล์สืบพันธุ์ของคอลัมน์", "Red boxes need another look. Tip: a cross with single-comb Hen D (rrpp) shows exactly which alleles the rooster carries.": "ช่องสีแดงต้องดูใหม่ เคล็ดลับ: ผสมกับไก่ตัวเมีย D หงอนจักร (rrpp) จะเห็นชัดว่าไก่ตัวผู้มีอัลลีลใด", "Your sequence should be 8–30 letters, using only A, C, G and T. Tick the box once your model is folded and shown.": "ลำดับควรยาว 8-30 ตัวอักษร ใช้เฉพาะ A, C, G และ T ทำเครื่องหมายในช่องเมื่อพับแบบจำลองและให้อาจารย์ดูแล้ว", "Finish Part A1 first.": "ทำส่วน A1 ให้เสร็จก่อน", "Lab Worksheet 6 · Copying DNA": "ใบงานปฏิบัติการที่ 6 · การจำลองดีเอ็นเอ", "Four simulations of DNA copying: the Meselson–Stahl experiment, a replication fork, proofreading and PCR. Answers are checked as you go and saved in this browser, so use the same device for the whole session.": "แบบจำลองการจำลองดีเอ็นเอ 4 อย่าง: การทดลองของ Meselson–Stahl ส้อมจำลอง การตรวจทาน และ PCR ตรวจคำตอบระหว่างทำและบันทึกในเบราว์เซอร์นี้ จึงควรใช้อุปกรณ์เดิมตลอดคาบ", "E. coli grew for many generations on heavy nitrogen (¹⁵N), then moved to light nitrogen (¹⁴N). Predict the bands each model would give, then spin the tubes. Your predictions lock when you spin.": "E. coli เลี้ยงบนไนโตรเจนหนัก (¹⁵N) หลายรุ่น แล้วย้ายไปไนโตรเจนเบา (¹⁴N) ทำนายแถบที่แต่ละแบบจำลองจะให้ แล้วปั่นหลอด คำทำนายจะล็อกเมื่อปั่น", "A1 · Your predictions": "A1 · คำทำนายของฉัน", "one heavy band": "แถบหนักหนึ่งแถบ", "one hybrid band": "แถบลูกผสมหนึ่งแถบ", "one light band": "แถบเบาหนึ่งแถบ", "heavy + light bands": "แถบหนัก + แถบเบา", "hybrid + light bands": "แถบลูกผสม + แถบเบา", "one band between hybrid and light": "แถบเดียวอยู่ระหว่างลูกผสมกับเบา", "Spin the tubes": "ปั่นหลอด", "1. Which model fits the tubes you just saw?": "1. แบบจำลองใดเข้ากับหลอดที่เพิ่งเห็น", "Conservative": "แบบอนุรักษ์ (conservative)", "Semi-conservative": "แบบกึ่งอนุรักษ์ (semi-conservative)", "Dispersive": "แบบกระจาย (dispersive)", "2. After which generation could conservative copying be ruled out?": "2. ตัดแบบอนุรักษ์ออกได้หลังรุ่นที่เท่าใด", "3. After which generation could dispersive copying be ruled out?": "3. ตัดแบบกระจายออกได้หลังรุ่นที่เท่าใด", "4. After 4 generations on ¹⁴N, what fraction of DNA molecules is hybrid? (decimal or fraction)": "4. หลังเลี้ยงบน ¹⁴N 4 รุ่น โมเลกุลดีเอ็นเอที่เป็นลูกผสมเป็นสัดส่วนเท่าใด (ทศนิยมหรือเศษส่วน)", "5. After 3 generations, what fraction is light?": "5. หลัง 3 รุ่น โมเลกุลที่เป็นแบบเบาเป็นสัดส่วนเท่าใด", "This stretch of DNA is being opened from the left; the fork moves to the right.": "ดีเอ็นเอช่วงนี้กำลังถูกเปิดจากด้านซ้าย ส้อมเคลื่อนไปทางขวา", "Fork moves →": "ส้อมเคลื่อนไปทางนี้ →", "1. The fork moves to the right. Which template gives the leading strand?": "1. ส้อมเคลื่อนไปทางขวา สายแม่แบบใดให้สายนำ (leading strand)", "Top template (3′ → 5′ left to right)": "สายแม่แบบบน (3′ → 5′ จากซ้ายไปขวา)", "Bottom template (5′ → 3′ left to right)": "สายแม่แบบล่าง (5′ → 3′ จากซ้ายไปขวา)", "2. Type the new strand made on the top template, left to right (it runs 5′ → 3′).": "2. พิมพ์สายใหม่ที่สร้างบนสายแม่แบบบน จากซ้ายไปขวา (วิ่ง 5′ → 3′)", "3. Type the new strand made on the bottom template, written 5′ → 3′.": "3. พิมพ์สายใหม่ที่สร้างบนสายแม่แบบล่าง เขียนแบบ 5′ → 3′", "4. A 1,800-nt stretch of lagging strand is made in fragments of 150 nt. How many RNA primers does it need?": "4. สายตามยาว 1,800 นิวคลีโอไทด์สร้างเป็นท่อนละ 150 นิวคลีโอไทด์ ต้องใช้ไพรเมอร์ RNA กี่อัน", "Put the events at the fork in order": "เรียงลำดับเหตุการณ์ที่ส้อมจำลอง", "Match each enzyme to its job": "จับคู่เอนไซม์กับหน้าที่", "A polymerase copied the template below but made exactly three mistakes. Your strand is different from your neighbour's.": "พอลิเมอเรสคัดลอกแม่แบบด้านล่างแต่ผิดพลาด 3 ตำแหน่งพอดี สายของแต่ละคนไม่เหมือนกัน", "Template (3′ → 5′)": "แม่แบบ (3′ → 5′)", "New strand (5′ → 3′): tap the bases you think are wrong": "สายใหม่ (5′ → 3′): แตะเบสที่คิดว่าผิด", "Flagged: 0 of 3": "ทำเครื่องหมายแล้ว: 0 จาก 3", "1. Type the corrected new strand (5′ → 3′, all 24 bases).": "1. พิมพ์สายใหม่ที่แก้แล้ว (5′ → 3′ ครบ 24 เบส)", "2. During copying, which activity removes a wrong base straight away?": "2. ระหว่างการคัดลอก กิจกรรมใดตัดเบสที่ผิดออกทันที", "Ligase": "ไลเกส", "The polymerase's 3′ → 5′ exonuclease (proofreading)": "เอกโซนิวคลีเอส 3′ → 5′ ของพอลิเมอเรส (การตรวจทาน)", "Primase": "ไพรเมส", "Helicase": "เฮลิเคส", "3. Mismatch repair corrects which strand?": "3. การซ่อมแซมเบสผิดคู่แก้ไขสายใด", "The old (template) strand": "สายเก่า (แม่แบบ)", "The new strand": "สายใหม่", "Whichever strand is shorter": "สายที่สั้นกว่า", "Both strands": "ทั้งสองสาย", "4. How does E. coli tell the new strand from the old one?": "4. E. coli แยกสายใหม่จากสายเก่าได้อย่างไร", "The new strand is longer": "สายใหม่ยาวกว่า", "The old strand carries methyl tags; the new strand does not yet": "สายเก่ามีหมู่เมทิลติดอยู่ ส่วนสายใหม่ยังไม่มี", "The new strand is made of RNA": "สายใหม่เป็น RNA", "The old strand is heavier": "สายเก่าหนักกว่า", "5. At 1 error per 10⁹ bp, about how many new errors does one cattle cell division make? (5.4 × 10⁹ bp copied)": "5. ที่อัตราผิดพลาด 1 ต่อ 10⁹ bp การแบ่งเซลล์โคหนึ่งครั้งเกิดความผิดพลาดใหม่ประมาณกี่ตำแหน่ง (คัดลอก 5.4 × 10⁹ bp)", "Each cycle: denature (heat), anneal (primers bind), extend (Taq builds). Run cycles and watch the copies double.": "แต่ละรอบ: แยกสาย (ให้ความร้อน) จับไพรเมอร์ (ไพรเมอร์เกาะ) ต่อสาย (Taq สร้างสาย) รันหลายรอบแล้วดูจำนวนสำเนาเพิ่มเป็นสองเท่า", "Run 1 cycle": "รัน 1 รอบ", "Run 10 cycles": "รัน 10 รอบ", "Ready.": "พร้อม", "1. Starting with 10 copies, how many copies after 25 cycles? (full number or e-notation, e.g. 3.4e8)": "1. เริ่มจาก 10 สำเนา หลัง 25 รอบมีกี่สำเนา (ตัวเลขเต็มหรือแบบ e เช่น 3.4e8)", "2. Starting with 1 copy, what is the fewest cycles to reach at least 1,000,000 copies?": "2. เริ่มจาก 1 สำเนา ต้องรันอย่างน้อยกี่รอบจึงได้อย่างน้อย 1,000,000 สำเนา", "3. Temperature for denaturation:": "3. อุณหภูมิขั้นแยกสาย:", "4. Temperature for annealing:": "4. อุณหภูมิขั้นจับไพรเมอร์:", "5. Temperature for extension:": "5. อุณหภูมิขั้นต่อสาย:", "6. In PCR, what does the job of helicase?": "6. ใน PCR อะไรทำหน้าที่แทนเฮลิเคส", "Primers": "ไพรเมอร์", "Heat": "ความร้อน", "Magnesium ions": "ไอออนแมกนีเซียม", "7. Why is Taq polymerase used instead of a cow's DNA polymerase?": "7. ทำไมใช้ Taq polymerase แทนดีเอ็นเอพอลิเมอเรสของโค", "It works without primers": "ทำงานได้โดยไม่ต้องมีไพรเมอร์", "It survives 95 °C heating every cycle": "ทนความร้อน 95 °C ได้ทุกรอบ", "It copies RNA": "คัดลอก RNA ได้", "It is cheaper to buy": "ราคาถูกกว่า", "1. Explain why the lagging strand has to be made in pieces. Use the words antiparallel and 5′ → 3′.": "1. อธิบายว่าทำไมสายตามต้องสร้างเป็นท่อน ใช้คำว่า antiparallel และ 5′ → 3′", "2. Give two ways PCR is like replication in a cell, and two ways it is different.": "2. บอกความเหมือนของ PCR กับการจำลองดีเอ็นเอในเซลล์ 2 ข้อ และความต่าง 2 ข้อ", "Hybrid at generation 1, then hybrid + light.": "รุ่นที่ 1 เป็นลูกผสม จากนั้นเป็นลูกผสม + เบา", "Conservative would show heavy + light at generation 1; they saw one hybrid band.": "แบบอนุรักษ์จะให้แถบหนัก + เบาในรุ่นที่ 1 แต่ผลเป็นแถบลูกผสมแถบเดียว", "Dispersive would show one band between hybrid and light at generation 2.": "แบบกระจายจะให้แถบเดียวระหว่างลูกผสมกับเบาในรุ่นที่ 2", "2 of 2⁴ = 16 molecules: 2/16 = 1/8.": "2 จาก 2⁴ = 16 โมเลกุล: 2/16 = 1/8", "After n generations there are 2ⁿ molecules and always 2 hybrids.": "หลัง n รุ่นมี 2ⁿ โมเลกุล และมีลูกผสม 2 โมเลกุลเสมอ", "6 of 8 molecules are light.": "6 จาก 8 โมเลกุลเป็นแบบเบา", "Light = total minus the 2 hybrids.": "แบบเบา = ทั้งหมด ลบลูกผสม 2 โมเลกุล", "Its new strand grows 5′ → 3′ to the right, the same way the fork moves.": "สายใหม่ยาวขึ้นแบบ 5′ → 3′ ไปทางขวา ทิศเดียวกับที่ส้อมเคลื่อน", "A new strand grows 5′ → 3′ and runs opposite to its template.": "สายใหม่ยาวขึ้นแบบ 5′ → 3′ และขนานสวนทางกับแม่แบบ", "It matches the bottom template base for base.": "ตรงกับสายแม่แบบล่างทุกเบส", "Pair each base: A↔T, G↔C.": "จับคู่ทุกเบส: A↔T, G↔C", "Pair each base, then write it from its 5′ end (right) to its 3′ end (left).": "จับคู่ทุกเบส แล้วเขียนจากปลาย 5′ (ขวา) ไปปลาย 3′ (ซ้าย)", "Pair the bases first, then reverse the order so it reads 5′ → 3′.": "จับคู่เบสก่อน แล้วกลับลำดับให้อ่านแบบ 5′ → 3′", "1,800 ÷ 150 = 12 fragments, one primer each.": "1,800 ÷ 150 = 12 ท่อน ท่อนละหนึ่งไพรเมอร์", "One primer per Okazaki fragment.": "หนึ่งไพรเมอร์ต่อหนึ่งท่อนโอคาซากิ", "Every base now pairs with the template.": "ทุกเบสจับคู่กับแม่แบบแล้ว", "Fix only the three wrong bases; keep the rest.": "แก้เฉพาะเบสที่ผิด 3 ตัว ที่เหลือคงไว้", "The polymerase backs up and cuts out its own mistake.": "พอลิเมอเรสถอยกลับและตัดความผิดพลาดของตัวเองออก", "The old strand holds the correct information.": "สายเก่ามีข้อมูลที่ถูกต้อง", "Methylation marks the old strand for a short time after copying.": "หมู่เมทิลทำเครื่องหมายสายเก่าไว้ช่วงสั้น ๆ หลังการคัดลอก", "Multiply base pairs copied by the error rate.": "คูณจำนวนคู่เบสที่คัดลอกด้วยอัตราความผิดพลาด", "copies = N₀ × 2ⁿ.": "จำนวนสำเนา = N₀ × 2ⁿ", "2²⁰ = 1,048,576; 2¹⁹ is only 524,288.": "2²⁰ = 1,048,576 ส่วน 2¹⁹ มีเพียง 524,288", "Use the simulator, or 2¹⁰ ≈ 1,000.": "ใช้เครื่องจำลอง หรือ 2¹⁰ ≈ 1,000", "Heat separates the strands.": "ความร้อนแยกสองสายออกจากกัน", "Cool enough for primers to bind.": "เย็นพอให้ไพรเมอร์เกาะได้", "Taq works best near 72 °C.": "Taq ทำงานได้ดีที่สุดใกล้ 72 °C", "High temperature breaks the hydrogen bonds.": "อุณหภูมิสูงทำลายพันธะไฮโดรเจน", "It comes from a hot-spring bacterium, Thermus aquaticus.": "มาจากแบคทีเรียในบ่อน้ำพุร้อน Thermus aquaticus", "Helicase opens, SSB holds, primase primes, polymerase extends, primers are replaced, ligase seals.": "เฮลิเคสเปิดสาย SSB ยึดสายแยก ไพรเมสสร้างไพรเมอร์ พอลิเมอเรสต่อสาย แทนไพรเมอร์ด้วยดีเอ็นเอ ไลเกสเชื่อมรอยต่อ", "All six enzymes matched.": "จับคู่เอนไซม์ถูกครบทั้ง 6 ตัว", "Helicase unzips the helix": "เฮลิเคสคลายเกลียว", "Primers are replaced with DNA": "แทนไพรเมอร์ด้วยดีเอ็นเอ", "DNA polymerase extends from the 3′ end": "ดีเอ็นเอพอลิเมอเรสต่อสายจากปลาย 3′", "SSB proteins hold the strands apart": "โปรตีน SSB ยึดสายให้แยกกัน", "Primase lays an RNA primer": "ไพรเมสวางไพรเมอร์ RNA", "Ligase seals the gaps": "ไลเกสเชื่อมรอยต่อ", "SSB proteins": "โปรตีน SSB", "Topoisomerase": "โทโพไอโซเมอเรส", "DNA polymerase": "ดีเอ็นเอพอลิเมอเรส", "Breaks hydrogen bonds between bases": "ทำลายพันธะไฮโดรเจนระหว่างเบส", "Makes RNA primers": "สร้างไพรเมอร์ RNA", "Joins Okazaki fragments": "เชื่อมท่อนโอคาซากิ", "Relieves twisting ahead of the fork": "คลายแรงบิดด้านหน้าส้อม", "Keeps single strands from re-pairing": "กันไม่ให้สายเดี่ยวกลับมาจับคู่", "Adds nucleotides and proofreads": "เติมนิวคลีโอไทด์และตรวจทาน", "Not yet.": "ยังไม่ถูก"};</script><script>(function(){
+var TH = window.__TH || {};
+var RULES = [
+  [/^(\d+) min$/, "$1 นาที"], [/^Check Part ([A-F])$/, "ตรวจส่วน $1"], [/^Next: Part ([A-F])$/, "ถัดไป: ส่วน $1"], [/^Start Part ([A-F])$/, "เริ่มส่วน $1"],
+  [/^Score: (.+)$/, "คะแนน: $1"], [/^Breed generation (\d+)$/, "ผสมพันธุ์รุ่นที่ $1"], [/^Flagged: (\d+) of (\d+)$/, "ทำเครื่องหมายแล้ว: $1 จาก $2"],
+  [/^Load exactly (\d+) tubes\.$/, "ใส่ให้ครบ $1 หลอด"], [/^Mistakes found: (\d+) of (\d+)\..*$/, "พบที่ผิด $1 จาก $2 ตำแหน่ง เทียบแต่ละเบสกับเบสคู่บนแม่แบบ"],
+  [/^(\d+) of (\d+) boxes correct \((\d+) of (\d+) chromosomes placed\)\..*$/, "ถูก $1 จาก $2 ช่อง (วางแล้ว $3 จาก $4 แท่ง) นับโครโมโซมใหม่ก่อนบันทึก 2n และเลือกเพศของสัตว์"],
+  [/^(\d+) of (\d+) boxes correct\. Count the microchromosomes.*$/, "ถูก $1 จาก $2 ช่อง นับไมโครโครโมโซมใหม่ (ทำเครื่องหมายทีละจุด) 2n = โครโมโซมในคาริโอแกรมรวมไมโครโครโมโซม และเลือกเพศของนก"],
+  [/^Microchromosomes marked: (\d+)$/, "ทำเครื่องหมายไมโครโครโมโซมแล้ว: $1"], [/^Gel (\d+)$/, "เจล $1"], [/^Run (\d+)$/, "ครั้งที่ $1"], [/^Copied$/, "คัดลอกแล้ว"], [/^Tap again to (.+)$/, "แตะอีกครั้งเพื่อยืนยัน"],
+  [/^Part ([A-F]) · (.+)$/, function(m){ var r = look(m[2]); return "ส่วน " + m[1] + (r ? " · " + r : ""); }]
+];
+function norm(s){ return String(s).replace(/\s+/g, " ").trim(); }
+function look(s){ if (Object.prototype.hasOwnProperty.call(TH, s)) return TH[s]; return null; }
+function lookup(s){ var r = look(s); if (r) return r; for (var i = 0; i < RULES.length; i++){ var m = s.match(RULES[i][0]); if (m) return typeof RULES[i][1] === "function" ? RULES[i][1](m) : s.replace(RULES[i][0], RULES[i][1]); } return null; }
+function fbThai(s){
+  var m = s.match(/^(Correct\.|Correct:|Not yet\.|Not quite\.)\s*(.*)$/);
+  if (!m) return lookup(s);
+  var pre = /^Correct/.test(m[1]) ? "ถูกต้อง" : "ยังไม่ถูก";
+  var rest = m[2] ? lookup(norm(m[2].replace(/^Answer: .*?\.\s*/, ""))) : null;
+  return pre + (rest ? " " + rest : "");
+}
+function baseText(el){ var t = ""; el.childNodes.forEach(function(n){ if (n.nodeType === 1 && n.classList && (n.classList.contains("th2") || n.classList.contains("badge") || n.classList.contains("ddh") || n.classList.contains("ddb"))) return; t += n.textContent; }); return norm(t); }
+var SEL = "h1, h3, p, li, label.field, th, td, .opts label span, .chk span, button, option, .key span, .legend span, .tag, .fb, .ddt, .mtn, .mtf";
+var SKIP = "#steps, .no-th, .aln, .mrna, .seq, svg, .copybox";
+function apply(){
+  document.querySelectorAll(SEL).forEach(function(el){
+    if (el.closest(SKIP) || el.classList.contains("dditem")) return;
+    if (el.querySelector("p, li, div, table, h3, ul, ol, select, input, textarea")) return;
+    var key = baseText(el); if (!key) return;
+    if (el.getAttribute("data-thk") === key) return;
+    el.setAttribute("data-thk", key);
+    if (/[\u0E00-\u0E7F]/.test(key) && el.tagName !== "BUTTON") return;
+    var th = el.classList.contains("fb") ? fbThai(key) : lookup(key);
+    var old = el.querySelector(":scope > .th2"); if (old) old.remove();
+    if (!th) return;
+    if (el.tagName === "OPTION"){ el.textContent = key + " · " + th; el.setAttribute("data-thk", el.textContent); return; }
+    var sp = document.createElement("span"); sp.className = "th2" + (el.tagName === "BUTTON" || el.classList.contains("mtn") || el.classList.contains("mtf") ? " inl" : ""); sp.textContent = th; el.appendChild(sp);
+  });
+}
+var pend = false;
+function schedule(){ if (pend) return; pend = true; (window.requestAnimationFrame || setTimeout)(function(){ pend = false; apply(); }); }
+if (window.MutationObserver) new MutationObserver(function(muts){ for (var i = 0; i < muts.length; i++){ var t = muts[i].target; if (t && t.classList && t.classList.contains("th2")) continue; schedule(); return; } }).observe(document.body, {childList:true, subtree:true, characterData:true});
+apply();
+window.__thApply = apply;
+})();
+</script><!--/BIL-JS-->
 </body>
 </html>

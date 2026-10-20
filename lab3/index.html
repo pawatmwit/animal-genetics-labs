@@ -133,10 +133,18 @@ input.bad,select.bad{border:2px solid var(--bad);background:var(--bad-soft)}
 .wrow .times{font-size:26px;font-weight:700;color:var(--gold)}
 .wsq{display:flex;flex-direction:column}
 </style>
-</head>
+<!--BIL-CSS--><style>.th2{display:block;font-size:.9em;font-weight:400;color:var(--muted,#5E6E68);margin-top:2px;line-height:1.45}
+.th2.inl{display:inline;margin:0 0 0 .4em;font-size:.85em}
+button .th2,.btn .th2{color:inherit;opacity:.85}
+.fb .th2{color:inherit;opacity:.9}
+.homebtn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--brand);text-decoration:none;font-weight:700;font-size:14px;white-space:nowrap}
+.homebtn:hover{border-color:var(--brand)}
+.sitefoot{margin:40px auto 24px;max-width:880px;padding:18px 20px;border-top:1px solid var(--line);text-align:center;font-size:13px;line-height:1.6;color:var(--muted,#5E6E68)}
+.sitefoot p{margin:2px 0}.sitefoot b{color:var(--brand)}
+</style><!--/BIL-CSS--></head>
 <body>
 <header>
-  <div class="bar">
+  <div class="bar"><!--BIL-HOME--><a class="homebtn" href="../index.html">← Home · หน้าหลัก</a><!--/BIL-HOME-->
     <h1>Lab Worksheet 3 · Gene interaction</h1>
     <span class="who" id="who">710 114 Animal Genetics</span>
   </div>
@@ -231,6 +239,14 @@ input.bad,select.bad{border:2px solid var(--bad);background:var(--bad-soft)}
 </section>
 
 </main>
+<!--BIL-FOOT--><footer class="sitefoot no-th">
+  <p><b>Asst. Prof. Pawat Seritrakul, PhD</b> · ผศ.ดร.ภวัต เสรีตระกูล</p>
+  <p>710 114 Animal Genetics · พันธุศาสตร์สัตว์</p>
+  <p>Animal Science Program · หลักสูตรสัตวศาสตร์</p>
+  <p>Faculty of Animal Sciences and Agricultural Technology, Silpakorn University · คณะสัตวศาสตร์และเทคโนโลยีการเกษตร มหาวิทยาลัยศิลปากร</p>
+</footer>
+<!--/BIL-FOOT-->
+
 <script>
 (function(){
 "use strict";
@@ -586,5 +602,52 @@ confirmTap($("R-reset"), "Tap again to erase everything", function(){ try{ local
 go(order.indexOf(state.step) >= 0 ? state.step : "start");
 })();
 </script>
+
+<!--BIL-JS--><script>window.__TH = {"Check": "ตรวจคำตอบ", "Choose": "เลือก", "Choose…": "เลือก…", "Copy summary as text": "คัดลอกสรุปเป็นข้อความ", "Count": "นับ", "Critical value at p = 0.05": "ค่าวิกฤตที่ p = 0.05", "Decision": "ผลการตัดสิน", "Degrees of freedom (df)": "องศาอิสระ (df)", "Expected (E)": "ค่าคาดหวัง (E)", "Full name": "ชื่อ-นามสกุล", "Lab group": "กลุ่มปฏิบัติการ", "Observed (O)": "ค่าที่สังเกตได้ (O)", "One": "หนึ่ง", "Part": "ส่วน", "Reset": "เริ่มใหม่", "Run": "รัน", "See my summary": "ดูสรุปของฉัน", "Start": "เริ่ม", "Start over on this device": "เริ่มใหม่ทั้งหมดบนเครื่องนี้", "Steps": "ขั้นตอน", "Student ID": "รหัสนักศึกษา", "Take a screenshot of this page, or copy the summary text, and submit it the way your instructor tells you.": "ถ่ายภาพหน้าจอหน้านี้ หรือคัดลอกข้อความสรุป แล้วส่งตามที่อาจารย์กำหนด", "Time": "เวลา", "Total": "รวม", "What you do": "สิ่งที่ทำ", "Write 2–4 sentences for each, in English or Thai, using your own results.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย โดยใช้ผลของตัวเอง", "Write 2–4 sentences for each, in English or Thai.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย", "χ² (total)": "χ² (รวม)", "Check my chi-square": "ตรวจค่าไคสแควร์ของฉัน", "Check my square": "ตรวจตารางของฉัน", "About 5": "ประมาณ 5", "Name": "ชื่อ", "Lab group number": "หมายเลขกลุ่ม", "Copy record as text": "คัดลอกบันทึกเป็นข้อความ", "Copy result as text": "คัดลอกผลเป็นข้อความ", "Before you begin": "ก่อนเริ่ม", "Yes": "ใช่", "No": "ไม่ใช่", "Clear": "ล้าง", "Back": "ย้อนกลับ", "Next": "ถัดไป", "New set": "ชุดใหม่", "See results": "ดูผล", "Full name(s) of your group": "ชื่อ-นามสกุลสมาชิกกลุ่ม", "Student ID(s)": "รหัสนักศึกษา", "Bench / group number": "โต๊ะ / หมายเลขกลุ่ม", "Round (time slot)": "รอบ (ช่วงเวลา)", "Name (optional)": "ชื่อ (ไม่บังคับ)", "Student ID (optional)": "รหัสนักศึกษา (ไม่บังคับ)", "Group (optional)": "กลุ่ม (ไม่บังคับ)", "Erase all on this device": "ลบทั้งหมดบนเครื่องนี้", "Drag the cards, or use ▲ ▼, so that step 1 is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้ขั้นที่ 1 อยู่บนสุด", "Drag the cards, or use ▲ ▼, so that the first event is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้เหตุการณ์แรกอยู่บนสุด", "Each parent's gametes carry one allele of each gene; list every kind once. Each box = the gamete on its row + the gamete above its column.": "เซลล์สืบพันธุ์ของพ่อแม่แต่ละตัวมีอัลลีลของแต่ละยีนหนึ่งตัว เขียนแต่ละแบบครั้งเดียว แต่ละช่อง = เซลล์สืบพันธุ์ของแถว + เซลล์สืบพันธุ์ของคอลัมน์", "Red boxes need another look. Tip: a cross with single-comb Hen D (rrpp) shows exactly which alleles the rooster carries.": "ช่องสีแดงต้องดูใหม่ เคล็ดลับ: ผสมกับไก่ตัวเมีย D หงอนจักร (rrpp) จะเห็นชัดว่าไก่ตัวผู้มีอัลลีลใด", "Your sequence should be 8–30 letters, using only A, C, G and T. Tick the box once your model is folded and shown.": "ลำดับควรยาว 8-30 ตัวอักษร ใช้เฉพาะ A, C, G และ T ทำเครื่องหมายในช่องเมื่อพับแบบจำลองและให้อาจารย์ดูแล้ว", "Finish Part A1 first.": "ทำส่วน A1 ให้เสร็จก่อน", "Lab Worksheet 3 · Gene interaction": "ใบงานปฏิบัติการที่ 3 · ปฏิกิริยาระหว่างยีน", "Solve problems on incomplete dominance, multiple alleles, lethal alleles and epistasis, then breed virtual chickens to uncover hidden genotypes and test a modified ratio with chi-square. Answers save in this browser, so use the same device for the whole session.": "แก้โจทย์การข่มไม่สมบูรณ์ มัลติเพิลแอลลีล อัลลีลตาย และเอพิสตาซิส แล้วผสมพันธุ์ไก่เสมือนเพื่อหาจีโนไทป์ที่ซ่อนอยู่ และทดสอบอัตราส่วนที่เปลี่ยนไปด้วยไคสแควร์ คำตอบบันทึกในเบราว์เซอร์นี้ จึงควรใช้อุปกรณ์เดิมตลอดคาบ", "Type fractions (for example 3/16) or decimals, or choose an option. Check as often as you like.": "พิมพ์เศษส่วน (เช่น 3/16) หรือทศนิยม หรือเลือกตัวเลือก ตรวจได้หลายครั้ง", "Warm-up square 1: blue Andalusian × blue (Bb × Bb)": "ตารางอุ่นเครื่อง 1: ไก่อันดาลูเซียนสีฟ้า × สีฟ้า (Bb × Bb)", "B = black, b = splash white; Bb is blue (incomplete dominance). Type the gametes in the header boxes, then fill each box.": "B = ดำ, b = ขาวด่าง; Bb เป็นสีฟ้า (การข่มไม่สมบูรณ์) พิมพ์เซลล์สืบพันธุ์ในช่องหัวตาราง แล้วเติมทุกช่อง", "What fraction of the chicks are blue?": "ลูกไก่สีฟ้าเป็นสัดส่วนเท่าใด", "Warm-up square 2: Labradors BbEe × BbEe": "ตารางอุ่นเครื่อง 2: สุนัขลาบราดอร์ BbEe × BbEe", "Each gamete carries one allele of each gene, for example BE. Fill all 16 boxes, then count the colours (ee = yellow).": "เซลล์สืบพันธุ์แต่ละอันมีอัลลีลของแต่ละยีนหนึ่งตัว เช่น BE เติมให้ครบ 16 ช่อง แล้วนับสี (ee = สีเหลือง)", "How many of the 16 boxes are yellow?": "16 ช่องเป็นสีเหลืองกี่ช่อง", "How many are black (B_E_)?": "เป็นสีดำ (B_E_) กี่ช่อง", "1. Blue Andalusian × blue Andalusian: fraction of chicks that are blue?": "1. ไก่อันดาลูเซียนสีฟ้า × สีฟ้า: ลูกไก่สีฟ้าเป็นสัดส่วนเท่าใด", "2. Chestnut × cremello horses: fraction of foals that are palomino?": "2. ม้าสีเกาลัด × ครีเมลโล: ลูกม้าสีพาโลมิโนเป็นสัดส่วนเท่าใด", "3. Roan × white Shorthorn: fraction of calves that are roan?": "3. โคชอร์ตฮอร์นสีโรน × สีขาว: ลูกโคสีโรนเป็นสัดส่วนเท่าใด", "4. The rabbit C gene has 4 alleles. How many genotypes are possible?": "4. ยีน C ของกระต่ายมี 4 อัลลีล มีจีโนไทป์ที่เป็นไปได้กี่แบบ", "5. Chinchilla rabbit cᶜʰcʰ × Himalayan cʰc: fraction of young that are Himalayan?": "5. กระต่ายชินชิลลา cᶜʰcʰ × หิมาลายัน cʰc: ลูกที่เป็นหิมาลายันเป็นสัดส่วนเท่าใด", "6. Creeper × creeper chickens: fraction of hatched chicks that are creepers?": "6. ไก่ครีปเปอร์ × ครีปเปอร์: ลูกไก่ที่ฟักออกเป็นครีปเปอร์สัดส่วนเท่าใด", "7. Dexter carrier × carrier: fraction of pregnancies lost (bulldog calves)?": "7. โคเด็กซ์เตอร์พาหะ × พาหะ: สัดส่วนการตั้งท้องที่สูญเสีย (ลูกโคบูลด็อก)", "8. Labradors BbEe × BbEe: fraction of puppies that are chocolate?": "8. ลาบราดอร์ BbEe × BbEe: ลูกสุนัขสีช็อกโกแลตเป็นสัดส่วนเท่าใด", "9. Labradors BbEe × bbee: fraction of puppies that are yellow?": "9. ลาบราดอร์ BbEe × bbee: ลูกสุนัขสีเหลืองเป็นสัดส่วนเท่าใด", "10. An F2 shows 12 : 3 : 1. This points to…": "10. รุ่น F2 แสดงอัตราส่วน 12 : 3 : 1 บ่งชี้ถึง…", "Recessive epistasis": "เอพิสตาซิสแบบด้อย", "Dominant epistasis": "เอพิสตาซิสแบบเด่น", "Complementary genes": "ยีนเสริมกัน", "Codominance": "การข่มร่วม", "11. A heterozygote shows both parental phenotypes side by side. This is…": "11. เฮเทอโรไซโกตแสดงลักษณะของพ่อและแม่พร้อมกัน คือ…", "Incomplete dominance": "การข่มไม่สมบูรณ์", "Epistasis": "เอพิสตาซิส", "Incomplete penetrance": "การแสดงออกไม่สมบูรณ์ (incomplete penetrance)", "12. The grey gene in horses also raises the risk of melanoma. This is an example of…": "12. ยีนสีเทาในม้าเพิ่มความเสี่ยงมะเร็งผิวหนังด้วย เป็นตัวอย่างของ…", "Pleiotropy": "พลีโอโทรปี", "Penetrance": "การแสดงออก (penetrance)", "Multiple alleles": "มัลติเพิลแอลลีล", "Comb shape depends on two genes: R_P_ walnut, R_pp rose, rrP_ pea, rrpp single. You can see each bird's comb but not its genotype. Pick one rooster and one hen, hatch 24 chicks, and repeat until you can name every genotype. Use as few crosses as you can.": "รูปหงอนขึ้นกับสองยีน: R_P_ หงอนวอลนัท, R_pp หงอนกุหลาบ, rrP_ หงอนถั่ว, rrpp หงอนจักร มองเห็นหงอนแต่ไม่เห็นจีโนไทป์ เลือกไก่ตัวผู้หนึ่งตัวและตัวเมียหนึ่งตัว ฟักลูก 24 ตัว ทำซ้ำจนบอกจีโนไทป์ได้ทุกตัว ใช้การผสมให้น้อยที่สุด", "Roosters": "ไก่ตัวผู้", "Rooster Arose comb": "ไก่ตัวผู้ A หงอนกุหลาบ", "Rooster Cwalnut comb": "ไก่ตัวผู้ C หงอนวอลนัท", "Rooster Fpea comb": "ไก่ตัวผู้ F หงอนถั่ว", "Hens": "ไก่ตัวเมีย", "Hen Bpea comb": "ไก่ตัวเมีย B หงอนถั่ว", "Hen Dsingle comb": "ไก่ตัวเมีย D หงอนจักร", "Hen Erose comb": "ไก่ตัวเมีย E หงอนกุหลาบ", "Hatch 24 chicks": "ฟักลูก 24 ตัว", "Latest clutch": "ครอกล่าสุด", "Your crosses": "การผสมของฉัน", "Cross": "การผสม", "walnut": "วอลนัท", "rose": "กุหลาบ", "pea": "ถั่ว", "single": "จักร", "No crosses yet.": "ยังไม่มีการผสม", "Your answers": "คำตอบของฉัน", "Hen D has a single comb, so she must be rrpp.": "ไก่ตัวเมีย D มีหงอนจักร จึงต้องเป็น rrpp", "Rooster A (rose)": "ไก่ตัวผู้ A (กุหลาบ)", "Hen B (pea)": "ไก่ตัวเมีย B (ถั่ว)", "Rooster C (walnut)": "ไก่ตัวผู้ C (วอลนัท)", "Hen E (rose)": "ไก่ตัวเมีย E (กุหลาบ)", "Rooster F (pea)": "ไก่ตัวผู้ F (ถั่ว)", "Check genotypes": "ตรวจจีโนไทป์", "White Leghorns and White Wyandottes are both white. A breeder crosses them; all the F1 chicks are white. The F1 are then mated together. Hatch 160 F2 chicks and work out which ratio they follow.": "ไก่ไวต์เลกฮอร์นและไวต์ไวยันดอตต์เป็นสีขาวทั้งคู่ ผู้เลี้ยงผสมกัน ลูก F1 เป็นสีขาวทั้งหมด แล้วนำ F1 มาผสมกัน ฟักลูก F2 160 ตัว แล้วหาว่าเป็นไปตามอัตราส่วนใด", "I = dominant white (blocks colour). c = recessive white (no pigment). Now: F1 × F1.": "I = ขาวแบบเด่น (ยับยั้งสี) c = ขาวแบบด้อย (ไม่มีเม็ดสี) ขณะนี้: F1 × F1", "Hatch 1 chick": "ฟักลูก 1 ตัว", "Hatch 10": "ฟักลูก 10 ตัว", "Hatch the rest": "ฟักที่เหลือทั้งหมด", "Last chick": "ลูกไก่ตัวล่าสุด", "Your F2 so far": "รุ่น F2 ของฉันขณะนี้", "Chicks": "ลูกไก่", "white": "ขาว", "coloured": "มีสี", "Step 1 · Which ratio fits your F2?": "ขั้นที่ 1 · อัตราส่วนใดเข้ากับ F2 ของฉัน", "Divide each count by the total and multiply by 16.": "หารแต่ละจำนวนด้วยผลรวม แล้วคูณด้วย 16", "Choose a ratio": "เลือกอัตราส่วน", "9 coloured : 7 white": "มีสี 9 : ขาว 7", "13 white : 3 coloured": "ขาว 13 : มีสี 3", "15 white : 1 coloured": "ขาว 15 : มีสี 1", "3 white : 1 coloured": "ขาว 3 : มีสี 1", "Step 2 · Chi-square test of that ratio": "ขั้นที่ 2 · ทดสอบอัตราส่วนนั้นด้วยไคสแควร์", "H₀: the F2 follows the ratio you chose. Round to 2 decimal places. Critical values: df 1 = 3.84, df 2 = 5.99, df 3 = 7.81.": "H₀: F2 เป็นไปตามอัตราส่วนที่เลือก ปัดทศนิยม 2 ตำแหน่ง ค่าวิกฤต: df 1 = 3.84, df 2 = 5.99, df 3 = 7.81", "Fail to reject H₀: the F2 fits the ratio": "ไม่ปฏิเสธ H₀: F2 เข้ากับอัตราส่วน", "Reject H₀: the F2 does not fit the ratio": "ปฏิเสธ H₀: F2 ไม่เข้ากับอัตราส่วน", "1. Choose one bird from Part B (for example Hen E or Rooster A). Which cross told you its genotype, and why was that cross informative?": "1. เลือกไก่หนึ่งตัวจากส่วน B (เช่น ไก่ตัวเมีย E หรือไก่ตัวผู้ A) การผสมใดบอกจีโนไทป์ของมัน และทำไมการผสมนั้นจึงให้ข้อมูล", "2. Using the I and C genes, explain how two white breeds can produce coloured chicks in the F2, and why the ratio is 13 : 3.": "2. ใช้ยีน I และ C อธิบายว่าไก่ขาวสองสายพันธุ์ให้ลูกมีสีใน F2 ได้อย่างไร และทำไมอัตราส่วนเป็น 13 : 3", "Blue is the heterozygote: 1 black : 2 blue : 1 splash, so ½.": "สีฟ้าคือเฮเทอโรไซโกต: ดำ 1 : ฟ้า 2 : ขาวด่าง 1 จึงเป็น ½", "Every foal gets one cream allele: all palomino.": "ลูกม้าทุกตัวได้อัลลีลครีมหนึ่งตัว: เป็นพาโลมิโนทั้งหมด", "RW × WW gives RW and WW, ½ each.": "RW × WW ได้ RW และ WW อย่างละ ½", "cᶜʰcʰ, cᶜʰc are chinchilla; cʰcʰ, cʰc are Himalayan: ½.": "cᶜʰcʰ, cᶜʰc เป็นชินชิลลา; cʰcʰ, cʰc เป็นหิมาลายัน: ½", "CpCp dies in the egg; of the three that hatch, two are Cp+: ⅔.": "CpCp ตายในไข่ จากสามส่วนที่ฟักออก สองส่วนเป็น Cp+: ⅔", "Two copies of the allele: ¼.": "มีอัลลีลสองชุด: ¼", "bbE_ = ¼ × ¾ = 3/16.": "bbE_ = ¼ × ¾ = 3/16", "ee needs e from both: Ee × ee gives ee ½, whatever B is.": "ee ต้องได้ e จากทั้งพ่อและแม่: Ee × ee ได้ ee ½ ไม่ว่า B เป็นอะไร", "One dominant allele hides the other gene's effect: 12 : 3 : 1.": "อัลลีลเด่นหนึ่งตัวบดบังผลของอีกยีน: 12 : 3 : 1", "Both alleles are fully expressed: codominance (e.g., roan).": "ทั้งสองอัลลีลแสดงออกเต็มที่: การข่มร่วม (เช่น สีโรน)", "One gene, several effects: pleiotropy.": "ยีนเดียว หลายผล: พลีโอโทรปี", "Not yet. Check the definitions on the Class 3 slides.": "ยังไม่ถูก ทบทวนนิยามในสไลด์ครั้งที่ 3", "Blue chicks are the Bb boxes.": "ลูกไก่สีฟ้าคือช่อง Bb", "Yellow boxes are ee, whatever B is.": "ช่องสีเหลืองคือ ee ไม่ว่า B เป็นอะไร", "Black boxes have at least one B and at least one E.": "ช่องสีดำมี B อย่างน้อยหนึ่งตัวและ E อย่างน้อยหนึ่งตัว", "Check the definitions on the Class 3 slides.": "ทบทวนนิยามในสไลด์ครั้งที่ 3"};</script><script>(function(){
+var TH = window.__TH || {};
+var RULES = [
+  [/^(\d+) min$/, "$1 นาที"], [/^Check Part ([A-F])$/, "ตรวจส่วน $1"], [/^Next: Part ([A-F])$/, "ถัดไป: ส่วน $1"], [/^Start Part ([A-F])$/, "เริ่มส่วน $1"],
+  [/^Score: (.+)$/, "คะแนน: $1"], [/^Breed generation (\d+)$/, "ผสมพันธุ์รุ่นที่ $1"], [/^Flagged: (\d+) of (\d+)$/, "ทำเครื่องหมายแล้ว: $1 จาก $2"],
+  [/^Load exactly (\d+) tubes\.$/, "ใส่ให้ครบ $1 หลอด"], [/^Mistakes found: (\d+) of (\d+)\..*$/, "พบที่ผิด $1 จาก $2 ตำแหน่ง เทียบแต่ละเบสกับเบสคู่บนแม่แบบ"],
+  [/^(\d+) of (\d+) boxes correct \((\d+) of (\d+) chromosomes placed\)\..*$/, "ถูก $1 จาก $2 ช่อง (วางแล้ว $3 จาก $4 แท่ง) นับโครโมโซมใหม่ก่อนบันทึก 2n และเลือกเพศของสัตว์"],
+  [/^(\d+) of (\d+) boxes correct\. Count the microchromosomes.*$/, "ถูก $1 จาก $2 ช่อง นับไมโครโครโมโซมใหม่ (ทำเครื่องหมายทีละจุด) 2n = โครโมโซมในคาริโอแกรมรวมไมโครโครโมโซม และเลือกเพศของนก"],
+  [/^Microchromosomes marked: (\d+)$/, "ทำเครื่องหมายไมโครโครโมโซมแล้ว: $1"], [/^Gel (\d+)$/, "เจล $1"], [/^Run (\d+)$/, "ครั้งที่ $1"], [/^Copied$/, "คัดลอกแล้ว"], [/^Tap again to (.+)$/, "แตะอีกครั้งเพื่อยืนยัน"],
+  [/^Part ([A-F]) · (.+)$/, function(m){ var r = look(m[2]); return "ส่วน " + m[1] + (r ? " · " + r : ""); }]
+];
+function norm(s){ return String(s).replace(/\s+/g, " ").trim(); }
+function look(s){ if (Object.prototype.hasOwnProperty.call(TH, s)) return TH[s]; return null; }
+function lookup(s){ var r = look(s); if (r) return r; for (var i = 0; i < RULES.length; i++){ var m = s.match(RULES[i][0]); if (m) return typeof RULES[i][1] === "function" ? RULES[i][1](m) : s.replace(RULES[i][0], RULES[i][1]); } return null; }
+function fbThai(s){
+  var m = s.match(/^(Correct\.|Correct:|Not yet\.|Not quite\.)\s*(.*)$/);
+  if (!m) return lookup(s);
+  var pre = /^Correct/.test(m[1]) ? "ถูกต้อง" : "ยังไม่ถูก";
+  var rest = m[2] ? lookup(norm(m[2].replace(/^Answer: .*?\.\s*/, ""))) : null;
+  return pre + (rest ? " " + rest : "");
+}
+function baseText(el){ var t = ""; el.childNodes.forEach(function(n){ if (n.nodeType === 1 && n.classList && (n.classList.contains("th2") || n.classList.contains("badge") || n.classList.contains("ddh") || n.classList.contains("ddb"))) return; t += n.textContent; }); return norm(t); }
+var SEL = "h1, h3, p, li, label.field, th, td, .opts label span, .chk span, button, option, .key span, .legend span, .tag, .fb, .ddt, .mtn, .mtf";
+var SKIP = "#steps, .no-th, .aln, .mrna, .seq, svg, .copybox";
+function apply(){
+  document.querySelectorAll(SEL).forEach(function(el){
+    if (el.closest(SKIP) || el.classList.contains("dditem")) return;
+    if (el.querySelector("p, li, div, table, h3, ul, ol, select, input, textarea")) return;
+    var key = baseText(el); if (!key) return;
+    if (el.getAttribute("data-thk") === key) return;
+    el.setAttribute("data-thk", key);
+    if (/[\u0E00-\u0E7F]/.test(key) && el.tagName !== "BUTTON") return;
+    var th = el.classList.contains("fb") ? fbThai(key) : lookup(key);
+    var old = el.querySelector(":scope > .th2"); if (old) old.remove();
+    if (!th) return;
+    if (el.tagName === "OPTION"){ el.textContent = key + " · " + th; el.setAttribute("data-thk", el.textContent); return; }
+    var sp = document.createElement("span"); sp.className = "th2" + (el.tagName === "BUTTON" || el.classList.contains("mtn") || el.classList.contains("mtf") ? " inl" : ""); sp.textContent = th; el.appendChild(sp);
+  });
+}
+var pend = false;
+function schedule(){ if (pend) return; pend = true; (window.requestAnimationFrame || setTimeout)(function(){ pend = false; apply(); }); }
+if (window.MutationObserver) new MutationObserver(function(muts){ for (var i = 0; i < muts.length; i++){ var t = muts[i].target; if (t && t.classList && t.classList.contains("th2")) continue; schedule(); return; } }).observe(document.body, {childList:true, subtree:true, characterData:true});
+apply();
+window.__thApply = apply;
+})();
+</script><!--/BIL-JS-->
 </body>
 </html>

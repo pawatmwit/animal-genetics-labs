@@ -98,10 +98,18 @@ ol.steps5{padding-left:22px;margin:8px 0}
 ol.steps5 li{margin:6px 0}
 .links a{color:var(--brand);font-weight:600}
 </style>
-</head>
+<!--BIL-CSS--><style>.th2{display:block;font-size:.9em;font-weight:400;color:var(--muted,#5E6E68);margin-top:2px;line-height:1.45}
+.th2.inl{display:inline;margin:0 0 0 .4em;font-size:.85em}
+button .th2,.btn .th2{color:inherit;opacity:.85}
+.fb .th2{color:inherit;opacity:.9}
+.homebtn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--brand);text-decoration:none;font-weight:700;font-size:14px;white-space:nowrap}
+.homebtn:hover{border-color:var(--brand)}
+.sitefoot{margin:40px auto 24px;max-width:880px;padding:18px 20px;border-top:1px solid var(--line);text-align:center;font-size:13px;line-height:1.6;color:var(--muted,#5E6E68)}
+.sitefoot p{margin:2px 0}.sitefoot b{color:var(--brand)}
+</style><!--/BIL-CSS--></head>
 <body>
 <header>
-  <div class="bar">
+  <div class="bar"><!--BIL-HOME--><a class="homebtn" href="../index.html">← Home · หน้าหลัก</a><!--/BIL-HOME-->
     <h1>Lab Worksheet 5 · Origami DNA</h1>
     <span class="who" id="who">710 114 Animal Genetics</span>
   </div>
@@ -193,6 +201,14 @@ ol.steps5 li{margin:6px 0}
 </section>
 
 </main>
+<!--BIL-FOOT--><footer class="sitefoot no-th">
+  <p><b>Asst. Prof. Pawat Seritrakul, PhD</b> · ผศ.ดร.ภวัต เสรีตระกูล</p>
+  <p>710 114 Animal Genetics · พันธุศาสตร์สัตว์</p>
+  <p>Animal Science Program · หลักสูตรสัตวศาสตร์</p>
+  <p>Faculty of Animal Sciences and Agricultural Technology, Silpakorn University · คณะสัตวศาสตร์และเทคโนโลยีการเกษตร มหาวิทยาลัยศิลปากร</p>
+</footer>
+<!--/BIL-FOOT-->
+
 <script>
 (function(){
 "use strict";
@@ -379,5 +395,52 @@ confirmTap($("R-reset"), "Tap again to erase everything", function(){ try{ local
 go(order.indexOf(state.step) >= 0 ? state.step : "start");
 })();
 </script>
+
+<!--BIL-JS--><script>window.__TH = {"Check": "ตรวจคำตอบ", "Choose": "เลือก", "Choose…": "เลือก…", "Copy summary as text": "คัดลอกสรุปเป็นข้อความ", "Count": "นับ", "Critical value at p = 0.05": "ค่าวิกฤตที่ p = 0.05", "Decision": "ผลการตัดสิน", "Degrees of freedom (df)": "องศาอิสระ (df)", "Expected (E)": "ค่าคาดหวัง (E)", "Full name": "ชื่อ-นามสกุล", "Lab group": "กลุ่มปฏิบัติการ", "Observed (O)": "ค่าที่สังเกตได้ (O)", "One": "หนึ่ง", "Part": "ส่วน", "Reset": "เริ่มใหม่", "Run": "รัน", "See my summary": "ดูสรุปของฉัน", "Start": "เริ่ม", "Start over on this device": "เริ่มใหม่ทั้งหมดบนเครื่องนี้", "Steps": "ขั้นตอน", "Student ID": "รหัสนักศึกษา", "Take a screenshot of this page, or copy the summary text, and submit it the way your instructor tells you.": "ถ่ายภาพหน้าจอหน้านี้ หรือคัดลอกข้อความสรุป แล้วส่งตามที่อาจารย์กำหนด", "Time": "เวลา", "Total": "รวม", "What you do": "สิ่งที่ทำ", "Write 2–4 sentences for each, in English or Thai, using your own results.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย โดยใช้ผลของตัวเอง", "Write 2–4 sentences for each, in English or Thai.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย", "χ² (total)": "χ² (รวม)", "Check my chi-square": "ตรวจค่าไคสแควร์ของฉัน", "Check my square": "ตรวจตารางของฉัน", "About 5": "ประมาณ 5", "Name": "ชื่อ", "Lab group number": "หมายเลขกลุ่ม", "Copy record as text": "คัดลอกบันทึกเป็นข้อความ", "Copy result as text": "คัดลอกผลเป็นข้อความ", "Before you begin": "ก่อนเริ่ม", "Yes": "ใช่", "No": "ไม่ใช่", "Clear": "ล้าง", "Back": "ย้อนกลับ", "Next": "ถัดไป", "New set": "ชุดใหม่", "See results": "ดูผล", "Full name(s) of your group": "ชื่อ-นามสกุลสมาชิกกลุ่ม", "Student ID(s)": "รหัสนักศึกษา", "Bench / group number": "โต๊ะ / หมายเลขกลุ่ม", "Round (time slot)": "รอบ (ช่วงเวลา)", "Name (optional)": "ชื่อ (ไม่บังคับ)", "Student ID (optional)": "รหัสนักศึกษา (ไม่บังคับ)", "Group (optional)": "กลุ่ม (ไม่บังคับ)", "Erase all on this device": "ลบทั้งหมดบนเครื่องนี้", "Drag the cards, or use ▲ ▼, so that step 1 is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้ขั้นที่ 1 อยู่บนสุด", "Drag the cards, or use ▲ ▼, so that the first event is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้เหตุการณ์แรกอยู่บนสุด", "Each parent's gametes carry one allele of each gene; list every kind once. Each box = the gamete on its row + the gamete above its column.": "เซลล์สืบพันธุ์ของพ่อแม่แต่ละตัวมีอัลลีลของแต่ละยีนหนึ่งตัว เขียนแต่ละแบบครั้งเดียว แต่ละช่อง = เซลล์สืบพันธุ์ของแถว + เซลล์สืบพันธุ์ของคอลัมน์", "Red boxes need another look. Tip: a cross with single-comb Hen D (rrpp) shows exactly which alleles the rooster carries.": "ช่องสีแดงต้องดูใหม่ เคล็ดลับ: ผสมกับไก่ตัวเมีย D หงอนจักร (rrpp) จะเห็นชัดว่าไก่ตัวผู้มีอัลลีลใด", "Your sequence should be 8–30 letters, using only A, C, G and T. Tick the box once your model is folded and shown.": "ลำดับควรยาว 8-30 ตัวอักษร ใช้เฉพาะ A, C, G และ T ทำเครื่องหมายในช่องเมื่อพับแบบจำลองและให้อาจารย์ดูแล้ว", "Finish Part A1 first.": "ทำส่วน A1 ให้เสร็จก่อน", "Lab Worksheet 5 · Origami DNA": "ใบงานปฏิบัติการที่ 5 · ดีเอ็นเอโอริงามิ", "Today you build a paper model of a DNA double helix using a sequence you invent, then use the same sequence to practise base pairing, GC content and DNA length. Answers save in this browser, so use the same device for the whole session.": "วันนี้สร้างแบบจำลองกระดาษของดีเอ็นเอเกลียวคู่จากลำดับที่คิดขึ้นเอง แล้วใช้ลำดับเดียวกันฝึกการจับคู่เบส ค่า GC และความยาวดีเอ็นเอ คำตอบบันทึกในเบราว์เซอร์นี้ จึงควรใช้อุปกรณ์เดิมตลอดคาบ", "You need: the blank Origami DNA template and pairing-rules sheet (handed out), coloured pens or pencils, and a calculator.": "สิ่งที่ต้องใช้: แบบพิมพ์เปล่า Origami DNA และแผ่นกฎการจับคู่ (แจกให้) ปากกาหรือดินสอสี และเครื่องคิดเลข", "This activity comes from yourgenome.org (Wellcome Connecting Science). Follow the printed instructions; the steps below summarise them.": "กิจกรรมนี้มาจาก yourgenome.org (Wellcome Connecting Science) ทำตามคำแนะนำที่พิมพ์แจก ขั้นตอนด้านล่างเป็นสรุป", "Lay the blank template flat on the table.": "วางแบบพิมพ์เปล่าบนโต๊ะ", "Invent a DNA sequence. Write its first base (A, C, G or T) in the top-right box, then continue down the right-hand column.": "คิดลำดับดีเอ็นเอ เขียนเบสแรก (A, C, G หรือ T) ในช่องขวาบน แล้วเขียนต่อลงมาตามคอลัมน์ขวา", "In the boxes diagonally across from each base, write its partner: A with T, C with G.": "ในช่องที่อยู่ทแยงกับแต่ละเบส เขียนเบสคู่สม: A กับ T, C กับ G", "Colour every base using the pairing-rules sheet, so partners always share a colour pair.": "ระบายสีทุกเบสตามแผ่นกฎการจับคู่ ให้เบสคู่สมมีสีคู่กันเสมอ", "Fold the template into a double helix, following the activity guide or the video on the yourgenome page.": "พับแบบพิมพ์เป็นเกลียวคู่ ตามคู่มือกิจกรรมหรือวิดีโอในหน้า yourgenome", "Original materials: Origami DNA on yourgenome.org · activity guide (PDF) · blank-template instructions (PDF) · pairing rules (PDF)": "เอกสารต้นฉบับ: Origami DNA ใน yourgenome.org · คู่มือกิจกรรม (PDF) · คำแนะนำแบบพิมพ์เปล่า (PDF) · กฎการจับคู่ (PDF)", "A1 · Record your model": "A1 · บันทึกแบบจำลองของฉัน", "Your sequence, top to bottom down the right-hand column (treat it as 5′ → 3′)": "ลำดับของฉัน จากบนลงล่างตามคอลัมน์ขวา (ถือว่าเป็น 5′ → 3′)", "The partner bases you wrote, in the same order (top to bottom)": "เบสคู่สมที่เขียน ตามลำดับเดียวกัน (บนลงล่าง)", "Use the double strand from your model (your sequence plus its partner). Every answer is checked against your own sequence from Part A.": "ใช้ดีเอ็นเอสายคู่จากแบบจำลอง (ลำดับของฉันและสายคู่สม) ทุกคำตอบตรวจกับลำดับของตัวเองในส่วน A", "Your double strand:": "ดีเอ็นเอสายคู่ของฉัน:", "1. How many A are in your sequence (one strand)?": "1. ลำดับของฉัน (สายเดียว) มี A กี่ตัว", "2. How many T?": "2. มี T กี่ตัว", "3. How many G?": "3. มี G กี่ตัว", "4. How many C?": "4. มี C กี่ตัว", "5. How many A–T base pairs are in your double strand?": "5. ดีเอ็นเอสายคู่ของฉันมีคู่เบส A–T กี่คู่", "6. How many G–C base pairs?": "6. มีคู่เบส G–C กี่คู่", "7. GC content of your double strand, in % (one decimal place)": "7. ค่า GC ของดีเอ็นเอสายคู่ของฉัน (%) ทศนิยม 1 ตำแหน่ง", "8. Total number of hydrogen bonds holding your two strands together": "8. จำนวนพันธะไฮโดรเจนทั้งหมดที่ยึดสองสายไว้", "9. Length of your double strand in nm, if it were real DNA (0.34 nm per base pair)": "9. ความยาวของดีเอ็นเอสายคู่เป็น nm ถ้าเป็นดีเอ็นเอจริง (0.34 nm ต่อคู่เบส)", "10. Write the reverse complement of your sequence (the partner strand, written 5′ → 3′)": "10. เขียน reverse complement ของลำดับของฉัน (สายคู่สม เขียนแบบ 5′ → 3′)", "Use 0.34 nm per base pair and 1 m = 10⁹ nm. Type numbers or choose an option.": "ใช้ 0.34 nm ต่อคู่เบส และ 1 m = 10⁹ nm พิมพ์ตัวเลขหรือเลือกตัวเลือก", "1. Cattle DNA is 29% A. What percentage is G?": "1. ดีเอ็นเอโคมี A 29% มี G กี่เปอร์เซ็นต์", "2. Write the reverse complement of 5′-ATTGCCAG-3′ (5′ → 3′, letters only).": "2. เขียน reverse complement ของ 5′-ATTGCCAG-3′ (5′ → 3′ ตัวอักษรเท่านั้น)", "3. Which sample cannot be double-stranded DNA?": "3. ตัวอย่างใดเป็นดีเอ็นเอสายคู่ไม่ได้", "4. Length of one haploid chicken genome (1.1 × 10⁹ bp), in metres (2 decimal places)": "4. ความยาวจีโนมไก่หนึ่งชุด (1.1 × 10⁹ bp) เป็นเมตร (ทศนิยม 2 ตำแหน่ง)", "5. Length of DNA in one pig body cell (haploid genome 2.5 × 10⁹ bp), in metres": "5. ความยาวดีเอ็นเอในเซลล์ร่างกายสุกรหนึ่งเซลล์ (จีโนมหนึ่งชุด 2.5 × 10⁹ bp) เป็นเมตร", "6. About 1.5% of the 2.7 Gb cattle genome codes for protein. How many Mb is that?": "6. ประมาณ 1.5% ของจีโนมโค 2.7 Gb เป็นส่วนสร้างโปรตีน คิดเป็นกี่ Mb", "7. If each nucleosome plus linker uses about 200 bp, how many nucleosomes (in millions) does one haploid cattle genome (2.7 × 10⁹ bp) need?": "7. ถ้านิวคลีโอโซมพร้อมดีเอ็นเอเชื่อมใช้ประมาณ 200 bp จีโนมโคหนึ่งชุด (2.7 × 10⁹ bp) ต้องใช้นิวคลีโอโซมกี่ล้านหน่วย", "8. Which part of a nucleotide carries the genetic information?": "8. ส่วนใดของนิวคลีโอไทด์ที่เก็บข้อมูลพันธุกรรม", "The phosphate": "หมู่ฟอสเฟต", "The sugar": "น้ำตาล", "The base": "เบส", "9. A calf's mitochondrial DNA comes from…": "9. ดีเอ็นเอไมโทคอนเดรียของลูกโคมาจาก…", "its sire": "พ่อ", "its dam": "แม่", "both parents equally": "พ่อและแม่เท่ากัน", "1. Using your folded model, explain why the two strands are called complementary and antiparallel.": "1. ใช้แบบจำลองที่พับแล้ว อธิบายว่าทำไมสองสายจึงเรียกว่าเป็นคู่สม (complementary) และขนานสวนทาง (antiparallel)", "2. The chicken genome is about 40% of the size of the cattle genome but has a similar number of genes. Where does the difference in size come from?": "2. จีโนมไก่มีขนาดประมาณ 40% ของจีโนมโค แต่มีจำนวนยีนใกล้เคียงกัน ความแตกต่างของขนาดมาจากไหน", "T = 29%, so G + C = 42% and G = 21%.": "T = 29% ดังนั้น G + C = 42% และ G = 21%", "Complement 3′-": "คู่สม 3′-", "In double-stranded DNA A = T and G = C; sample 2 breaks both.": "ในดีเอ็นเอสายคู่ A = T และ G = C ตัวอย่างที่ 2 ผิดทั้งสองข้อ", "1.1 × 10⁹ × 0.34 nm = 0.374 × 10⁹ nm ≈ 0.37 m.": "1.1 × 10⁹ × 0.34 nm = 0.374 × 10⁹ nm ≈ 0.37 m", "Two sets: 2 × 2.5 × 10⁹ × 0.34 nm = 1.7 m.": "สองชุด: 2 × 2.5 × 10⁹ × 0.34 nm = 1.7 m", "0.015 × 2,700 Mb = 40.5 Mb.": "0.015 × 2,700 Mb = 40.5 Mb", "2.7 × 10⁹ ÷ 200 = 13.5 million.": "2.7 × 10⁹ ÷ 200 = 13.5 ล้าน", "The sequence of bases is the code; the backbone is the same everywhere.": "ลำดับเบสคือรหัส ส่วนโครงหลักเหมือนกันทุกที่", "mtDNA is inherited from the mother.": "ดีเอ็นเอไมโทคอนเดรียถ่ายทอดจากแม่", "Not yet. Check the units and the pairing rules, then try again.": "ยังไม่ถูก ตรวจหน่วยและกฎการจับคู่ แล้วลองใหม่", "Check the units and the pairing rules, then try again.": "ตรวจหน่วยและกฎการจับคู่ แล้วลองใหม่"};</script><script>(function(){
+var TH = window.__TH || {};
+var RULES = [
+  [/^(\d+) min$/, "$1 นาที"], [/^Check Part ([A-F])$/, "ตรวจส่วน $1"], [/^Next: Part ([A-F])$/, "ถัดไป: ส่วน $1"], [/^Start Part ([A-F])$/, "เริ่มส่วน $1"],
+  [/^Score: (.+)$/, "คะแนน: $1"], [/^Breed generation (\d+)$/, "ผสมพันธุ์รุ่นที่ $1"], [/^Flagged: (\d+) of (\d+)$/, "ทำเครื่องหมายแล้ว: $1 จาก $2"],
+  [/^Load exactly (\d+) tubes\.$/, "ใส่ให้ครบ $1 หลอด"], [/^Mistakes found: (\d+) of (\d+)\..*$/, "พบที่ผิด $1 จาก $2 ตำแหน่ง เทียบแต่ละเบสกับเบสคู่บนแม่แบบ"],
+  [/^(\d+) of (\d+) boxes correct \((\d+) of (\d+) chromosomes placed\)\..*$/, "ถูก $1 จาก $2 ช่อง (วางแล้ว $3 จาก $4 แท่ง) นับโครโมโซมใหม่ก่อนบันทึก 2n และเลือกเพศของสัตว์"],
+  [/^(\d+) of (\d+) boxes correct\. Count the microchromosomes.*$/, "ถูก $1 จาก $2 ช่อง นับไมโครโครโมโซมใหม่ (ทำเครื่องหมายทีละจุด) 2n = โครโมโซมในคาริโอแกรมรวมไมโครโครโมโซม และเลือกเพศของนก"],
+  [/^Microchromosomes marked: (\d+)$/, "ทำเครื่องหมายไมโครโครโมโซมแล้ว: $1"], [/^Gel (\d+)$/, "เจล $1"], [/^Run (\d+)$/, "ครั้งที่ $1"], [/^Copied$/, "คัดลอกแล้ว"], [/^Tap again to (.+)$/, "แตะอีกครั้งเพื่อยืนยัน"],
+  [/^Part ([A-F]) · (.+)$/, function(m){ var r = look(m[2]); return "ส่วน " + m[1] + (r ? " · " + r : ""); }]
+];
+function norm(s){ return String(s).replace(/\s+/g, " ").trim(); }
+function look(s){ if (Object.prototype.hasOwnProperty.call(TH, s)) return TH[s]; return null; }
+function lookup(s){ var r = look(s); if (r) return r; for (var i = 0; i < RULES.length; i++){ var m = s.match(RULES[i][0]); if (m) return typeof RULES[i][1] === "function" ? RULES[i][1](m) : s.replace(RULES[i][0], RULES[i][1]); } return null; }
+function fbThai(s){
+  var m = s.match(/^(Correct\.|Correct:|Not yet\.|Not quite\.)\s*(.*)$/);
+  if (!m) return lookup(s);
+  var pre = /^Correct/.test(m[1]) ? "ถูกต้อง" : "ยังไม่ถูก";
+  var rest = m[2] ? lookup(norm(m[2].replace(/^Answer: .*?\.\s*/, ""))) : null;
+  return pre + (rest ? " " + rest : "");
+}
+function baseText(el){ var t = ""; el.childNodes.forEach(function(n){ if (n.nodeType === 1 && n.classList && (n.classList.contains("th2") || n.classList.contains("badge") || n.classList.contains("ddh") || n.classList.contains("ddb"))) return; t += n.textContent; }); return norm(t); }
+var SEL = "h1, h3, p, li, label.field, th, td, .opts label span, .chk span, button, option, .key span, .legend span, .tag, .fb, .ddt, .mtn, .mtf";
+var SKIP = "#steps, .no-th, .aln, .mrna, .seq, svg, .copybox";
+function apply(){
+  document.querySelectorAll(SEL).forEach(function(el){
+    if (el.closest(SKIP) || el.classList.contains("dditem")) return;
+    if (el.querySelector("p, li, div, table, h3, ul, ol, select, input, textarea")) return;
+    var key = baseText(el); if (!key) return;
+    if (el.getAttribute("data-thk") === key) return;
+    el.setAttribute("data-thk", key);
+    if (/[\u0E00-\u0E7F]/.test(key) && el.tagName !== "BUTTON") return;
+    var th = el.classList.contains("fb") ? fbThai(key) : lookup(key);
+    var old = el.querySelector(":scope > .th2"); if (old) old.remove();
+    if (!th) return;
+    if (el.tagName === "OPTION"){ el.textContent = key + " · " + th; el.setAttribute("data-thk", el.textContent); return; }
+    var sp = document.createElement("span"); sp.className = "th2" + (el.tagName === "BUTTON" || el.classList.contains("mtn") || el.classList.contains("mtf") ? " inl" : ""); sp.textContent = th; el.appendChild(sp);
+  });
+}
+var pend = false;
+function schedule(){ if (pend) return; pend = true; (window.requestAnimationFrame || setTimeout)(function(){ pend = false; apply(); }); }
+if (window.MutationObserver) new MutationObserver(function(muts){ for (var i = 0; i < muts.length; i++){ var t = muts[i].target; if (t && t.classList && t.classList.contains("th2")) continue; schedule(); return; } }).observe(document.body, {childList:true, subtree:true, characterData:true});
+apply();
+window.__thApply = apply;
+})();
+</script><!--/BIL-JS-->
 </body>
 </html>

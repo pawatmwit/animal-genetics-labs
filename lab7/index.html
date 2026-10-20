@@ -105,10 +105,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:2px;text-transform:uppercase}
 .links a{color:var(--brand);font-weight:600}
 </style>
-</head>
+<!--BIL-CSS--><style>.th2{display:block;font-size:.9em;font-weight:400;color:var(--muted,#5E6E68);margin-top:2px;line-height:1.45}
+.th2.inl{display:inline;margin:0 0 0 .4em;font-size:.85em}
+button .th2,.btn .th2{color:inherit;opacity:.85}
+.fb .th2{color:inherit;opacity:.9}
+.homebtn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--brand);text-decoration:none;font-weight:700;font-size:14px;white-space:nowrap}
+.homebtn:hover{border-color:var(--brand)}
+.sitefoot{margin:40px auto 24px;max-width:880px;padding:18px 20px;border-top:1px solid var(--line);text-align:center;font-size:13px;line-height:1.6;color:var(--muted,#5E6E68)}
+.sitefoot p{margin:2px 0}.sitefoot b{color:var(--brand)}
+</style><!--/BIL-CSS--></head>
 <body>
 <header>
-  <div class="bar">
+  <div class="bar"><!--BIL-HOME--><a class="homebtn" href="../index.html">← Home · หน้าหลัก</a><!--/BIL-HOME-->
     <h1>Lab Worksheet 7 · Reading a gene</h1>
     <span class="who" id="who">710 114 Animal Genetics</span>
   </div>
@@ -118,7 +126,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 
 <section class="step" id="s-start" data-title="Start">
   <h2>Before you begin <span class="th">· ก่อนเริ่ม</span></h2>
-  <p class="lead">You will read a model animal gene built on real rules, turn it into a mature mRNA, test what happens when an exon is skipped, and then look up a real cattle gene. Answers save in this browser, so use the same device for the whole session.</p>
+  <p class="lead">You will read a model animal gene built on real rules, turn it into a mature mRNA step by step, and then look up a real cattle gene. Answers save in this browser, so use the same device for the whole session.</p>
   <div class="card">
     <label class="field" for="f-name">Full name</label><input type="text" id="f-name" autocomplete="name">
     <label class="field" for="f-id">Student ID</label><input type="text" id="f-id" inputmode="numeric">
@@ -127,10 +135,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   <table class="tbl" aria-label="Parts of this worksheet">
     <tr><th>Part</th><th>What you do</th><th>Time</th></tr>
     <tr><td>A</td><td>Find the parts of the gene · ส่วนประกอบของยีน</td><td>50 min</td></tr>
-    <tr><td>B</td><td>Build the mature mRNA · สร้าง mRNA</td><td>45 min</td></tr>
-    <tr><td>C</td><td>Skip an exon · ข้ามเอ็กซอน</td><td>25 min</td></tr>
-    <tr><td>D</td><td>Cattle MSTN in Ensembl · ฐานข้อมูลจีโนม</td><td>25 min</td></tr>
-    <tr><td>E</td><td>Explain · อธิบาย</td><td>20 min</td></tr>
+    <tr><td>B</td><td>From gene to mRNA, step by step · จากยีนสู่ mRNA</td><td>50 min</td></tr>
+    <tr><td>C</td><td>Cattle MSTN in Ensembl · ฐานข้อมูลจีโนม</td><td>40 min</td></tr>
+    <tr><td>D</td><td>Explain · อธิบาย</td><td>20 min</td></tr>
   </table>
   <div class="card">
     <h3 style="margin-top:0">Rules you will use</h3>
@@ -153,32 +160,24 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 </section>
 
 <section class="step" id="s-B" data-title="B · mRNA">
-  <h2>Part B · Build the mature mRNA <span class="th">· สร้าง mRNA ที่สมบูรณ์</span></h2>
-  <p class="lead">Type the first and last position of each exon. The builder joins them, changes T to U and shows the result.</p>
-  <div class="card">
-    <div class="bgrid" id="B-builder"></div>
-    <div class="row"><button class="btn ghost" id="B-build" type="button">Build mRNA</button><span class="score" id="B-bscore"></span></div>
-    <div class="fb" id="B-bfb"></div>
-    <p class="note" style="margin:6px 0">5′ cap · <span style="color:#2F8F83">exon 1</span> · <span style="color:#3A6EA5">exon 2</span> · <span style="color:#9E6B12">exon 3</span> · poly-A tail</p>
-    <div class="mrna" id="B-mrna">(not built yet)</div>
-    <div class="row"><button class="btn quiet" id="B-codons" type="button" disabled>Show codons from the first AUG</button></div>
-    <div class="mrna" id="B-codonview" hidden></div>
-  </div>
+  <h2>Part B · From gene to mRNA, step by step <span class="th">· จากยีนสู่ mRNA ทีละขั้น</span></h2>
+  <p class="lead">A cell turns the gene into mature mRNA in three steps. Press the buttons in order and watch the sequence change, then answer the questions.</p>
+  <div class="card"><h3 style="margin-top:0">Step 1 · Cut out the introns</h3>
+    <p class="note" style="margin:0 0 6px">The exons you found in Part A are kept and joined; the introns are removed. In RNA, T becomes U.</p>
+    <div class="row"><button class="btn ghost" id="B-s1" type="button">Splice</button></div><div id="B-v1"></div></div>
+  <div class="card"><h3 style="margin-top:0">Step 2 · Add the cap and the tail</h3>
+    <p class="note" style="margin:0 0 6px">A cap is added to the 5′ end and a long poly-A tail to the 3′ end. They protect the mRNA and help ribosomes find it.</p>
+    <div class="row"><button class="btn ghost" id="B-s2" type="button" disabled>Add cap and tail</button></div><div id="B-v2"></div></div>
+  <div class="card"><h3 style="margin-top:0">Step 3 · Find the start codon and read in threes</h3>
+    <p class="note" style="margin:0 0 6px">The ribosome starts at the first AUG and reads three bases at a time until a stop codon. Grey bases before AUG are the 5′ UTR.</p>
+    <div class="row"><button class="btn ghost" id="B-s3" type="button" disabled>Show codons</button></div><div id="B-v3"></div></div>
   <div id="B-qs"></div>
   <div class="row"><button class="btn" id="B-check">Check Part B</button><span class="score" id="B-score"></span></div>
-  <div class="row"><button class="btn ghost" data-go="C">Next: Part C</button></div>
+  <div class="row"><button class="btn ghost" data-go="D">Next: Part C</button></div>
 </section>
 
-<section class="step" id="s-C" data-title="C · Skip an exon">
-  <h2>Part C · Skip an exon <span class="th">· เมื่อเซลล์ข้ามเอ็กซอน 2</span></h2>
-  <p class="lead">Like exon 17 of KIT in Dominant White pigs, imagine a splice-site mutation makes cells skip exon 2 of this gene.</p>
-  <div id="C-qs"></div>
-  <div class="row"><button class="btn" id="C-check">Check Part C</button><span class="score" id="C-score"></span></div>
-  <div class="row"><button class="btn ghost" data-go="D">Next: Part D</button></div>
-</section>
-
-<section class="step" id="s-D" data-title="D · Ensembl">
-  <h2>Part D · Cattle MSTN in Ensembl <span class="th">· ยีนไมโอสแตตินของโค</span></h2>
+<section class="step" id="s-D" data-title="C · Ensembl">
+  <h2>Part C · Cattle MSTN in Ensembl <span class="th">· ยีนไมโอสแตตินของโค</span></h2>
   <p class="lead">Myostatin (MSTN) is the gene behind double muscling in Belgian Blue cattle and heavy muscling in Texel sheep.</p>
   <div class="card links">
     <p style="margin:4px 0">1. Open <a href="https://www.ensembl.org/" target="_blank" rel="noopener">ensembl.org</a>.</p>
@@ -188,12 +187,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   </div>
   <div id="D-qs"></div>
   <label class="field" for="D-note">Note for the instructor (optional): what did you see?</label><textarea id="D-note" style="min-height:70px"></textarea>
-  <div class="row"><button class="btn" id="D-check">Check Part D</button><span class="score" id="D-score"></span></div>
-  <div class="row"><button class="btn ghost" data-go="E">Next: Part E</button></div>
+  <div class="row"><button class="btn" id="D-check">Check Part C</button><span class="score" id="D-score"></span></div>
+  <div class="row"><button class="btn ghost" data-go="E">Next: Part D</button></div>
 </section>
 
-<section class="step" id="s-E" data-title="E · Explain">
-  <h2>Part E · Explain <span class="th">· อธิบาย</span></h2>
+<section class="step" id="s-E" data-title="D · Explain">
+  <h2>Part D · Explain <span class="th">· อธิบาย</span></h2>
   <p class="lead">Write 2–4 sentences for each, in English or Thai.</p>
   <div id="E-qs"></div>
   <div class="row"><button class="btn" data-go="R">See my summary</button></div>
@@ -208,6 +207,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 </section>
 
 </main>
+<!--BIL-FOOT--><footer class="sitefoot no-th">
+  <p><b>Asst. Prof. Pawat Seritrakul, PhD</b> · ผศ.ดร.ภวัต เสรีตระกูล</p>
+  <p>710 114 Animal Genetics · พันธุศาสตร์สัตว์</p>
+  <p>Animal Science Program · หลักสูตรสัตวศาสตร์</p>
+  <p>Faculty of Animal Sciences and Agricultural Technology, Silpakorn University · คณะสัตวศาสตร์และเทคโนโลยีการเกษตร มหาวิทยาลัยศิลปากร</p>
+</footer>
+<!--/BIL-FOOT-->
+
 <script>
 (function(){
 "use strict";
@@ -243,7 +250,7 @@ K.ex2len = K.ex[1][1] - K.ex[1][0] + 1;
 K.introns = (K.in1e - K.in1s + 1) + (K.in2e - K.in2s + 1);
 
 /* ---------- navigation ---------- */
-var order = ["start","A","B","C","D","E","R"], stepsNav = $("steps");
+var order = ["start","A","B","D","E","R"], stepsNav = $("steps");
 order.forEach(function(s){ var b = document.createElement("button"); b.type = "button"; b.dataset.step = s; b.textContent = $("s-"+s).dataset.title; b.addEventListener("click", function(){ go(s); }); stepsNav.appendChild(b); });
 function refreshNav(){ stepsNav.querySelectorAll("button").forEach(function(b){ if (b.dataset.step === state.step) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current"); b.classList.toggle("done", !!state.checked[b.dataset.step]); }); }
 function go(s){ state.step = s; save(); order.forEach(function(x){ $("s-"+x).classList.toggle("on", x === s); }); refreshNav(); if (s === "R") renderSummary(); try{ window.scrollTo(0,0); }catch(e){} }
@@ -312,53 +319,30 @@ function checkA(show){ return checkList("A", AQ, show); }
 $("A-check").addEventListener("click", function(){ var n = checkA(true); $("A-score").textContent = "Score: " + n + " / " + AQ.length; state.checked.A = true; save(); refreshNav(); });
 
 /* ---------- PART B ---------- */
-var EXF = [["e1s","Exon 1 first"],["e1e","Exon 1 last"],["e2s","Exon 2 first"],["e2e","Exon 2 last"],["e3s","Exon 3 first"],["e3e","Exon 3 last"]];
-$("B-builder").innerHTML = EXF.map(function(f){ return "<div><label class='field' for='B-" + f[0] + "'>" + f[1] + "</label><input type='text' inputmode='numeric' id='B-" + f[0] + "' style='max-width:120px'></div>"; }).join("");
-EXF.forEach(function(f){ var e = $("B-" + f[0]); e.value = state.B.ex[f[0]] || ""; e.addEventListener("input", function(){ state.B.ex[f[0]] = e.value; save(); }); });
-function exVals(){ return EXF.map(function(f){ return parseInt(state.B.ex[f[0]], 10); }); }
-function builderScore(){ var v = exVals(), key = [K.ex[0][0], K.ex[0][1], K.ex[1][0], K.ex[1][1], K.ex[2][0], K.ex[2][1]], n = 0; v.forEach(function(x, i){ if (x === key[i]) n++; }); return n; }
-function build(show){
-  var v = exVals(), ok = v.every(function(x){ return isFinite(x) && x >= 1 && x <= SEQ.length; }) && v[0] <= v[1] && v[1] < v[2] && v[2] <= v[3] && v[3] < v[4] && v[4] <= v[5];
-  if (!ok){ $("B-mrna").textContent = "Fill all six positions in order (exon 1 first ≤ exon 1 last < exon 2 first …)."; $("B-codons").disabled = true; return false; }
-  var parts = [piece(v[0], v[1]), piece(v[2], v[3]), piece(v[4], v[5])].map(function(s){ return s.replace(/T/g, "U"); });
-  $("B-mrna").innerHTML = "5′ cap–" + parts.map(function(p, i){ return '<span class="x' + (i + 1) + '">' + p + '</span>'; }).join("") + "–AAAA…A 3′<br><span class='note'>Length without cap and tail: " + parts.join("").length + " nt</span>";
-  var n = builderScore();
-  if (show){ $("B-bscore").textContent = "Exon borders correct: " + n + " / 6"; var f = $("B-bfb"); f.className = "fb show " + (n === 6 ? "ok" : "bad");
-    f.textContent = n === 6 ? "Correct: this is the mature mRNA." : "Not yet. Exon 1 starts at the transcription start; each exon ends one base before an intron's GT and starts one base after its AG; exon 3 ends at the cleavage site."; }
-  $("B-codons").disabled = n !== 6;
-  return n === 6;
+state.B.step = state.B.step || 0;
+function exTable(){ return "<table class='tbl' style='max-width:520px'><tr><th>Exon</th><th>First base</th><th>Last base</th><th>Length (nt)</th></tr>" + K.ex.map(function(e, i){ return "<tr><td><span style='font-weight:700;color:" + ["#2F8F83","#3A6EA5","#9E6B12"][i] + "'>Exon " + (i + 1) + "</span></td><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + (e[1] - e[0] + 1) + "</td></tr>"; }).join("") + "</table>"; }
+function joined(){ return K.ex.map(function(e, i){ return '<span class="x' + (i + 1) + '">' + piece(e[0], e[1]).replace(/T/g, "U") + '</span>'; }).join(""); }
+function drawB(){
+  var st = state.B.step;
+  $("B-v1").innerHTML = st >= 1 ? exTable() + "<div class='mrna'>" + joined() + "</div>" : "";
+  $("B-v2").innerHTML = st >= 2 ? "<div class='mrna'><b>5′ cap</b>–" + joined() + "–<b>AAAAAAAAAA…A 3′</b></div>" : "";
+  $("B-v3").innerHTML = st >= 3 ? "<div class='mrna'><span style='color:#8A9A94'>" + K.mrna.slice(0, K.utr5) + "</span> " + K.codons.map(function(c, i){ return '<span class="codon' + (i === 0 ? " go" : (i === K.codons.length - 1 ? " st" : "")) + '">' + c + '</span>'; }).join("") + " <span style='color:#8A9A94'>" + K.mrna.slice(K.utr5 + K.cds) + "</span></div><p class='note'>Green = start codon (AUG) · red = stop codon · grey = untranslated regions (UTRs)</p>" : "";
+  $("B-s2").disabled = st < 1; $("B-s3").disabled = st < 2;
 }
-$("B-build").addEventListener("click", function(){ build(true); save(); });
-$("B-codons").addEventListener("click", function(){
-  var cv = $("B-codonview"); cv.hidden = false;
-  cv.innerHTML = K.codons.map(function(c, i){ return '<span class="codon' + (i === 0 ? " go" : (i === K.codons.length - 1 ? " st" : "")) + '">' + c + '</span>'; }).join("");
-});
-if (EXF.every(function(f){ return state.B.ex[f[0]]; })) build(false);
+$("B-s1").addEventListener("click", function(){ state.B.step = Math.max(state.B.step, 1); save(); drawB(); });
+$("B-s2").addEventListener("click", function(){ state.B.step = Math.max(state.B.step, 2); save(); drawB(); });
+$("B-s3").addEventListener("click", function(){ state.B.step = Math.max(state.B.step, 3); save(); drawB(); });
+drawB();
 var BQ = [
- {k:"b1", t:"num", q:"Length of the mature mRNA without cap and tail (nt)", a:K.mrna.length, why:"Exon 1 + exon 2 + exon 3.", hint:"Build it, then read the length under the mRNA."},
- {k:"b2", t:"num", q:"Total length of the two introns removed (nt)", a:K.introns, why:"Intron 1 + intron 2.", hint:"Last minus first, plus 1, for each intron."},
- {k:"b3", t:"num", q:"Length of the 5′ UTR (from the start of the mRNA to just before AUG)", a:K.utr5, why:"Start codon position minus transcription start."},
- {k:"b4", t:"num", q:"Length of the coding sequence, from AUG to the end of the stop codon (nt)", a:K.cds, why:"Count codons × 3.", hint:"Use the codon view: count the codons and multiply by 3."},
- {k:"b5", t:"num", q:"How many amino acids does this mRNA code for?", a:K.aa, why:"Codons minus the stop codon.", hint:"The stop codon does not code for an amino acid."},
- {k:"b6", t:"txt", rna:true, q:"Which stop codon ends the coding sequence? (3 letters, RNA)", a:K.stop, why:"", hint:"The last codon in the codon view."},
- {k:"b7", t:"num", q:"Length of the 3′ UTR (after the stop codon to the end of the mRNA)", a:K.utr3, why:"mRNA length − 5′ UTR − coding sequence."},
- {k:"b8", t:"mc", q:"Where are the cap and the tail added?", o:["Cap at 3′, tail at 5′","Cap at 5′, tail at 3′","Both at the 5′ end"], a:1, why:"The 5′ cap and the 3′ poly-A tail."}
+ {k:"b1", t:"num", q:"How long is the mature mRNA, not counting the cap and tail (nt)?", a:K.mrna.length, why:"Add the three exon lengths in the Step 1 table.", hint:"Add the three numbers in the Length column of the Step 1 table."},
+ {k:"b2", t:"num", q:"How many bases come before the start codon AUG (the 5′ UTR)?", a:K.utr5, why:"These grey bases are not translated.", hint:"Count the grey bases before the green AUG in Step 3."},
+ {k:"b3", t:"num", q:"How many amino acids does this mRNA code for?", a:K.aa, why:"Count the codons from AUG to the stop, then leave out the stop codon.", hint:"Count all the boxed codons in Step 3, then subtract 1 for the stop codon."},
+ {k:"b4", t:"txt", rna:true, q:"Which stop codon ends the message? (3 letters)", a:K.stop, why:"", hint:"The red codon at the end of Step 3."},
+ {k:"b5", t:"mc", q:"Where are the cap and the tail added?", o:["Cap at 3′, tail at 5′","Cap at 5′, tail at 3′","Both at the 5′ end"], a:1, why:"The 5′ cap and the 3′ poly-A tail (Step 2)."}
 ];
 buildQs("B", "B-qs", BQ);
-function checkB(show){ return builderScore() + checkList("B", BQ, show); }
-$("B-check").addEventListener("click", function(){ build(true); var n = checkB(true); $("B-score").textContent = "Score: " + n + " / " + (6 + BQ.length); state.checked.B = true; save(); refreshNav(); });
-
-/* ---------- PART C ---------- */
-var CQ = [
- {k:"c1", t:"num", q:"How long is exon 2 (nt)?", a:K.ex2len, why:""},
- {k:"c2", t:"num", q:"How long is the mRNA (without cap and tail) if exon 2 is skipped?", a:K.mrna.length - K.ex2len, why:"Total minus exon 2."},
- {k:"c3", t:"mc", q:"Is the length of exon 2 a multiple of 3?", o:["Yes","No"], a:(K.ex2len % 3 === 0 ? 0 : 1), why:"Divide by 3 and look at the remainder."},
- {k:"c4", t:"mc", q:"So, after the exon 1–exon 3 junction, the ribosome would read…", o:["the same codons as before, just fewer of them","a shifted reading frame: different codons, usually ending at an early stop","nothing: skipped exons cannot be translated"], a:(K.ex2len % 3 === 0 ? 0 : 1), why:"Losing a number of bases that is not a multiple of 3 shifts the frame."},
- {k:"c5", t:"num", q:"If exon 2 were 45 nt long instead, how many amino acids would the protein lose?", a:15, why:"45 ÷ 3 = 15 codons, and the frame is kept."}
-];
-buildQs("C", "C-qs", CQ);
-function checkC(show){ return checkList("C", CQ, show); }
-$("C-check").addEventListener("click", function(){ var n = checkC(true); $("C-score").textContent = "Score: " + n + " / " + CQ.length; state.checked.C = true; save(); refreshNav(); });
+function checkB(show){ return checkList("B", BQ, show); }
+$("B-check").addEventListener("click", function(){ var n = checkB(true); $("B-score").textContent = "Score: " + n + " / " + BQ.length; state.checked.B = true; save(); refreshNav(); });
 
 /* ---------- PART D ---------- */
 var DQ = [
@@ -389,15 +373,14 @@ function renderSummary(){
   var i = state.info;
   var rows = [["Name", esc(i.name || "(not entered)")], ["Student ID", esc(i.id || "(not entered)")], ["Lab group", esc(i.group || "(not entered)")],
     ["Part A · gene parts", checkA(false) + " / " + AQ.length],
-    ["Part B · mature mRNA", checkB(false) + " / " + (6 + BQ.length)],
-    ["Part C · exon skipping", checkC(false) + " / " + CQ.length],
-    ["Part D · MSTN in Ensembl", checkD(false) + " / " + DQ.length + (state.D.note ? "; note: " + esc(state.D.note) : "")]];
-  var h = "<table class='tbl'>" + rows.map(function(r){ return "<tr><th style='width:32%'>" + r[0] + "</th><td>" + r[1] + "</td></tr>"; }).join("") + "</table><h3>Part E · written answers</h3>";
+    ["Part B · gene to mRNA", checkB(false) + " / " + BQ.length],
+    ["Part C · MSTN in Ensembl", checkD(false) + " / " + DQ.length + (state.D.note ? "; note: " + esc(state.D.note) : "")]];
+  var h = "<table class='tbl'>" + rows.map(function(r){ return "<tr><th style='width:32%'>" + r[0] + "</th><td>" + r[1] + "</td></tr>"; }).join("") + "</table><h3>Part D · written answers</h3>";
   EQ.forEach(function(q, n){ h += "<p><b>" + (n+1) + ".</b> " + esc(q.q) + "<br>" + esc(state.E[q.k] || "(no answer)").replace(/\n/g, "<br>") + "</p>"; });
   h += "<p class='note'>Created " + new Date().toLocaleString() + "</p>";
   $("R-body").innerHTML = h;
   var txt = rows.map(function(r){ return r[0] + ": " + r[1].replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,"\""); }).join("\n");
-  EQ.forEach(function(q, n){ txt += "\n\nE" + (n+1) + ". " + q.q + "\n" + (state.E[q.k] || "(no answer)"); });
+  EQ.forEach(function(q, n){ txt += "\n\nD" + (n+1) + ". " + q.q + "\n" + (state.E[q.k] || "(no answer)"); });
   $("R-text").value = txt;
 }
 $("R-copy").addEventListener("click", function(){ var t = $("R-text"), done = function(){ $("R-copy").textContent = "Copied"; setTimeout(function(){ $("R-copy").textContent = "Copy summary as text"; }, 1800); };
@@ -407,5 +390,52 @@ confirmTap($("R-reset"), "Tap again to erase everything", function(){ try{ local
 go(order.indexOf(state.step) >= 0 ? state.step : "start");
 })();
 </script>
+
+<!--BIL-JS--><script>window.__TH = {"Check": "ตรวจคำตอบ", "Choose": "เลือก", "Choose…": "เลือก…", "Copy summary as text": "คัดลอกสรุปเป็นข้อความ", "Count": "นับ", "Critical value at p = 0.05": "ค่าวิกฤตที่ p = 0.05", "Decision": "ผลการตัดสิน", "Degrees of freedom (df)": "องศาอิสระ (df)", "Expected (E)": "ค่าคาดหวัง (E)", "Full name": "ชื่อ-นามสกุล", "Lab group": "กลุ่มปฏิบัติการ", "Observed (O)": "ค่าที่สังเกตได้ (O)", "One": "หนึ่ง", "Part": "ส่วน", "Reset": "เริ่มใหม่", "Run": "รัน", "See my summary": "ดูสรุปของฉัน", "Start": "เริ่ม", "Start over on this device": "เริ่มใหม่ทั้งหมดบนเครื่องนี้", "Steps": "ขั้นตอน", "Student ID": "รหัสนักศึกษา", "Take a screenshot of this page, or copy the summary text, and submit it the way your instructor tells you.": "ถ่ายภาพหน้าจอหน้านี้ หรือคัดลอกข้อความสรุป แล้วส่งตามที่อาจารย์กำหนด", "Time": "เวลา", "Total": "รวม", "What you do": "สิ่งที่ทำ", "Write 2–4 sentences for each, in English or Thai, using your own results.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย โดยใช้ผลของตัวเอง", "Write 2–4 sentences for each, in English or Thai.": "เขียนข้อละ 2-4 ประโยค เป็นภาษาอังกฤษหรือไทย", "χ² (total)": "χ² (รวม)", "Check my chi-square": "ตรวจค่าไคสแควร์ของฉัน", "Check my square": "ตรวจตารางของฉัน", "About 5": "ประมาณ 5", "Name": "ชื่อ", "Lab group number": "หมายเลขกลุ่ม", "Copy record as text": "คัดลอกบันทึกเป็นข้อความ", "Copy result as text": "คัดลอกผลเป็นข้อความ", "Before you begin": "ก่อนเริ่ม", "Yes": "ใช่", "No": "ไม่ใช่", "Clear": "ล้าง", "Back": "ย้อนกลับ", "Next": "ถัดไป", "New set": "ชุดใหม่", "See results": "ดูผล", "Full name(s) of your group": "ชื่อ-นามสกุลสมาชิกกลุ่ม", "Student ID(s)": "รหัสนักศึกษา", "Bench / group number": "โต๊ะ / หมายเลขกลุ่ม", "Round (time slot)": "รอบ (ช่วงเวลา)", "Name (optional)": "ชื่อ (ไม่บังคับ)", "Student ID (optional)": "รหัสนักศึกษา (ไม่บังคับ)", "Group (optional)": "กลุ่ม (ไม่บังคับ)", "Erase all on this device": "ลบทั้งหมดบนเครื่องนี้", "Drag the cards, or use ▲ ▼, so that step 1 is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้ขั้นที่ 1 อยู่บนสุด", "Drag the cards, or use ▲ ▼, so that the first event is at the top.": "ลากการ์ด หรือกด ▲ ▼ ให้เหตุการณ์แรกอยู่บนสุด", "Each parent's gametes carry one allele of each gene; list every kind once. Each box = the gamete on its row + the gamete above its column.": "เซลล์สืบพันธุ์ของพ่อแม่แต่ละตัวมีอัลลีลของแต่ละยีนหนึ่งตัว เขียนแต่ละแบบครั้งเดียว แต่ละช่อง = เซลล์สืบพันธุ์ของแถว + เซลล์สืบพันธุ์ของคอลัมน์", "Red boxes need another look. Tip: a cross with single-comb Hen D (rrpp) shows exactly which alleles the rooster carries.": "ช่องสีแดงต้องดูใหม่ เคล็ดลับ: ผสมกับไก่ตัวเมีย D หงอนจักร (rrpp) จะเห็นชัดว่าไก่ตัวผู้มีอัลลีลใด", "Your sequence should be 8–30 letters, using only A, C, G and T. Tick the box once your model is folded and shown.": "ลำดับควรยาว 8-30 ตัวอักษร ใช้เฉพาะ A, C, G และ T ทำเครื่องหมายในช่องเมื่อพับแบบจำลองและให้อาจารย์ดูแล้ว", "Finish Part A1 first.": "ทำส่วน A1 ให้เสร็จก่อน", "Lab Worksheet 7 · Reading a gene": "ใบงานปฏิบัติการที่ 7 · การอ่านยีน", "You will read a model animal gene built on real rules, turn it into a mature mRNA step by step, and then look up a real cattle gene. Answers save in this browser, so use the same device for the whole session.": "นักศึกษาจะอ่านยีนสัตว์จำลองที่สร้างตามกฎจริง เปลี่ยนเป็น mRNA ที่สมบูรณ์ทีละขั้น แล้วค้นยีนจริงของโค คำตอบบันทึกในเบราว์เซอร์นี้ จึงควรใช้อุปกรณ์เดิมตลอดคาบ", "Rules you will use": "กฎที่จะใช้", "TATA box: TATAAA, about 25–30 bp before the transcription start.": "TATA box: TATAAA อยู่ก่อนจุดเริ่มถอดรหัสประมาณ 25-30 bp", "Start codon: the first ATG after the transcription start.": "โคดอนเริ่ม: ATG ตัวแรกหลังจุดเริ่มถอดรหัส", "Introns: start GTAAGT or GTGAGT; end with a run of C and T, then AG.": "อินทรอน: เริ่มด้วย GTAAGT หรือ GTGAGT และจบด้วยช่วง C และ T ตามด้วย AG", "Poly-A signal: AATAAA; the RNA is cut 10–30 nt after it.": "สัญญาณ poly-A: AATAAA RNA ถูกตัดหลังจากนั้น 10-30 นิวคลีโอไทด์", "This is the coding strand, written 5′ → 3′, numbered from 1. Tap any base to see its position. The transcription start (position 61) and the cleavage site at the end of the last exon (position 364) are underlined.": "นี่คือสายรหัส เขียนแบบ 5′ → 3′ เริ่มนับจาก 1 แตะเบสใดก็ได้เพื่อดูตำแหน่ง จุดเริ่มถอดรหัส (ตำแหน่ง 61) และจุดตัดท้ายเอ็กซอนสุดท้าย (ตำแหน่ง 364) ขีดเส้นใต้ไว้", "Tap a base to see its position.": "แตะเบสเพื่อดูตำแหน่ง", "1. Position of the first base (T) of the TATA box": "1. ตำแหน่งของเบสแรก (T) ของ TATA box", "2. How many bases from the start of the TATA box to the transcription start? (TSS position minus TATA position)": "2. จากต้น TATA box ถึงจุดเริ่มถอดรหัสห่างกี่เบส (ตำแหน่ง TSS ลบตำแหน่ง TATA)", "3. Position of the A of the start codon (first ATG after the transcription start)": "3. ตำแหน่งของ A ในโคดอนเริ่ม (ATG ตัวแรกหลังจุดเริ่มถอดรหัส)", "4. Intron 1: position of its first base (the G of GT)": "4. อินทรอน 1: ตำแหน่งเบสแรก (G ของ GT)", "5. Intron 1: position of its last base (the G of AG)": "5. อินทรอน 1: ตำแหน่งเบสสุดท้าย (G ของ AG)", "6. Intron 2: position of its first base": "6. อินทรอน 2: ตำแหน่งเบสแรก", "7. Intron 2: position of its last base": "7. อินทรอน 2: ตำแหน่งเบสสุดท้าย", "8. Position of the first base of the poly-A signal AATAAA": "8. ตำแหน่งเบสแรกของสัญญาณ poly-A AATAAA", "9. The strand shown is the coding strand. Which statement is true?": "9. สายที่แสดงคือสายรหัส ข้อใดถูก", "The mRNA is its complement": "mRNA เป็นคู่สมของสายนี้", "The mRNA has the same sequence, with U for T": "mRNA มีลำดับเหมือนกัน แต่ใช้ U แทน T", "It is the strand RNA polymerase reads": "เป็นสายที่ RNA polymerase อ่าน", "A cell turns the gene into mature mRNA in three steps. Press the buttons in order and watch the sequence change, then answer the questions.": "เซลล์เปลี่ยนยีนเป็น mRNA ที่สมบูรณ์ใน 3 ขั้น กดปุ่มตามลำดับแล้วดูลำดับเปลี่ยนไป จากนั้นตอบคำถาม", "Step 1 · Cut out the introns": "ขั้นที่ 1 · ตัดอินทรอนออก", "The exons you found in Part A are kept and joined; the introns are removed. In RNA, T becomes U.": "เอ็กซอนที่หาได้ในส่วน A ถูกเก็บไว้และต่อกัน อินทรอนถูกตัดออก ใน RNA ใช้ U แทน T", "Splice": "ตัดต่อ (Splice)", "Step 2 · Add the cap and the tail": "ขั้นที่ 2 · เติมแคปและหาง", "A cap is added to the 5′ end and a long poly-A tail to the 3′ end. They protect the mRNA and help ribosomes find it.": "เติมแคปที่ปลาย 5′ และหาง poly-A ยาวที่ปลาย 3′ ช่วยปกป้อง mRNA และช่วยให้ไรโบโซมหา mRNA พบ", "Add cap and tail": "เติมแคปและหาง", "Step 3 · Find the start codon and read in threes": "ขั้นที่ 3 · หาโคดอนเริ่มแล้วอ่านทีละสามเบส", "The ribosome starts at the first AUG and reads three bases at a time until a stop codon. Grey bases before AUG are the 5′ UTR.": "ไรโบโซมเริ่มที่ AUG ตัวแรกและอ่านทีละสามเบสจนถึงโคดอนหยุด เบสสีเทาก่อน AUG คือ 5′ UTR", "Show codons": "แสดงโคดอน", "1. How long is the mature mRNA, not counting the cap and tail (nt)?": "1. mRNA ที่สมบูรณ์ยาวเท่าใด ไม่นับแคปและหาง (นิวคลีโอไทด์)", "2. How many bases come before the start codon AUG (the 5′ UTR)?": "2. มีกี่เบสอยู่ก่อนโคดอนเริ่ม AUG (5′ UTR)", "3. How many amino acids does this mRNA code for?": "3. mRNA นี้เป็นรหัสของกรดอะมิโนกี่ตัว", "4. Which stop codon ends the message? (3 letters)": "4. โคดอนหยุดใดปิดท้ายข้อความ (3 ตัวอักษร)", "5. Where are the cap and the tail added?": "5. แคปและหางเติมที่ใด", "Cap at 3′, tail at 5′": "แคปที่ 3′ หางที่ 5′", "Cap at 5′, tail at 3′": "แคปที่ 5′ หางที่ 3′", "Both at the 5′ end": "ทั้งคู่ที่ปลาย 5′", "Myostatin (MSTN) is the gene behind double muscling in Belgian Blue cattle and heavy muscling in Texel sheep.": "ไมโอสแตติน (MSTN) คือยีนที่ทำให้เกิดกล้ามเนื้อสองชั้นในโคเบลเจียนบลู และกล้ามเนื้อมากในแกะเท็กเซล", "1. Open ensembl.org.": "1. เปิด ensembl.org", "2. Choose Cow as the species and search for MSTN; open the gene page.": "2. เลือกสปีชีส์ Cow แล้วค้นหา MSTN เปิดหน้ายีน", "3. Read the location (chromosome), the transcript table, and the protein length of the main transcript.": "3. อ่านตำแหน่ง (โครโมโซม) ตารางทรานสคริปต์ และความยาวโปรตีนของทรานสคริปต์หลัก", "If Ensembl shows something different from what the checker expects, write what you see in the note box and tell the instructor.": "ถ้า Ensembl แสดงต่างจากที่ระบบตรวจคาดไว้ ให้เขียนสิ่งที่เห็นในช่องบันทึกและแจ้งอาจารย์", "1. On which cattle chromosome is MSTN?": "1. MSTN อยู่บนโครโมโซมใดของโค", "2. How many exons does the main MSTN transcript have?": "2. ทรานสคริปต์หลักของ MSTN มีกี่เอ็กซอน", "3. How many amino acids long is the MSTN protein?": "3. โปรตีน MSTN ยาวกี่กรดอะมิโน", "4. Belgian Blue cattle carry an 11-bp deletion in MSTN. Which exon is it in?": "4. โคเบลเจียนบลูมีการขาดหาย 11 bp ในยีน MSTN อยู่ในเอ็กซอนใด", "Exon 1": "เอ็กซอน 1", "Exon 2": "เอ็กซอน 2", "Exon 3": "เอ็กซอน 3", "Note for the instructor (optional): what did you see?": "บันทึกถึงอาจารย์ (ไม่บังคับ): เห็นอะไร", "1. Why is the mature mRNA of this gene much shorter than the gene itself? Why could a bacterium not make the right protein from this DNA?": "1. ทำไม mRNA ที่สมบูรณ์ของยีนนี้สั้นกว่าตัวยีนมาก และทำไมแบคทีเรียจึงสร้างโปรตีนที่ถูกต้องจากดีเอ็นเอนี้ไม่ได้", "2. Texel sheep and Belgian Blue cattle are both heavily muscled because of MSTN. Explain how the two mutations act at different steps from gene to protein.": "2. แกะเท็กเซลและโคเบลเจียนบลูมีกล้ามเนื้อมากเพราะ MSTN ทั้งคู่ อธิบายว่าการกลายพันธุ์สองแบบนี้ออกฤทธิ์ในขั้นต่างกันอย่างไรจากยีนสู่โปรตีน", "TATAAA starts there.": "TATAAA เริ่มที่ตำแหน่งนี้", "Look upstream of the underlined start for TATAAA.": "หา TATAAA ก่อนจุดเริ่มที่ขีดเส้นใต้", "Within the usual 25–30 bp range.": "อยู่ในช่วงปกติ 25-30 bp", "Subtract the two positions.": "ลบสองตำแหน่ง", "The first ATG downstream of the start site.": "ATG ตัวแรกหลังจุดเริ่มถอดรหัส", "Read along from the underlined A until you meet ATG.": "อ่านต่อจาก A ที่ขีดเส้นใต้จนพบ ATG", "It begins GTAAGT.": "เริ่มด้วย GTAAGT", "Look for GTAAGT or GTGAGT.": "หา GTAAGT หรือ GTGAGT", "A C/T-rich run, then AG.": "ช่วงที่มี C/T มาก แล้วตามด้วย AG", "Find the C/T-rich run that ends in AG.": "หาช่วงที่มี C/T มากซึ่งจบด้วย AG", "It begins GTGAGT.": "เริ่มด้วย GTGAGT", "CTTTCCTTTCAG ends here.": "CTTTCCTTTCAG จบที่ตำแหน่งนี้", "The cleavage site lies 20 nt beyond it.": "จุดตัดอยู่ถัดไป 20 นิวคลีโอไทด์", "The coding strand matches the mRNA.": "สายรหัสตรงกับ mRNA", "Add the three exon lengths in the Step 1 table.": "บวกความยาวของสามเอ็กซอนในตารางขั้นที่ 1", "Add the three numbers in the Length column of the Step 1 table.": "บวกสามตัวเลขในคอลัมน์ความยาวของตารางขั้นที่ 1", "These grey bases are not translated.": "เบสสีเทาเหล่านี้ไม่ถูกแปลรหัส", "Count the grey bases before the green AUG in Step 3.": "นับเบสสีเทาก่อน AUG สีเขียวในขั้นที่ 3", "Count the codons from AUG to the stop, then leave out the stop codon.": "นับโคดอนจาก AUG ถึงโคดอนหยุด แล้วไม่นับโคดอนหยุด", "Count all the boxed codons in Step 3, then subtract 1 for the stop codon.": "นับโคดอนในกรอบทั้งหมดในขั้นที่ 3 แล้วลบ 1 สำหรับโคดอนหยุด", "The red codon at the end of Step 3.": "โคดอนสีแดงท้ายขั้นที่ 3", "The 5′ cap and the 3′ poly-A tail (Step 2).": "แคปที่ปลาย 5′ และหาง poly-A ที่ปลาย 3′ (ขั้นที่ 2)", "Bovine chromosome 2 (BTA2).": "โครโมโซม 2 ของโค (BTA2)", "Read the Location line at the top of the gene page.": "อ่านบรรทัด Location ด้านบนของหน้ายีน", "Myostatin has 3 exons and 2 introns.": "ไมโอสแตตินมี 3 เอ็กซอนและ 2 อินทรอน", "Open the transcript table and look at the Exons column.": "เปิดตารางทรานสคริปต์แล้วดูคอลัมน์ Exons", "375 aa: the precursor that is later cut to the active hormone.": "375 กรดอะมิโน: โปรตีนตั้งต้นที่ต่อมาถูกตัดเป็นฮอร์โมนที่ทำงาน", "Protein length is in the transcript table.": "ความยาวโปรตีนอยู่ในตารางทรานสคริปต์", "The deletion is in exon 3 and causes a frameshift that destroys the active part of the protein.": "การขาดหายอยู่ในเอ็กซอน 3 และทำให้กรอบการอ่านเลื่อน ทำลายส่วนที่ทำงานของโปรตีน"};</script><script>(function(){
+var TH = window.__TH || {};
+var RULES = [
+  [/^(\d+) min$/, "$1 นาที"], [/^Check Part ([A-F])$/, "ตรวจส่วน $1"], [/^Next: Part ([A-F])$/, "ถัดไป: ส่วน $1"], [/^Start Part ([A-F])$/, "เริ่มส่วน $1"],
+  [/^Score: (.+)$/, "คะแนน: $1"], [/^Breed generation (\d+)$/, "ผสมพันธุ์รุ่นที่ $1"], [/^Flagged: (\d+) of (\d+)$/, "ทำเครื่องหมายแล้ว: $1 จาก $2"],
+  [/^Load exactly (\d+) tubes\.$/, "ใส่ให้ครบ $1 หลอด"], [/^Mistakes found: (\d+) of (\d+)\..*$/, "พบที่ผิด $1 จาก $2 ตำแหน่ง เทียบแต่ละเบสกับเบสคู่บนแม่แบบ"],
+  [/^(\d+) of (\d+) boxes correct \((\d+) of (\d+) chromosomes placed\)\..*$/, "ถูก $1 จาก $2 ช่อง (วางแล้ว $3 จาก $4 แท่ง) นับโครโมโซมใหม่ก่อนบันทึก 2n และเลือกเพศของสัตว์"],
+  [/^(\d+) of (\d+) boxes correct\. Count the microchromosomes.*$/, "ถูก $1 จาก $2 ช่อง นับไมโครโครโมโซมใหม่ (ทำเครื่องหมายทีละจุด) 2n = โครโมโซมในคาริโอแกรมรวมไมโครโครโมโซม และเลือกเพศของนก"],
+  [/^Microchromosomes marked: (\d+)$/, "ทำเครื่องหมายไมโครโครโมโซมแล้ว: $1"], [/^Gel (\d+)$/, "เจล $1"], [/^Run (\d+)$/, "ครั้งที่ $1"], [/^Copied$/, "คัดลอกแล้ว"], [/^Tap again to (.+)$/, "แตะอีกครั้งเพื่อยืนยัน"],
+  [/^Part ([A-F]) · (.+)$/, function(m){ var r = look(m[2]); return "ส่วน " + m[1] + (r ? " · " + r : ""); }]
+];
+function norm(s){ return String(s).replace(/\s+/g, " ").trim(); }
+function look(s){ if (Object.prototype.hasOwnProperty.call(TH, s)) return TH[s]; return null; }
+function lookup(s){ var r = look(s); if (r) return r; for (var i = 0; i < RULES.length; i++){ var m = s.match(RULES[i][0]); if (m) return typeof RULES[i][1] === "function" ? RULES[i][1](m) : s.replace(RULES[i][0], RULES[i][1]); } return null; }
+function fbThai(s){
+  var m = s.match(/^(Correct\.|Correct:|Not yet\.|Not quite\.)\s*(.*)$/);
+  if (!m) return lookup(s);
+  var pre = /^Correct/.test(m[1]) ? "ถูกต้อง" : "ยังไม่ถูก";
+  var rest = m[2] ? lookup(norm(m[2].replace(/^Answer: .*?\.\s*/, ""))) : null;
+  return pre + (rest ? " " + rest : "");
+}
+function baseText(el){ var t = ""; el.childNodes.forEach(function(n){ if (n.nodeType === 1 && n.classList && (n.classList.contains("th2") || n.classList.contains("badge") || n.classList.contains("ddh") || n.classList.contains("ddb"))) return; t += n.textContent; }); return norm(t); }
+var SEL = "h1, h3, p, li, label.field, th, td, .opts label span, .chk span, button, option, .key span, .legend span, .tag, .fb, .ddt, .mtn, .mtf";
+var SKIP = "#steps, .no-th, .aln, .mrna, .seq, svg, .copybox";
+function apply(){
+  document.querySelectorAll(SEL).forEach(function(el){
+    if (el.closest(SKIP) || el.classList.contains("dditem")) return;
+    if (el.querySelector("p, li, div, table, h3, ul, ol, select, input, textarea")) return;
+    var key = baseText(el); if (!key) return;
+    if (el.getAttribute("data-thk") === key) return;
+    el.setAttribute("data-thk", key);
+    if (/[\u0E00-\u0E7F]/.test(key) && el.tagName !== "BUTTON") return;
+    var th = el.classList.contains("fb") ? fbThai(key) : lookup(key);
+    var old = el.querySelector(":scope > .th2"); if (old) old.remove();
+    if (!th) return;
+    if (el.tagName === "OPTION"){ el.textContent = key + " · " + th; el.setAttribute("data-thk", el.textContent); return; }
+    var sp = document.createElement("span"); sp.className = "th2" + (el.tagName === "BUTTON" || el.classList.contains("mtn") || el.classList.contains("mtf") ? " inl" : ""); sp.textContent = th; el.appendChild(sp);
+  });
+}
+var pend = false;
+function schedule(){ if (pend) return; pend = true; (window.requestAnimationFrame || setTimeout)(function(){ pend = false; apply(); }); }
+if (window.MutationObserver) new MutationObserver(function(muts){ for (var i = 0; i < muts.length; i++){ var t = muts[i].target; if (t && t.classList && t.classList.contains("th2")) continue; schedule(); return; } }).observe(document.body, {childList:true, subtree:true, characterData:true});
+apply();
+window.__thApply = apply;
+})();
+</script><!--/BIL-JS-->
 </body>
 </html>
